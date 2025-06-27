@@ -226,3 +226,4 @@
 /Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/obj/Debug/net9.0/compressed/28bzvdi3py-zic3xve3cn.gz
 /Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/obj/Debug/net9.0/compressed/7xdr4qdvek-e2s7xvzkxx.gz
 /Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/obj/Debug/net9.0/compressed/hef6h7pfzk-e2s7xvzkxx.gz
+/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/obj/Debug/net9.0/CarHostingWeb.sourcelink.json

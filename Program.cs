@@ -2,6 +2,7 @@ using CarHostingWeb.Components;
 using CarHostingWeb.Models;
 using CarHostingWeb.Services;
 using CarHostingWeb.Services.Authentication;
+using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
@@ -46,11 +47,36 @@ builder.Services.AddSingleton<CloudinaryDotNet.Cloudinary>(sp =>
     return new CloudinaryDotNet.Cloudinary(account);
 });
 
-Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "Secrets/firebase-key.json");
+// Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "Secrets/firebase-key.json");
 
-var firestoreDb = FirestoreDb.Create("ernesto-car-website");
+
+// Instead of using file path, use environment variable
+var firebaseCredentialsJson = Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS");
+
+if (!string.IsNullOrEmpty(firebaseCredentialsJson))
+{
+    // Create credentials from JSON string
+    var credential = GoogleCredential.FromJson(firebaseCredentialsJson);
+    var firestoreDb = new FirestoreDbBuilder
+    {
+        ProjectId = "ernesto-car-website",
+        Credential = credential
+    }.Build();
+    
+    builder.Services.AddSingleton(firestoreDb);
+}
+else
+{
+    // Fallback for local development
+    Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "Secrets/firebase-key.json");
+    var firestoreDb = FirestoreDb.Create("ernesto-car-website");
+    builder.Services.AddSingleton(firestoreDb);
+}
+
+// var firestoreDb = FirestoreDb.Create("ernesto-car-website");
 // Preparing firestore for injection.
-builder.Services.AddSingleton(firestoreDb);
+// builder.Services.AddSingleton(firestoreDb);
+
 builder.Services.AddSingleton<CarService>();
 
 // Register FirebaseAuthService as singleton so auth state persists

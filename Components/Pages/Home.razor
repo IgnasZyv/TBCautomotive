@@ -1,0 +1,77 @@
+﻿@rendermode InteractiveServer
+@page "/"
+@using CarHostingWeb.Services
+@using CarHostingWeb.Models
+@using CarHostingWeb.Components.Shared
+
+@inject LocalizationService Localization
+@inject CarService CarService
+
+<PageTitle>Car hosting</PageTitle>
+
+<section>
+    <div style="background-image: url('./assets/HeroSection/Hero Background Crop.webp'); 
+              background-size: cover;
+              background-position: center;
+              height: 50vh;
+              position: relative;
+              margin-left: -2rem;
+              margin-right: -1.5rem;
+              width: calc(100% + 3.5rem);">
+        <div class="text-white text-center d-flex flex-column justify-content-top align-items-center" style="padding-top: 10vh; height: 100%;">
+            <h1 class="display-4 fw-bold">@Localization.GetString("SiteName")</h1>
+            <p class="lead mt-5">@Localization.GetString("HeroSub")</p>
+            @* <button class="btn btn-primary btn-lg m-5">Get Started</button> *@
+        </div>
+    </div>
+</section>
+<section class="mt-3">
+    <div class="d-flex justify-content-center bg-dark-subtle border-primary border-2 rounded-3 shadow-sm my-2">
+        <h1 class="text">@Localization.GetString("ListingHeader")</h1>
+    </div>
+    
+    <DisplayCars />
+    
+    @* <div class="d-flex justify-content-end mr-5"> *@
+    @*     <SearchAndFilter OnFilterChanged="HandleFilterChanged"/> *@
+    @* </div> *@
+    @* *@
+    @* <DisplayCarCards Cars="FilteredCars"/> *@
+</section>
+
+
+@* @code *@
+@* { *@
+@*     private List<Car>? AllCars { get; set; } *@
+@*     private List<Car>? FilteredCars { get; set; } *@
+@*     private string SearchTerm { get; set; } = string.Empty; *@
+@* *@
+@*     protected override async Task OnInitializedAsync() *@
+@*     { *@
+@*         AllCars = await CarService.GetAllCarsAsync(); *@
+@*         FilteredCars = AllCars; *@
+@*     } *@
+@* *@
+@*     private void HandleFilterChanged(string searchTerm) *@
+@*     { *@
+@*         SearchTerm = searchTerm; *@
+@*         ApplyFilters(); *@
+@*     } *@
+@* *@
+@*     private void ApplyFilters() *@
+@*     { *@
+@*         if (AllCars == null) return; *@
+@* *@
+@*         FilteredCars = AllCars.Where(car => *@
+@*             car is { Make: not null, Model: not null } && *@
+@*             ( *@
+@*                 string.IsNullOrEmpty(SearchTerm) ||  *@
+@*                 car.Make.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) || *@
+@*                 car.Model.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) *@
+@*             ) *@
+@*         ).ToList(); *@
+@*          *@
+@*         StateHasChanged(); *@
+@*     } *@
+
+}

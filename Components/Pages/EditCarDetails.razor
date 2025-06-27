@@ -1,0 +1,282 @@
+﻿@page "/admin/edit/{CarId}"
+
+@rendermode InteractiveServer
+@using CarHostingWeb.Models
+@using CarHostingWeb.Services
+@using CarHostingWeb.Components.Shared
+
+@inject CarService CarService
+@inject NavigationManager NavigationManager
+@inject LocalizationService Localization
+
+@if (_isLoading)
+{
+    <div class="d-flex justify-content-center mt-5">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else if (_car == null)
+{
+    <div class="container mt-4">
+        <div class="alert alert-danger">
+            <h4>Car Not Found</h4>
+            <p>The car you're looking for doesn't exist.</p>
+            <button class="btn btn-primary" @onclick="GoBack">
+                Back to Admin
+            </button>
+        </div>
+    </div>
+}
+else
+{
+    <div class="container mt-4">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="h2">Edit Car Details</h1>
+            <div>
+                <button class="btn btn-outline-secondary me-2" @onclick="GoBack">
+                    <i class="bi bi-arrow-left"></i> @Localization.GetString("FormCancel")
+                </button>
+                <button class="btn btn-success" @onclick="SaveChanges" disabled="@_isSaving">
+                    @if (_isSaving)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status"></span>
+                    }
+                    <i class="bi bi-check"></i> @Localization.GetString("FormSaveChanges")
+                </button>
+            </div>
+        </div>
+
+        <!-- Success/Error Messages -->
+        @if (!string.IsNullOrEmpty(_successMessage))
+        {
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                @_successMessage
+                <button type="button" class="btn-close" @onclick="() => _successMessage = string.Empty"></button>
+            </div>
+        }
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @_errorMessage
+                <button type="button" class="btn-close" @onclick="() => _errorMessage = string.Empty"></button>
+            </div>
+        }
+
+        <div class="row">
+            <!-- Image Section -->
+            <CarImageGallery PrimaryImage="@_car.ImagePath" SubImages="@testData" IsEditable="@true"/>
+       
+            
+            @* <div class="col-md-6"> *@
+            @*     <div class="card"> *@
+            @*         <div class="card-header"> *@
+            @*             <h5 class="mb-0">Car Image</h5> *@
+            @*         </div> *@
+            @*         <div class="card-body"> *@
+            @*             @if (!string.IsNullOrEmpty(_car.ImagePath)) *@
+            @*             { *@
+            @*                 <image src="@_car.ImagePath" alt="@_car.Make @_car.Model" class="img-fluid rounded mb-3" /> *@
+            @*             } *@
+            @*             else *@
+            @*             { *@
+            @*                 <div class="bg-light p-5 text-center rounded mb-3"> *@
+            @*                     <i class="bi bi-image fs-1 text-muted"></i> *@
+            @*                     <div class="text-muted">No Image Available</div> *@
+            @*                 </div> *@
+            @*             } *@
+            @* *@
+            @*             <div class="mb-3"> *@
+            @*                 <label class="form-label">@Localization.GetString("FormImageUrl")</label> *@
+            @*                 <input type="url" class="form-control" @bind="_car.ImagePath" placeholder="Enter image URL" /> *@
+            @*                 <div class="form-text">Enter a valid URL for the car image</div> *@
+            @*             </div> *@
+            @*         </div> *@
+            @*     </div> *@
+            @* </div> *@
+
+            <!-- Details Section -->
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">@Localization.GetString("FormCarDetails")</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label">@Localization.GetString("CarMake") <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @(_validationErrors.ContainsKey("Make") ? "is-invalid" : "")" 
+                                   @bind="_car.Make" placeholder="Enter car make" />
+                            @if (_validationErrors.ContainsKey("Make"))
+                            {
+                                <div class="invalid-feedback">@_validationErrors["Make"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@Localization.GetString("CarModel") <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control @(_validationErrors.ContainsKey("Model") ? "is-invalid" : "")" 
+                                   @bind="_car.Model" placeholder="Enter car model" />
+                            @if (_validationErrors.ContainsKey("Model"))
+                            {
+                                <div class="invalid-feedback">@_validationErrors["Model"]</div>
+                            }
+                        </div>
+    
+                        <div class="mb-3">
+                            <label class="form-label">@Localization.GetString("CarYear") <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control @(_validationErrors.ContainsKey("Year") ? "is-invalid" : "")" 
+                                   @bind="_car.Year" min="1900" max="@DateTime.Now.Year" placeholder="Enter year" />
+                            @if (_validationErrors.ContainsKey("Year"))
+                            {
+                                <div class="invalid-feedback">@_validationErrors["Year"]</div>
+                            }
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@Localization.GetString("CarPrice") <span class="text-danger">*</span></label>
+                            <div class="input-group">
+                                <span class="input-group-text">€</span>
+                                <input type="number" class="form-control @(_validationErrors.ContainsKey("Price") ? "is-invalid" : "")" 
+                                       @bind="_car.Price" min="0" step="0.01" placeholder="0.00" />
+                                @if (_validationErrors.ContainsKey("Price"))
+                                {
+                                    <div class="invalid-feedback">@_validationErrors["Price"]</div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">@Localization.GetString("CarDescription")</label>
+                            <textarea class="form-control" rows="4" @bind="_car.Description" 
+                                      placeholder="Enter car description (optional)"></textarea>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label">@Localization.GetString("CarKm")</label>
+                                <input type="number" class="form-control" @bind="_car.Kilometres" 
+                                       min="0" placeholder="Miles" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">@Localization.GetString("CarFuelType")</label>
+                                <select class="form-select" @bind="_car.FuelType">
+                                    <option value="">@Localization.GetString("FormSelectFuelType")</option>
+                                    <option value="Petrol">@Localization.GetString("CarFuelTypePetrol")</option>
+                                    <option value="Diesel">@Localization.GetString("CarFuelTypeDiesel")</option>
+                                    <option value="Electric">@Localization.GetString("CarFuelTypeElectric")</option>
+                                    <option value="Hybrid">@Localization.GetString("CarFuelTypeHybrid")</option>
+                                    <option value="Other">@Localization.GetString("GeneralOther")</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <small class="text-muted">
+                                <strong>Created:</strong> @_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter] public string CarId { get; set; } = string.Empty;
+
+    private Car? _car;
+    private bool _isLoading = true;
+    private bool _isSaving = false;
+    private string _successMessage = string.Empty;
+    private string _errorMessage = string.Empty;
+    private Dictionary<string, string> _validationErrors = new();
+
+    private List<string> testData = ["./assets/Cars/test-car1.jpg", "./assets/Cars/test-car2.jpg", "./assets/Cars/test-car3.jpg"];
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (!string.IsNullOrEmpty(CarId))
+            {
+                _car = await CarService.GetCarByIdAsync(CarId);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($@"Error loading car: {ex.Message}");
+            _car = null;
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private async Task HandleImagesChanged(List<string> images)
+    {
+        _car.SubImages = images;
+    }
+
+    private bool ValidateForm()
+    {
+        _validationErrors.Clear();
+
+        if (string.IsNullOrWhiteSpace(_car?.Make))
+            _validationErrors["Make"] = $"{Localization.GetString("FormValidationMake")}";
+
+        if (string.IsNullOrWhiteSpace(_car?.Model))
+            _validationErrors["Model"] = $"{Localization.GetString("FormValidationModel")}";
+
+        if (_car?.Year < 1900 || _car?.Year > DateTime.Now.Year)
+            _validationErrors["Year"] = $"{Localization.GetString("FormValidationYear")} {DateTime.Now.Year}";
+
+        if (_car?.Price <= 0)
+            _validationErrors["Price"] = $"{Localization.GetString("FormValidationPrice")}";
+
+        return _validationErrors.Count == 0;
+    }
+
+    private async Task SaveChanges()
+    {
+        if (_car == null) return;
+
+        Console.WriteLine(_car.FuelType);
+
+        if (!ValidateForm())
+        {
+            _errorMessage = $"{Localization.GetString("FormValidationErrorMessage")}";
+            return;
+        }
+
+        _isSaving = true;
+        _errorMessage = string.Empty;
+        _successMessage = string.Empty;
+
+        try
+        {
+            await CarService.UpdateCarAsync(CarId, _car);
+
+            _successMessage = $"{Localization.GetString("FormCarUpdateMessage")}";
+        }
+        catch (Exception ex)
+        {
+            _errorMessage = $"{Localization.GetString("FormCarUpdateErrorMessage")} {ex.Message}";
+        }
+        finally
+        {
+            _isSaving = false;
+        }
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/admin");
+    }
+
+}

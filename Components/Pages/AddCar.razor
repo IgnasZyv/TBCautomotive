@@ -1,0 +1,125 @@
+@rendermode InteractiveServer
+@page "/admin/add-car"
+@using CarHostingWeb.Models
+@using CarHostingWeb.Services
+@using Microsoft.AspNetCore.Components.Forms
+@inject ImageUploadService ImageUploadService
+@inject CarService CarService
+@inject NavigationManager NavigationManager
+
+<h3>Add New Car</h3>
+
+<EditForm Model="@_car" FormName="addCar" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    
+    <div class="d-flex flex-row justify-content-around p-5">
+        
+        <div>
+            <!-- Image upload section -->
+            <div class="mb-3">
+                <label for="carImage" class="form-label">Car Image</label>
+                <InputFile OnChange="OnFileChange" class="form-control" accept="image/*" id="carImage"/>
+            </div>
+
+            @if (_isUploading)
+            {
+                <div class="d-flex align-items-center mb-3">
+                    <div class="spinner-border text-primary me-2" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <span>Uploading image...</span>
+                </div>
+            }
+
+            @if (!string.IsNullOrEmpty(_car.ImagePath))
+            {
+                <div class="mb-3">
+                    <img src="@_car.ImagePath" class="img-thumbnail" style="max-height: 200px;" alt="Main Car Image"/>
+                </div>
+            }
+        </div>
+        
+
+        <div class="row">
+            <div class="col-md-12">
+                <!-- Car details fields -->
+                <div class="mb-2">
+                    <label for="make" class="form-label">Make</label>
+                    <InputText id="make" @bind-Value="_car.Make" class="form-control"/>
+                    <ValidationMessage For="@(() => _car.Make)"/>
+                </div>
+
+                <div class="mb-2">
+                    <label for="model" class="form-label">Model</label>
+                    <InputText id="model" @bind-Value="_car.Model" class="form-control"/>
+                    <ValidationMessage For="@(() => _car.Model)"/>
+                </div>
+
+                <div class="mb-2">
+                    <label for="year" class="form-label">Year</label>
+                    <InputNumber id="year" @bind-Value="_car.Year" class="form-control"/>
+                    <ValidationMessage For="@(() => _car.Year)"/>
+                </div>
+
+                <div class="mb-2">
+                    <label for="price" class="form-label">Price</label>
+                    <InputNumber id="price" @bind-Value="_car.Price" class="form-control"/>
+                    <ValidationMessage For="@(() => _car.Price)"/>
+                </div>
+                
+            </div>
+            
+        </div>
+
+    </div>
+    
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-primary" disabled="@_isUploading">Save Car</button>
+    </div>
+    
+
+
+    
+</EditForm>
+
+@code {
+    private readonly Car _car = new Car();
+    private bool _isUploading;
+
+    private async Task OnFileChange(InputFileChangeEventArgs e)
+    {
+        try
+        {
+            _isUploading = true;
+            StateHasChanged();
+
+            // Add logging here
+            Console.WriteLine($@"Starting upload for file: {e.File.Name}");
+        
+            _car.ImagePath = await ImageUploadService.UploadImageAsync(e.File);
+        
+            // Add logging here too
+            Console.WriteLine($@"Upload completed. Image path: {_car.ImagePath}");
+        }
+        catch (Exception ex)
+        {
+            // More detailed error handling
+            await Console.Error.WriteLineAsync($"Upload failed: {ex.Message}");
+            await Console.Error.WriteLineAsync($"Stack trace: {ex.StackTrace}");
+            // You might want to set an error message to display to the user
+            // errorMessage = $"Upload failed: {ex.Message}";
+        }
+        finally
+        {
+            _isUploading = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        await CarService.CreateCarAsync(_car);
+        NavigationManager.NavigateTo("/");
+    }
+}

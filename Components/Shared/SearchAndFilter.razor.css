@@ -1,0 +1,30 @@
+﻿.custom-input-group {
+    border-bottom: 2px solid #000;
+    border-radius: 0;
+}
+
+.custom-input-group .form-control {
+    border: none;
+    background: transparent;
+    box-shadow: none;
+}
+
+.custom-input-group .form-control:focus {
+    border: none;
+    box-shadow: none;
+}
+
+.custom-input-group:focus-within {
+    border-bottom-color: #0d6efd;
+}
+
+.input-group-text {
+    border: none;
+    background: transparent;
+    padding-left: 0;
+}
+
+.search-icon {
+    width: 20px;
+    height: 20px;
+}

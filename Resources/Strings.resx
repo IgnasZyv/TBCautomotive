@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <data name="SiteName" xml:space="preserve">
+        <value>Ernesto Car hosting website</value>
+    </data>
+    <data name="HeroSub" xml:space="preserve">
+        <value>Find the perfect car for your next adventure</value>
+    </data>
+    <data name="ListingHeader" xml:space="preserve">
+        <value>Listings</value>
+    </data>
+    <data name="LogIn" xml:space="preserve">
+        <value>Log In</value>
+    </data>
+    <data name="LogOut" xml:space="preserve">
+        <value>Log Out</value>
+    </data>
+    <data name="CarCardDetailButton" xml:space="preserve">
+        <value>View Details</value>
+    </data>
+    <data name="CarModel" xml:space="preserve">
+        <value>Model</value>
+    </data>
+    <data name="CarYear" xml:space="preserve">
+        <value>Year</value>
+    </data>
+    <data name="CarPrice" xml:space="preserve">
+        <value>Price</value>
+    </data>
+    <data name="CarMake" xml:space="preserve">
+        <value>Make</value>
+    </data>
+    <data name="CarCardEditButton" xml:space="preserve">
+        <value>Edit Car</value>
+    </data>
+    <data name="FormCancel" xml:space="preserve">
+        <value>Cancel</value>
+    </data>
+    <data name="FormSaveChanges" xml:space="preserve">
+        <value>Save Changes</value>
+    </data>
+    <data name="FormImageUrl" xml:space="preserve">
+        <value>Image URL</value>
+    </data>
+    <data name="FormCarDetails" xml:space="preserve">
+        <value>Car Details</value>
+    </data>
+    <data name="CarKm" xml:space="preserve">
+        <value>Kilometres</value>
+    </data>
+    <data name="CarDescription" xml:space="preserve">
+        <value>Description</value>
+    </data>
+    <data name="CarFuelType" xml:space="preserve">
+        <value>Fuel Type</value>
+    </data>
+    <data name="FormSelectFuelType" xml:space="preserve">
+        <value>Select fuel type</value>
+    </data>
+    <data name="CarFuelTypePetrol" xml:space="preserve">
+        <value>Petrol</value>
+    </data>
+    <data name="CarFuelTypeDiesel" xml:space="preserve">
+        <value>Diesel</value>
+    </data>
+    <data name="CarFuelTypeElectric" xml:space="preserve">
+        <value>Electric</value>
+    </data>
+    <data name="CarFuelTypeHybrid" xml:space="preserve">
+        <value>Hybrid</value>
+    </data>
+    <data name="GeneralOther" xml:space="preserve">
+        <value>Other</value>
+    </data>
+    <data name="FormValidationMake" xml:space="preserve">
+        <value>Car Make is required</value>
+    </data>
+    <data name="FormValidationModel" xml:space="preserve">
+        <value>Model is required</value>
+    </data>
+    <data name="FormValidationYear" xml:space="preserve">
+        <value>Year must be between 1900 and</value>
+    </data>
+    <data name="FormValidationPrice" xml:space="preserve">
+        <value>Price must be greater than 0</value>
+    </data>
+    <data name="FormValidationErrorMessage" xml:space="preserve">
+        <value>Please fix the validation errors below.</value>
+    </data>
+    <data name="FormCarUpdateMessage" xml:space="preserve">
+        <value>Car details updated successfully!</value>
+    </data>
+    <data name="FormCarUpdateErrorMessage" xml:space="preserve">
+        <value>Error saving changes:</value>
+    </data>
+    <data name="AdminDashboard" xml:space="preserve">
+        <value>Admin Dashboard</value>
+    </data>
+    <data name="FormCarNotFoundMessage" xml:space="preserve">
+        <value>Cannot find the car you are looking for.</value>
+    </data>
+    <data name="AdminAddCar" xml:space="preserve">
+        <value>Add Car</value>
+    </data>
+    <data name="AdminGoHome" xml:space="preserve">
+        <value>Back to Home</value>
+    </data>
+    <data name="AdminManageCars" xml:space="preserve">
+        <value>Manage Cars</value>
+    </data>
+</root>

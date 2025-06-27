@@ -1,0 +1,130 @@
+﻿@rendermode InteractiveServer
+@using System.Security.Claims
+@using CarHostingWeb.Services
+@using CarHostingWeb.Services.Authentication
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Microsoft.AspNetCore.Components.Authorization
+
+@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthenticationStateProvider
+@inject FirebaseAuthService FirebaseAuthService
+@inject LocalizationService Localization
+
+<div class="top-navbar">
+    <div class="top-row ps-3 navbar navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="">CarHostingWeb</a>
+
+            <input type="checkbox"
+                   @bind="@_isMenuExpanded"
+                   title="Navigation menu"
+                   class="navbar-toggler" />
+            
+            <div class="nav-scrollable @(_isMenuExpanded ? "show w-100 mt-4" : "")">
+                <nav class="nav @(_isMenuExpanded ? "flex-column" : "")">
+                    <CascadingAuthenticationState>
+                        <AuthorizeView>
+                            <Authorized>
+                                <div class="nav-item px-3">
+                                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                                    </NavLink>
+                                </div>
+
+                                <div class="nav-item px-3">
+                                    <NavLink class="nav-link" href="/admin" Match="NavLinkMatch.Prefix">
+                                        <img class="mr-1" src="assets/Icons/admin-icon.svg" alt="admin icon" height="20" width="20"/> Admin Panel
+                                    </NavLink>
+                                </div>
+
+                                <div class="nav-item px-3">
+                                    <button class="nav-link btn btn-link" @onclick="HandleLogout">
+                                        <img class="mr-1" src="assets/Icons/logout-icon.svg" alt="admin icon" height="20" width="20"/> @Localization.GetString("LogOut")
+                                    </button>
+                                </div>
+                            </Authorized>
+                            
+                            
+                            <NotAuthorized>
+                                <div class="nav-item px-3">
+                                    <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">
+                                        <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
+                                    </NavLink>
+                                </div>
+                                
+                                <div class="nav-item px-3">
+                                    <NavLink class="nav-link" href="login">
+                                        <img class="mr-1" src="assets/Icons/login-icon.svg" alt="login icon" height="20" width="20"/> @Localization.GetString("LogIn")
+                                    </NavLink>
+                                </div>
+                            </NotAuthorized>
+            
+                        </AuthorizeView>
+                    </CascadingAuthenticationState>
+
+
+                    
+
+
+                    @* <button @onclick="@(() => ChangeCulture("en"))"> *@
+                    @*     <img src="assets/flags/us-flag.svg" alt="English" width="24" /> *@
+                    @* </button> *@
+                    @* <button @onclick="@(() => ChangeCulture("es"))"> *@
+                    @*     <img src="assets/flags/es-flag.svg" alt="Español" width="24" /> *@
+                    @* </button> *@
+
+                    <CultureSelector/>
+
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private bool _isMenuExpanded = false;
+    private AuthenticationState? _authState;
+    private ClaimsPrincipal? _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        _user = _authState.User;
+    }
+    
+    private bool IsAuthenticated => _user?.Identity?.IsAuthenticated ?? false;
+    
+    private bool IsAdmin =>
+        _user?.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "admin") ?? false;
+    
+    private void HandleLogout()
+    {
+        try
+        {
+            FirebaseAuthService?.SignOut();
+            NavigationManager.NavigateTo("/");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Logout error: {ex.Message}");
+            // Still navigate away even if logout fails
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private void ChangeCulture(string cultureCode)
+    {
+        var returnUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        if (string.IsNullOrWhiteSpace(returnUrl))
+        {
+            returnUrl = "/";
+        }
+        else
+        {
+            returnUrl = "/" + returnUrl; // Ensure leading slash
+        }
+
+        NavigationManager.NavigateTo($"Culture/Set?culture={cultureCode}&redirectUri={Uri.EscapeDataString(returnUrl)}", forceLoad: true);
+    }
+
+}

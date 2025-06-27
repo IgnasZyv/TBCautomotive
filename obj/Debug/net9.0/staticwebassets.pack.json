@@ -1,0 +1,273 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/obj/Debug/net9.0/scopedcss/projectbundle/CarHostingWeb.bundle.scp.css",
+      "PackagePath": "staticwebassets/CarHostingWeb.e2s7xvzkxx.bundle.scp.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/app.css",
+      "PackagePath": "staticwebassets/app.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Cars/test-car.webp",
+      "PackagePath": "staticwebassets/assets/Cars/test-car.webp"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Cars/test-car1.jpg",
+      "PackagePath": "staticwebassets/assets/Cars/test-car1.jpg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Cars/test-car2.jpg",
+      "PackagePath": "staticwebassets/assets/Cars/test-car2.jpg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Cars/test-car3.jpg",
+      "PackagePath": "staticwebassets/assets/Cars/test-car3.jpg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/HeroSection/Hero Background Crop.webp",
+      "PackagePath": "staticwebassets/assets/HeroSection/Hero Background Crop.webp"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/HeroSection/heroBackground.png",
+      "PackagePath": "staticwebassets/assets/HeroSection/heroBackground.png"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/HeroSection/heroBackground.webp",
+      "PackagePath": "staticwebassets/assets/HeroSection/heroBackground.webp"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Icons/add-image-icon.svg",
+      "PackagePath": "staticwebassets/assets/Icons/add-image-icon.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Icons/admin-icon.svg",
+      "PackagePath": "staticwebassets/assets/Icons/admin-icon.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Icons/filter-icon.svg",
+      "PackagePath": "staticwebassets/assets/Icons/filter-icon.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Icons/login-icon.svg",
+      "PackagePath": "staticwebassets/assets/Icons/login-icon.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Icons/logout-icon.svg",
+      "PackagePath": "staticwebassets/assets/Icons/logout-icon.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/Icons/search-icon.svg",
+      "PackagePath": "staticwebassets/assets/Icons/search-icon.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/flags/en-flag.svg",
+      "PackagePath": "staticwebassets/assets/flags/en-flag.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/assets/flags/es-flag.svg",
+      "PackagePath": "staticwebassets/assets/flags/es-flag.svg"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/favicon.png",
+      "PackagePath": "staticwebassets/favicon.png"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/css/bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.js.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.js.map"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js"
+    },
+    {
+      "Id": "/Users/ignaszyvatkauskas/Developer/WebProjects/Blazor/CarHostingWeb/wwwroot/lib/bootstrap/dist/js/bootstrap.min.js.map",
+      "PackagePath": "staticwebassets/lib/bootstrap/dist/js/bootstrap.min.js.map"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.CarHostingWeb.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.CarHostingWeb.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.build.CarHostingWeb.props",
+      "PackagePath": "build\\CarHostingWeb.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildMultiTargeting.CarHostingWeb.props",
+      "PackagePath": "buildMultiTargeting\\CarHostingWeb.props"
+    },
+    {
+      "Id": "obj/Debug/net9.0/staticwebassets/msbuild.buildTransitive.CarHostingWeb.props",
+      "PackagePath": "buildTransitive\\CarHostingWeb.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

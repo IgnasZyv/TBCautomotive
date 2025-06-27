@@ -1,0 +1,21 @@
+﻿@rendermode InteractiveServer
+
+<div class="input-group custom-input-group" style="width: 15rem;">
+    <span class="input-group-text">
+        <img src="assets/Icons/search-icon.svg" alt="search icon" class="search-icon"/>
+    </span>
+    <input type="text" class="form-control" placeholder="Search..." 
+           @bind="SearchTerm" @oninput="OnSearchChanged" />
+</div>
+
+@code {
+    [Parameter] public EventCallback<string> OnFilterChanged { get; set; }
+    
+    private string SearchTerm { get; set; } = string.Empty;
+
+    private async Task OnSearchChanged(ChangeEventArgs e)
+    {
+        SearchTerm = e.Value?.ToString() ?? string.Empty;
+        await OnFilterChanged.InvokeAsync(SearchTerm);
+    }
+}

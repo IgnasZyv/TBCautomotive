@@ -1,0 +1,70 @@
+@page "/login"
+@rendermode InteractiveServer
+
+@using System.ComponentModel.DataAnnotations
+@using CarHostingWeb.Services
+@using CarHostingWeb.Services.Authentication
+
+@inject NavigationManager NavigationManager
+@inject FirebaseAuthService AuthService
+@inject CustomAuthStateProvider AuthStateProvider
+
+<div class="d-flex justify-content-center align-items-center vh-100 bg-light">
+    <div class="card shadow p-4" style="width: 100%; max-width: 400px;">
+        <h3 class="text-center mb-4">Log In</h3>
+
+        <EditForm Model="@_loginModel" OnValidSubmit="HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                <InputText class="form-control" @bind-Value="_loginModel.Email" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <InputText class="form-control" type="password" @bind-Value="_loginModel.Password" />
+            </div>
+
+            <button class="btn btn-primary w-100" type="submit">Sign In</button>
+        </EditForm>
+
+        @if (!string.IsNullOrEmpty(_errorMessage))
+        {
+            <div class="alert alert-danger mt-3">@_errorMessage</div>
+        }
+    </div>
+</div>
+
+@code {
+    private LoginModel _loginModel = new();
+    private string? _errorMessage;
+
+    private async Task HandleLogin()
+    {
+        var token = await AuthService.SignInWithEmailAndPasswordAsync(_loginModel.Email, _loginModel.Password);
+
+        if (token is null)
+        {
+            _errorMessage = "Invalid credentials. Please try again.";
+        }
+        else
+        {
+            _errorMessage = null;
+            Console.WriteLine("Login successful!");
+            // No need to call AuthStateProvider.SetUser anymore - 
+            // FirebaseAuthService automatically triggers auth state change
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    public class LoginModel
+    {
+        [Required]
+        public string Email { get; set; } = string.Empty;
+
+        [Required]
+        public string Password { get; set; } = string.Empty;
+    }
+}

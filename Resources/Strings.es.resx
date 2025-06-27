@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<root>
+    <data name="SiteName" xml:space="preserve">
+        <value>Ernesto Car hosting website but spanish</value>
+    </data>
+    <data name="HeroSub" xml:space="preserve">
+        <value>Encuentra el coche perfecto para tu próxima aventura</value>
+    </data>
+    <data name="ListingHeader" xml:space="preserve">
+        <value>Listados</value>
+    </data>
+    <data name="LogOut" xml:space="preserve">
+        <value>Cerrar sesión</value>
+    </data>
+    <data name="LogIn" xml:space="preserve">
+        <value>Iniciar sesión</value>
+    </data>
+    <data name="CarCardDetailButton" xml:space="preserve">
+        <value>Ver detalles</value>
+    </data>
+    <data name="CarModel" xml:space="preserve">
+        <value>Modelo</value>
+    </data>
+    <data name="CarYear" xml:space="preserve">
+        <value>Año</value>
+    </data>
+    <data name="CarPrice" xml:space="preserve">
+        <value>Precio</value>
+    </data>
+    <data name="CarMake" xml:space="preserve">
+        <value>Marca del coche</value>
+    </data>
+    <data name="CarCardEditButton" xml:space="preserve">
+        <value>Editar coche</value>
+    </data>
+    <data name="FormCancel" xml:space="preserve">
+        <value>Cancelar</value>
+    </data>
+    <data name="FormSaveChanges" xml:space="preserve">
+        <value>Guardar cambios</value>
+    </data>
+    <data name="FormImageUrl" xml:space="preserve">
+        <value>URL de la imagen</value>
+    </data>
+    <data name="FormCarDetails" xml:space="preserve">
+        <value>Detalles del vehículo</value>
+    </data>
+    <data name="CarKm" xml:space="preserve">
+        <value>Kilómetros</value>
+    </data>
+    <data name="CarDescription" xml:space="preserve">
+        <value>Descripción</value>
+    </data>
+    <data name="CarFuelType" xml:space="preserve">
+        <value>Tipo de combustible</value>
+    </data>
+    <data name="FormSelectFuelType" xml:space="preserve">
+        <value>Seleccione el tipo de combustible</value>
+    </data>
+    <data name="CarFuelTypePetrol" xml:space="preserve">
+        <value>Gasolina</value>
+    </data>
+    <data name="CarFuelTypeDiesel" xml:space="preserve">
+        <value>Diesel</value>
+    </data>
+    <data name="CarFuelTypeElectric" xml:space="preserve">
+        <value>Eléctrica</value>
+    </data>
+    <data name="CarFuelTypeHybrid" xml:space="preserve">
+        <value>Híbrida</value>
+    </data>
+    <data name="GeneralOther" xml:space="preserve">
+        <value>Otra</value>
+    </data>
+    <data name="FormValidationMake" xml:space="preserve">
+        <value>Se requiere la marca del vehículo</value>
+    </data>
+    <data name="FormValidationModel" xml:space="preserve">
+        <value>Se requiere el modelo del coche</value>
+    </data>
+    <data name="FormValidationYear" xml:space="preserve">
+        <value>El año debe estar entre 1900 y</value>
+    </data>
+    <data name="FormValidationPrice" xml:space="preserve">
+        <value>El precio debe ser mayor que 0</value>
+    </data>
+    <data name="FormValidationErrorMessage" xml:space="preserve">
+        <value>Corrija los errores de validación a continuación.</value>
+    </data>
+    <data name="FormCarUpdateMessage" xml:space="preserve">
+        <value>¡Detalles del vehículo actualizados exitosamente!</value>
+    </data>
+    <data name="FormCarUpdateErrorMessage" xml:space="preserve">
+        <value>Error al guardar los cambios:</value>
+    </data>
+    <data name="FormCarNotFoundMessage" xml:space="preserve">
+        <value>Error al cargar el coche:</value>
+    </data>
+    <data name="AdminDashboard" xml:space="preserve">
+        <value>Panel de administración</value>
+    </data>
+    <data name="AdminAddCar" xml:space="preserve">
+        <value>Agregar coche</value>
+    </data>
+    <data name="AdminGoHome" xml:space="preserve">
+        <value>De vuelta a casa</value>
+    </data>
+    <data name="AdminManageCars" xml:space="preserve">
+        <value>Administrar coches</value>
+    </data>
+</root>

@@ -1,0 +1,44 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<CascadingValue Value="this">
+    <div>
+        <div class="page">
+            <main>
+                <NavMenu />
+                @if (IsAdminPage)
+                {
+                    <AdminNavMenu />
+                }
+                <article class="@(IsAdminPage ? "admin-content" : "")">
+                    @Body
+                </article>
+            </main>
+        </div>
+
+        <div id="blazor-error-ui" data-nosnippet>
+            An unhandled error has occurred.
+            <a href="." class="reload">Reload</a>
+            <span class="dismiss">🗙</span>
+        </div>
+    </div>
+</CascadingValue>
+
+@code {
+    private bool IsAdminPage => Navigation.ToBaseRelativePath(Navigation.Uri).StartsWith("admin");
+
+    protected override void OnInitialized()
+    {
+        Navigation.LocationChanged += OnLocationChanged;
+    }
+
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        Navigation.LocationChanged -= OnLocationChanged;
+    }
+}

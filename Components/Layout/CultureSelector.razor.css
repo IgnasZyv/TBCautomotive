@@ -1,0 +1,9 @@
+.dropdown-flags {
+    min-width: auto !important;
+    width: auto;
+    padding: 0.25rem;
+}
+
+.dropdown-flags .dropdown-item {
+    justify-content: center;
+}

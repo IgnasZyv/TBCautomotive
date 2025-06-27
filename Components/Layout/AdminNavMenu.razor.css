@@ -1,0 +1,77 @@
+﻿.admin-sidebar {
+    width: 250px;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    overflow-y: auto;
+    box-shadow: 2px 0 4px rgba(0,0,0,0.1);
+}
+
+.admin-sidebar-header {
+    padding: 1.25rem 1rem;
+    background-color: #495057;
+    color: white;
+}
+
+.admin-nav {
+    padding: 1rem 0;
+}
+
+.admin-nav .nav-link {
+    color: #495057;
+    padding: 0.75rem 1rem;
+    border-radius: 0;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+}
+
+.admin-nav .nav-link:hover {
+    background-color: #e9ecef;
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.admin-nav .nav-link.active {
+    background-color: #0d6efd;
+    color: white;
+    font-weight: 500;
+}
+
+.admin-nav .nav-link.active:hover {
+    background-color: #0b5ed7;
+    color: white;
+}
+
+.admin-nav .nav-link.text-danger:hover {
+    background-color: #f8d7da;
+    color: #dc3545 !important;
+}
+
+.admin-nav hr {
+    margin: 0.5rem 1rem;
+    border-color: #dee2e6;
+}
+
+/* Add spacing to body when admin sidebar is present */
+body:has(.admin-sidebar) .admin-content,
+.admin-sidebar ~ * {
+    margin-left: 250px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .admin-sidebar {
+        width: 100%;
+        position: relative;
+        min-height: auto;
+    }
+
+    body:has(.admin-sidebar) .admin-content,
+    .admin-sidebar ~ * {
+        margin-left: 0;
+    }
+}

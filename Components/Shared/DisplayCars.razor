@@ -1,0 +1,46 @@
+﻿@using CarHostingWeb.Models
+@using CarHostingWeb.Services
+
+@inject CarService CarService
+
+<div class="d-flex justify-content-end mr-5">
+    <SearchAndFilter OnFilterChanged="HandleFilterChanged"/>
+</div>
+    
+<DisplayCarCards Cars="FilteredCars"/>
+
+@code
+{
+    private List<Car>? AllCars { get; set; }
+    private List<Car>? FilteredCars { get; set; }
+    private string SearchTerm { get; set; } = string.Empty;
+
+    protected override async Task OnInitializedAsync()
+    {
+        AllCars = await CarService.GetAllCarsAsync();
+        FilteredCars = AllCars;
+    }
+
+    private void HandleFilterChanged(string searchTerm)
+    {
+        SearchTerm = searchTerm;
+        ApplyFilters();
+    }
+
+    private void ApplyFilters()
+    {
+        if (AllCars == null) return;
+
+        FilteredCars = AllCars.Where(car =>
+            car is { Make: not null, Model: not null } &&
+            (
+                string.IsNullOrEmpty(SearchTerm) || 
+                car.Make.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                car.Model.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
+            )
+        ).ToList();
+        
+        StateHasChanged();
+    }
+
+}

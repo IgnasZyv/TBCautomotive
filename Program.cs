@@ -80,9 +80,9 @@ else
 builder.Services.AddSingleton<CarService>();
 
 // Register FirebaseAuthService as singleton so auth state persists
+builder.Services.AddScoped<FirebaseAuthService>();
 builder.Services.AddScoped<CustomAuthStateProvider>();
 builder.Services.AddScoped<AuthenticationStateProvider>(provider => provider.GetRequiredService<CustomAuthStateProvider>());
-builder.Services.AddSingleton<FirebaseAuthService>();
 
 builder.Services.AddAuthorizationCore();
 
@@ -97,7 +97,7 @@ app.UseSession();
 var supportedCultures = new[] { "en", "es" };
 
 var localizationOptions = new RequestLocalizationOptions()
-    .SetDefaultCulture("en")
+    .SetDefaultCulture("es")
     .AddSupportedCultures(supportedCultures)
     .AddSupportedUICultures(supportedCultures);
 

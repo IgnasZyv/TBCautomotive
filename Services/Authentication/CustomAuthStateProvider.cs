@@ -2,11 +2,12 @@ using System.Security.Claims;
 using CarHostingWeb.Services.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 
-namespace CarHostingWeb.Services.Authentication;
 
+namespace CarHostingWeb.Services.Authentication;
 public class CustomAuthStateProvider : AuthenticationStateProvider, IDisposable
 {
     private readonly FirebaseAuthService _firebaseAuthService;
+    private bool _initialized = false;
 
     public CustomAuthStateProvider(FirebaseAuthService firebaseAuthService)
     {
@@ -14,10 +15,17 @@ public class CustomAuthStateProvider : AuthenticationStateProvider, IDisposable
         _firebaseAuthService.AuthStateChanged += OnAuthStateChanged;
     }
 
-    public override Task<AuthenticationState> GetAuthenticationStateAsync()
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
+        // Only initialize once
+        if (!_initialized)
+        {
+            await _firebaseAuthService.InitializeAsync();
+            _initialized = true;
+        }
+        
         var user = GetCurrentUser();
-        return Task.FromResult(new AuthenticationState(user));
+        return new AuthenticationState(user);
     }
 
     private ClaimsPrincipal GetCurrentUser()
@@ -36,15 +44,9 @@ public class CustomAuthStateProvider : AuthenticationStateProvider, IDisposable
         return new ClaimsPrincipal(new ClaimsIdentity());
     }
 
-    public void SetUser(string email)
-    {
-        // This is now handled automatically by the FirebaseAuthService
-        // when SignInWithEmailAndPasswordAsync succeeds
-    }
-
     public void ClearUser()
     {
-        _firebaseAuthService.SignOut();
+        _ = _firebaseAuthService.SignOut();
     }
 
     private void OnAuthStateChanged()

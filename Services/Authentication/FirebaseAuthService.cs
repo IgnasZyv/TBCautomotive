@@ -1,10 +1,13 @@
+using Microsoft.JSInterop;
+
 namespace CarHostingWeb.Services.Authentication;
 
-public class FirebaseAuthService(HttpClient httpClient, IConfiguration configuration)
+public class FirebaseAuthService
 {
-    private readonly string _apiKey = configuration["Firebase:ApiKey"] ?? throw new Exception("Missing Firebase API key");
+    private readonly HttpClient _httpClient;
+    private readonly string _apiKey;
+    private readonly IJSRuntime _jsRuntime;
     
-    // Add auth state management
     private string? _currentUserEmail;
     private string? _currentToken;
     
@@ -13,6 +16,40 @@ public class FirebaseAuthService(HttpClient httpClient, IConfiguration configura
     public string? CurrentUserEmail => _currentUserEmail;
     public string? CurrentToken => _currentToken;
     public bool IsAuthenticated => !string.IsNullOrEmpty(_currentUserEmail);
+
+    public FirebaseAuthService(HttpClient httpClient, IConfiguration configuration, IJSRuntime jsRuntime)
+    {
+        _httpClient = httpClient;
+        _apiKey = configuration["Firebase:ApiKey"] ?? throw new Exception("Missing Firebase API key");
+        _jsRuntime = jsRuntime;
+    }
+
+    // Call this on component initialization to restore auth state
+    public async Task InitializeAsync()
+    {
+        try
+        {
+            var storedEmail = await _jsRuntime.InvokeAsync<string?>("localStorage.getItem", "user_email");
+            var storedToken = await _jsRuntime.InvokeAsync<string?>("localStorage.getItem", "user_token");
+        
+            // Only update if different from current state
+            if (storedEmail != _currentUserEmail || storedToken != _currentToken)
+            {
+                _currentUserEmail = storedEmail;
+                _currentToken = storedToken;
+            
+                // Only trigger event if we actually have auth data
+                if (!string.IsNullOrEmpty(_currentUserEmail))
+                {
+                    AuthStateChanged?.Invoke();
+                }
+            }
+        }
+        catch
+        {
+            // JS interop not available yet (prerendering)
+        }
+    }
 
     public async Task<string?> SignInWithEmailAndPasswordAsync(string email, string password)
     {
@@ -23,7 +60,7 @@ public class FirebaseAuthService(HttpClient httpClient, IConfiguration configura
             returnSecureToken = true
         };
 
-        var response = await httpClient.PostAsJsonAsync(
+        var response = await _httpClient.PostAsJsonAsync(
             $"https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key={_apiKey}",
             payload
         );
@@ -32,32 +69,39 @@ public class FirebaseAuthService(HttpClient httpClient, IConfiguration configura
         {
             var result = await response.Content.ReadFromJsonAsync<FirebaseAuthResponse>();
             
-            // Store the auth state
             _currentToken = result?.IdToken;
             _currentUserEmail = email;
             
-            // Notify auth state changed
+            // Store in browser localStorage (per-user)
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "user_email", email);
+            await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "user_token", result?.IdToken);
+            
             AuthStateChanged?.Invoke();
             
             return result?.IdToken;
         }
 
         var error = await response.Content.ReadAsStringAsync();
-        Console.WriteLine(@"Failed to sign in: " + error);
+        Console.WriteLine("Failed to sign in: " + error);
         return null;
     }
 
-    public void SignOut()
+    public async Task SignOut()
     {
         _currentUserEmail = null;
         _currentToken = null;
+        
+        // Clear from browser localStorage
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "user_email");
+        await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", "user_token");
+        
         AuthStateChanged?.Invoke();
     }
 
     private class FirebaseAuthResponse
     {
-        public required string IdToken { get; init; }
-        public required string RefreshToken { get; init; }
-        public required string LocalId { get; init; }
+        public string IdToken { get; set; }
+        public string RefreshToken { get; set; }
+        public string LocalId { get; set; }
     }
 }

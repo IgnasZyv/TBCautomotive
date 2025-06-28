@@ -5,6 +5,8 @@
 @namespace CarHostingWeb.Components.Shared
 
 @inject LocalizationService Localization
+@inject ImageUploadService ImageUploadService
+@inject CarService CarService
 @inject IJSRuntime JsRuntime
 
 <div class="car-image-gallery col-md-6">
@@ -14,16 +16,16 @@
         </div>
 
         <div class="card-body p-0 position-relative">
-            @if (!string.IsNullOrEmpty(PrimaryImage))
+            @if (!string.IsNullOrEmpty(Car.ImagePath))
             {
                 <div class="image-container">
                     @if (!IsEditable)
                     {
-                        <img src="@PrimaryImage" class="w-100 h-100 object-fit-cover" alt="Main Car Image" @onclick="() => ShowImageModal(PrimaryImage)"/>
+                        <img src="@Car.ImagePath" class="w-100 h-100 object-fit-cover" alt="Main Car Image" @onclick="() => ShowImageModal(Car.ImagePath)"/>
                     }
                     else
                     {
-                        <img src="@PrimaryImage" class="w-100 h-100 object-fit-cover" alt="Main Car Image"/>
+                        <img src="@Car.ImagePath" class="w-100 h-100 object-fit-cover" alt="Main Car Image"/>
                         
                         <div class="overlay d-flex flex-column">
                             <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="80" width="80"/>
@@ -42,24 +44,93 @@
         </div>
         
         <div class="card-footer">
-            @if (SubImages?.Any() == true)
+            @if (Car.SubImages?.Any() == true)
             {
-                @for (var i = 0; i < SubImages.Count; i++)
+                @for (var i = 0; i < Car.SubImages.Count; i++)
                 {
                     var imageIndex = i; // Capture for closure
-                    <div class="sub-image-box rounded-2 shadow-sm" @onclick="() => ShowImageModal(SubImages[imageIndex])">
-                        <img src="@SubImages[imageIndex]" alt="sub image" class="sub-image-box-image rounded-2"/>
+                    <div class="sub-image-container position-relative">
+                        <div class="sub-image-box rounded-2 shadow-sm" @onclick="() => ShowImageModal(Car.SubImages[imageIndex])">
+                            <img src="@Car.SubImages[imageIndex]" alt="sub image" class="sub-image-box-image rounded-2"/>
+                        </div>
+                        @if (IsEditable)
+                        {
+                            <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" 
+                                    style="border-radius: 50%; width: 25px; height: 25px; padding: 0;"
+                                    @onclick:stopPropagation="true"
+                                    @onclick="() => RemoveUploadedImage(imageIndex)">
+                                ×
+                            </button>
+                        }
                     </div>
                 }
             }
+
+            @if (TemporaryFiles?.Any() == true)
+            {
+                @for (var i = 0; i < TemporaryFiles.Count; i++)
+                {
+                    var imageIndex = i; // Capture for closure
+                    <div class="sub-image-container position-relative temp-image">
+                        <div class="sub-image-box rounded-2 shadow-sm" @onclick="() => ShowImageModal(TemporaryFiles[imageIndex].DataUrl)">
+                            <img src="@TemporaryFiles[imageIndex].DataUrl" alt="sub image" class="sub-image-box-image rounded-2"/>
+                        </div>
+                        @if (IsEditable)
+                        {
+                            <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                                    style="border-radius: 50%; width: 25px; height: 25px; padding: 0;"
+                                    @onclick:stopPropagation="true"
+                                    @onclick="() => RemoveTemporaryImage(imageIndex)">
+                                ×
+                            </button>
+                        }
+                    </div>
+                }
+            }
+
             @if (IsEditable)
             {
-                <div class="sub-image-box rounded-2 shadow-sm d-flex flex-wrap justify-content-center">
+                <label class="sub-image-box rounded-2 shadow-sm d-flex flex-wrap justify-content-center"
+                       style="cursor: pointer;">
                     <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="40" width="40"/>
                     <span class="text-muted">Add Image</span>
+                    <InputFile OnChange="OnFilesSelected"
+                               multiple
+                               accept="image/*"
+                               style="display: none;"/>
+                </label>
+            }
+            
+        </div>
+        
+        @if (_containsUnuploaded || _isUploading)
+        {
+            <div class="d-flex justify-content-center m-2">
+                <button class="btn btn-success text-white" @onclick="UploadTemporaryImages" disabled="@_isUploading">
+                    @if (_isUploading)
+                    {
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        <span>Uploading...</span>
+                    }
+                    else
+                    {
+                        <text>Confirm</text>
+                    }
+                </button>
+            </div>
+
+            @if (_isUploading)
+            {
+                <div class="d-flex justify-content-center m-2">
+                    <div class="progress" style="width: 200px; height: 8px;">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-success" 
+                             role="progressbar" 
+                             style="width: 100%">
+                        </div>
+                    </div>
                 </div>
             }
-        </div>
+        }
     </div>
 </div>
 
@@ -83,7 +154,7 @@
                     </div>
                     
                     <!-- Navigation arrows (if you're using them) -->
-                    @if (SubImages?.Count > 1)
+                    @if (Car.SubImages?.Count > 1)
                     {
                         <button class="btn btn-outline-light position-absolute start-0 top-50 translate-middle-y ms-3"
                                 @onclick="PreviousImage"
@@ -93,7 +164,7 @@
                         
                         <button class="btn btn-outline-light position-absolute end-0 top-50 translate-middle-y me-3"
                                 @onclick="NextImage"
-                                disabled="@(_currentImageIndex == SubImages.Count - 1)">
+                                disabled="@(_currentImageIndex == Car.SubImages.Count - 1)">
                             <i class="bi bi-chevron-right"></i>
                         </button>
                     }
@@ -105,18 +176,117 @@
 
 
 @code {
-    [Parameter] public string? PrimaryImage { get; set; }
-    [Parameter] public List<string>? SubImages { get; set; }
+    [Parameter] public required Car Car { get; set; }
     [Parameter] public bool IsEditable { get; set; }
 
+    private List<TempImage> TemporaryFiles { get; set; } = new();
+    
+    private bool _containsUnuploaded;
     private string? _selectedImage;
     private int _currentImageIndex = 0;
+
+    private bool _isUploading = false;
+    
+    private async Task OnFilesSelected(InputFileChangeEventArgs e)
+    {
+        var files = e.GetMultipleFiles();
+    
+        // Initialize SubImages list if it's null
+        Car.SubImages ??= [];
+    
+        foreach (var file in files)
+        {
+            if (file.ContentType.StartsWith("image/"))
+            {
+                try
+                {
+                    // Read file content and convert to data URL
+                    var maxFileSize = 10 * 1024 * 1024; // 10MB limit
+                    using var stream = file.OpenReadStream(maxFileSize);
+                    using var memoryStream = new MemoryStream();
+                    await stream.CopyToAsync(memoryStream);
+                
+                    var fileBytes = memoryStream.ToArray();
+                    var base64String = Convert.ToBase64String(fileBytes);
+                    var dataUrl = $"data:{file.ContentType};base64,{base64String}";
+                
+                    // Add to SubImages list for immediate display
+                    var tempImage = new TempImage(imageDataUrl: dataUrl, imageFile: file);
+                    TemporaryFiles.Add(tempImage);
+                    
+                    _containsUnuploaded = true;
+                }
+                catch (Exception ex)
+                {
+                    // Handle error (file too large, etc.)
+                    Console.WriteLine($@"Error processing file {file.Name}: {ex.Message}");
+                    // You might want to show a toast notification or error message to user
+                }
+            }
+        }
+    
+        // Refresh the UI to show new images
+        StateHasChanged();
+    }
+
+    public async Task UploadTemporaryImages()
+    {
+        if (!TemporaryFiles.Any()) return;
+
+        _isUploading = true;
+        StateHasChanged();
+
+        try
+        {
+            var filesToUpload = TemporaryFiles.Select(t => t.File);
+
+            var uploadedUrls = await ImageUploadService.UploadImagesAsync(filesToUpload);
+
+            Car.SubImages ??= [];
+            Car.SubImages.AddRange(uploadedUrls);
+
+            if (Car.Id != null) await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
+
+            // Clear temp images
+            TemporaryFiles.Clear();
+            _containsUnuploaded = false;
+
+            StateHasChanged();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($@"Error uploading images: {e.Message}");
+        }
+        finally
+        {
+            _isUploading = false;
+            StateHasChanged();
+        }
+    }
+    
+    private void RemoveTemporaryImage(int index)
+    {
+        if (index >= 0 && index < TemporaryFiles.Count)
+        {
+            TemporaryFiles.RemoveAt(index);
+            
+            if (TemporaryFiles.Count == 0)
+            {
+                _containsUnuploaded = false;
+            }
+            
+            StateHasChanged();
+        }
+    }
+
+    private void RemoveUploadedImage(int index)
+    {
+        
+    }
 
     private async Task ShowImageModal(string imageUrl)
     {
         _selectedImage = imageUrl;
-
-        Console.WriteLine(_selectedImage);
 
         // Show the modal using Bootstrap's JavaScript API
         await JsRuntime.InvokeVoidAsync("eval",
@@ -125,10 +295,10 @@
     
     private void NextImage()
     {
-        if (SubImages?.Any() == true && _currentImageIndex < SubImages.Count - 1)
+        if (Car.SubImages?.Any() == true && _currentImageIndex < Car.SubImages.Count - 1)
         {
             _currentImageIndex++;
-            _selectedImage = SubImages[_currentImageIndex];
+            _selectedImage = Car.SubImages[_currentImageIndex];
             
             Console.WriteLine(_selectedImage);
         }
@@ -136,13 +306,12 @@
 
     private void PreviousImage()
     {
-        if (SubImages?.Any() == true && _currentImageIndex > 0)
+        if (Car.SubImages?.Any() == true && _currentImageIndex > 0)
         {
             _currentImageIndex--;
-            _selectedImage = SubImages[_currentImageIndex];
+            _selectedImage = Car.SubImages[_currentImageIndex];
             
             Console.WriteLine(_selectedImage);
         }
     }
-
 }

@@ -90,6 +90,15 @@
     color: white;
 }
 
+.temp-image {
+    border: 2px dashed #ffc107;
+    opacity: 0.8;
+}
+
+.spinner-border-sm {
+    flex-shrink: 0;
+}
+
 @media (max-width: 576px) {
     .card-footer {
         grid-template-columns: repeat(auto-fit, minmax(100px, 120px));

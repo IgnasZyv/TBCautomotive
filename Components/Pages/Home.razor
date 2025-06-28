@@ -9,11 +9,11 @@
 
 <PageTitle>Car hosting</PageTitle>
 
-<section>
+<section class="">
     <div style="background-image: url('./assets/HeroSection/Hero Background Crop.webp'); 
               background-size: cover;
               background-position: center;
-              height: 50vh;
+              height: 70vh;
               position: relative;
               margin-left: -2rem;
               margin-right: -1.5rem;
@@ -26,17 +26,13 @@
     </div>
 </section>
 <section class="mt-3">
-    <div class="d-flex justify-content-center bg-dark-subtle border-primary border-2 rounded-3 shadow-sm my-2">
-        <h1 class="text">@Localization.GetString("ListingHeader")</h1>
-    </div>
+    <SectionHeader LocalizationString="ListingHeader" IconClassString="bi bi-car-front-fill me-1 text-primary" IsTop="@false"/>
     
     <DisplayCars />
-    
-    @* <div class="d-flex justify-content-end mr-5"> *@
-    @*     <SearchAndFilter OnFilterChanged="HandleFilterChanged"/> *@
-    @* </div> *@
-    @* *@
-    @* <DisplayCarCards Cars="FilteredCars"/> *@
+</section>
+
+<section>
+    <SectionHeader LocalizationString="ContactUs" IconClassString="bi bi-envelope me-1 text-primary" IsTop="@false"/>
 </section>
 
 

@@ -1,0 +1,17 @@
+﻿@using CarHostingWeb.Services
+
+@inject LocalizationService Localization
+
+
+<div class="stock-header container bg-light border-bottom text-center my-4 p-2 shadow-sm rounded-4 @(IsTop ? "mt-top" : "")">
+    <h1 class="display-6 fw-bold">
+        <i class="@IconClassString"></i> 
+        @Localization.GetString($"{LocalizationString}")
+    </h1>
+</div>
+
+@code {
+    [Parameter] public string? LocalizationString { get; set; }
+    [Parameter] public string? IconClassString { get; set; }
+    [Parameter] public bool IsTop { get; set; }
+}

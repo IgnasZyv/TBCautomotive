@@ -7,9 +7,9 @@
         <value>Encuentra el coche perfecto para tu próxima aventura</value>
     </data>
     <data name="ListingHeader" xml:space="preserve">
-        <value>Listados</value>
+        <value>Coches en stock</value>
     </data>
-    <data name="LogOut" xml:space="preserve">
+    <data name="SignOut" xml:space="preserve">
         <value>Cerrar sesión</value>
     </data>
     <data name="LogIn" xml:space="preserve">

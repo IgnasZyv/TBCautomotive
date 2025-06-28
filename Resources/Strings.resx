@@ -7,13 +7,13 @@
         <value>Find the perfect car for your next adventure</value>
     </data>
     <data name="ListingHeader" xml:space="preserve">
-        <value>Listings</value>
+        <value>Cars in stock</value>
     </data>
     <data name="LogIn" xml:space="preserve">
         <value>Log In</value>
     </data>
-    <data name="LogOut" xml:space="preserve">
-        <value>Log Out</value>
+    <data name="SignOut" xml:space="preserve">
+        <value>Sign Out</value>
     </data>
     <data name="CarCardDetailButton" xml:space="preserve">
         <value>View Details</value>

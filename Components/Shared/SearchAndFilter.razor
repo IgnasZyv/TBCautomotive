@@ -1,10 +1,11 @@
 ﻿@rendermode InteractiveServer
 
-<div class="input-group custom-input-group" style="width: 15rem;">
-    <span class="input-group-text">
-        <img src="assets/Icons/search-icon.svg" alt="search icon" class="search-icon"/>
+<div class="input-group custom-input-group shadow-sm rounded" style="width: 15rem;">
+    <span class="input-group-text bg-white border-end-0">
+        <img src="assets/Icons/search-icon.svg" alt="search icon" class="search-icon" style="width: 1rem; height: 1rem;" />
     </span>
-    <input type="text" class="form-control" placeholder="Search..." 
+    <input type="text" class="form-control border-start-0 shadow-none"
+           placeholder="Search..." 
            @bind="SearchTerm" @oninput="OnSearchChanged" />
 </div>
 

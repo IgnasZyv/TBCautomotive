@@ -4,9 +4,9 @@
 @inject NavigationManager NavigationManager
 @inject LocalizationService Localization;
 
-<div class="dropdown align-content-center justify-content-center">
-    <button class="btn btn-light p-1 bg-transparent border-0 " type="button" data-bs-toggle="dropdown" aria-expanded="false">
-        <img src="assets/flags/@CurrentFlag-flag.svg" alt="@CurrentCulture flag" width="20" height="14" class="me-2 m-0" />
+<div class="dropdown d-flex align-content-center justify-content-center">
+    <button class="btn btn-light bg-transparent border-0 justify-content-center align-content-center" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <img src="assets/flags/@CurrentFlag-flag.svg" alt="@CurrentCulture flag" width="20" height="14" class="m-0" />
     </button>
     <ul class="dropdown-menu dropdown-flags">
         <li>
@@ -20,8 +20,6 @@
             </a>
         </li>
     </ul>
-
-
 </div>
 
 @code {

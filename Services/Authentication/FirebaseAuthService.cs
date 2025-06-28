@@ -100,8 +100,8 @@ public class FirebaseAuthService
 
     private class FirebaseAuthResponse
     {
-        public string IdToken { get; set; }
-        public string RefreshToken { get; set; }
-        public string LocalId { get; set; }
+        public required string IdToken { get; init; }
+        public required string RefreshToken { get; init; }
+        public required string LocalId { get; init; }
     }
 }

@@ -3,8 +3,10 @@
 @using Microsoft.AspNetCore.Authorization
 @* @attribute [Authorize(Roles = "Admin")] *@
 
-<div class="d-flex justify-content-center bg-primary-subtle rounded-3 shadow shadow-sm mb-2">
-    <h2 class="">Manage Cars</h2>
-</div>
+@* <div class="d-flex justify-content-center bg-primary-subtle rounded-3 shadow shadow-sm" style="margin-top: 4rem"> *@
+@*     <h2 class="">Manage Cars</h2> *@
+@* </div> *@
+
+<SectionHeader LocalizationString="ManageCars" IconClassString="bi bi-car-front-fill me-1 text-primary" IsTop="@true"/>
  
 <DisplayCars />

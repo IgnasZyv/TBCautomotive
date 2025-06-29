@@ -12,10 +12,14 @@
     position: relative;
     overflow: hidden;
 
-    /* Add these height constraints */
-    min-height: 500px;      /* Minimum height */
-    max-height: 70vh;       /* Maximum 80% of viewport */
-    height: auto;           /* Let content determine height */
+    /* Height constraints */
+    min-height: 500px;
+    max-height: 70vh;
+
+    /* Flex container for centering */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
  /*Subtle shared background element for unity */

@@ -5,15 +5,20 @@
 }
 
 
- .hero {
-     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
-     padding: 4rem 2rem;
-     border-bottom: 1px solid #e0e0e0;
-     position: relative;
-     overflow: hidden;
- }
+.hero {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
+    padding: 4rem 2rem;
+    border-bottom: 1px solid #e0e0e0;
+    position: relative;
+    overflow: hidden;
 
-/* Subtle shared background element for unity */
+    /* Add these height constraints */
+    min-height: 500px;      /* Minimum height */
+    max-height: 70vh;       /* Maximum 80% of viewport */
+    height: auto;           /* Let content determine height */
+}
+
+ /*Subtle shared background element for unity */
 .hero::before {
     content: '';
     position: absolute;
@@ -169,6 +174,7 @@
 @media (max-width: 768px) {
     .hero {
         padding: 2rem 1rem;
+        max-height: 85vh;
     }
 
     .hero-container {

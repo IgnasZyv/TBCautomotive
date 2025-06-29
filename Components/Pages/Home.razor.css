@@ -3,3 +3,246 @@
     backdrop-filter: blur(6px); /* Glassmorphism effect */
     border: 1px solid #dee2e6;
 }
+
+
+ .hero {
+     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
+     padding: 4rem 2rem;
+     border-bottom: 1px solid #e0e0e0;
+     position: relative;
+     overflow: hidden;
+ }
+
+/* Subtle shared background element for unity */
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    width: 20%;
+    height: 40%;
+    background: radial-gradient(ellipse, rgba(52, 144, 220, 0.03), transparent);
+    border-radius: 50%;
+    z-index: 1;
+}
+
+.hero-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 3rem;
+    flex-wrap: wrap;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-text {
+    flex: 1;
+    min-width: 280px;
+    position: relative;
+}
+
+/* Connecting element from text to image */
+.hero-text::after {
+    content: '';
+    position: absolute;
+    right: -2rem;
+    top: 50%;
+    width: 4rem;
+    height: 2px;
+    background: linear-gradient(to right, #3490dc, transparent);
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.hero-logo {
+    width: 220px;
+    margin-bottom: 1.5rem;
+    position: relative;
+    transition: transform 0.3s ease;
+}
+
+/* Accent bar under logo for brand unity */
+.hero-logo::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: #3490dc;
+    border-radius: 2px;
+}
+
+.hero-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+/* Blue highlight for key word - creates color unity */
+.hero-title .highlight {
+    color: #3490dc;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #4b5563;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+/* Enhanced buttons with unified blue theme */
+.btn-primary {
+    background: linear-gradient(45deg, #3490dc, #2563eb);
+    border: none;
+    box-shadow: 0 4px 15px rgba(52, 144, 220, 0.2);
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(45deg, #2563eb, #1d4ed8);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(52, 144, 220, 0.3);
+}
+
+.btn-secondary {
+    background: #6b7280;
+    border: none;
+    transition: all 0.3s ease;
+    font-weight: 600;
+}
+
+.btn-secondary:hover {
+    background: #4b5563;
+    transform: translateY(-2px);
+}
+
+.hero-image {
+    flex: 1;
+    min-width: 280px;
+    text-align: center;
+    position: relative;
+}
+
+/* Shadow connection from car to text + subtle animation */
+.hero-image img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 1rem;
+    animation: subtle-pulse 4s ease-in-out infinite;
+    filter: drop-shadow(-3rem 0 3rem rgba(52, 144, 220, 0.08));
+    position: relative;
+    z-index: 2;
+}
+
+/* Refined animation - more professional */
+@keyframes subtle-pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.03);
+    }
+}
+
+/* Additional shadow element for stronger connection */
+.hero-text::before {
+    content: '';
+    position: absolute;
+    right: -1rem;
+    top: 40%;
+    width: 2rem;
+    height: 20%;
+    background: linear-gradient(to right, rgba(52, 144, 220, 0.05), transparent);
+    border-radius: 0 10px 10px 0;
+    z-index: 1;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .hero {
+        padding: 2rem 1rem;
+    }
+
+    .hero-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 2rem;
+    }
+
+    .hero-text::after,
+    .hero-text::before {
+        display: none;
+    }
+
+    .hero-title {
+        font-size: 1.75rem;
+    }
+
+    .hero::before {
+        display: none;
+    }
+}
+
+/* Entrance animations for polish */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.fade-in-left {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: fadeInLeft 0.8s ease-out forwards;
+}
+
+.fade-in-right {
+    opacity: 0;
+    transform: translateX(30px);
+    animation: fadeInRight 0.8s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeInLeft {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeInRight {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Stagger the entrance animations */
+.hero-logo { animation-delay: 0.1s; }
+.hero-title { animation-delay: 0.3s; }
+.hero-subtitle { animation-delay: 0.5s; }
+.cta-buttons { animation-delay: 0.7s; }
+.hero-image { animation-delay: 0.9s; }
+
+/* Additional polish - subtle glow on hover for logo */
+.hero-logo:hover {
+    transform: scale(1.02);
+}
+
+.hero-logo:hover::after {
+    box-shadow: 0 0 10px rgba(52, 144, 220, 0.3);
+}

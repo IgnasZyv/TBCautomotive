@@ -61,5 +61,57 @@ namespace CarHostingWeb.Services
             var results = await UploadImagesAsync([file]); // Wrap in array
             return results.FirstOrDefault();
         }
+
+        public async Task<bool> DeleteImageAsync(string imageUrl)
+        {
+            try
+            {
+                var publicId = ExtractPublicIdFromUrl(imageUrl);
+
+                if (string.IsNullOrEmpty(publicId)) return false;
+
+                var deletionParams = new DeletionParams(publicId);
+                var result = await cloudinary.DestroyAsync(deletionParams);
+
+                return result.Result == "ok";
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($@"Error deleting image: {e.Message}");
+                return false;
+            }
+        }
+
+        private string? ExtractPublicIdFromUrl(string imageUrl)
+        {
+            try
+            {
+                var uri = new Uri(imageUrl);
+                var segments = uri.Segments;
+
+                // Find the upload segment and get everything after it
+                var uploadIndex = Array.FindIndex(segments, s => s.Contains("upload"));
+                if (uploadIndex == -1) return null;
+            
+                // Get path after upload/version
+                var pathParts = segments.Skip(uploadIndex + 2).ToArray(); // Skip upload/ and version/
+                var fullPath = string.Join("", pathParts).TrimEnd('/');
+            
+                // Remove file extension
+                var lastDotIndex = fullPath.LastIndexOf('.');
+                if (lastDotIndex > 0)
+                {
+                    fullPath = fullPath.Substring(0, lastDotIndex);
+                }
+
+                return fullPath;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+            
+        }
     }
 }

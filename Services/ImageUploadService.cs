@@ -82,6 +82,35 @@ namespace CarHostingWeb.Services
             }
         }
 
+        public async Task<bool> DeleteMultipleImagesAsync(IEnumerable<string> imageUrls)
+        {
+            try
+            {
+                var publicIds = imageUrls
+                    .Select(ExtractPublicIdFromUrl)
+                    .Where(id => !string.IsNullOrEmpty(id))
+                    .ToList();
+
+                if (publicIds.Count == 0) return true; // Nothing to delete
+
+                var deletionParams = new DelResParams()
+                {
+                    PublicIds = publicIds,
+                    Type = "upload",
+                    ResourceType = ResourceType.Image
+                };
+
+                var result = await cloudinary.DeleteResourcesAsync(deletionParams);
+
+                return result.Deleted?.Count == publicIds.Count;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($@"Error deleting multiple images: {e.Message}");
+                return false;
+            }
+        }
+
         private string? ExtractPublicIdFromUrl(string imageUrl)
         {
             try

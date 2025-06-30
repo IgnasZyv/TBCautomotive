@@ -58,6 +58,29 @@ public class CarService()
         await docRef.SetAsync(car);
         return docRef.Id;
     }
+
+    public async Task<bool> DeleteCarAsync(string carId)
+    {
+        try
+        {
+            Debug.Assert(_carsCollection != null, nameof(_carsCollection) + " != null");
+
+            if (string.IsNullOrEmpty(carId))
+                throw new ArgumentException(@"Car ID cannot be null or empty", nameof(carId));
+
+
+            var docRef = _carsCollection.Document(carId);
+            await docRef.DeleteAsync();
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(@$"Error deleting car {carId}: {e.Message}");
+            return false;
+        }
+
+    }
     
 }
 

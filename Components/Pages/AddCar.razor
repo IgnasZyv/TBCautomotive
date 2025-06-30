@@ -3,6 +3,7 @@
 @using CarHostingWeb.Models
 @using CarHostingWeb.Services
 @using Microsoft.AspNetCore.Components.Forms
+@using CarHostingWeb.Components.Shared
 @inject ImageUploadService ImageUploadService
 @inject CarService CarService
 @inject NavigationManager NavigationManager
@@ -13,36 +14,40 @@
     <DataAnnotationsValidator />
     <ValidationSummary />
     
-    <div class="d-flex flex-row justify-content-around p-5">
+    <div class="container mt-5">
         
-        <div>
-            <!-- Image upload section -->
-            <div class="mb-3">
-                <label for="carImage" class="form-label">Car Image</label>
-                <InputFile OnChange="OnFileChange" class="form-control" accept="image/*" id="carImage"/>
-            </div>
-
-            @if (_isUploading)
-            {
-                <div class="d-flex align-items-center mb-3">
-                    <div class="spinner-border text-primary me-2" role="status">
-                        <span class="visually-hidden">Loading...</span>
-                    </div>
-                    <span>Uploading image...</span>
-                </div>
-            }
-
-            @if (!string.IsNullOrEmpty(_car.ImagePath))
-            {
-                <div class="mb-3">
-                    <img src="@_car.ImagePath" class="img-thumbnail" style="max-height: 200px;" alt="Main Car Image"/>
-                </div>
-            }
-        </div>
+        @* <div> *@
+        @*     <!-- Image upload section --> *@
+        @*     <div class="mb-3"> *@
+        @*         <label for="carImage" class="form-label">Car Image</label> *@
+        @*         <InputFile OnChange="OnFileChange" class="form-control" accept="image/*" id="carImage"/> *@
+        @*     </div> *@
+        @* *@
+        @*     @if (_isUploading) *@
+        @*     { *@
+        @*         <div class="d-flex align-items-center mb-3"> *@
+        @*             <div class="spinner-border text-primary me-2" role="status"> *@
+        @*                 <span class="visually-hidden">Loading...</span> *@
+        @*             </div> *@
+        @*             <span>Uploading image...</span> *@
+        @*         </div> *@
+        @*     } *@
+        @* *@
+        @*     @if (!string.IsNullOrEmpty(_car.ImagePath)) *@
+        @*     { *@
+        @*         <div class="mb-3"> *@
+        @*             <img src="@_car.ImagePath" class="img-thumbnail" style="max-height: 200px;" alt="Main Car Image"/> *@
+        @*         </div> *@
+        @*     } *@
+        @* </div> *@
+        
+ 
         
 
         <div class="row">
-            <div class="col-md-12">
+            <CarImageGallery Car="_car" IsEditable="@true" />
+            
+            <div class="col-md-4">
                 <!-- Car details fields -->
                 <div class="mb-2">
                     <label for="make" class="form-label">Make</label>
@@ -67,9 +72,9 @@
                     <InputNumber id="price" @bind-Value="_car.Price" class="form-control"/>
                     <ValidationMessage For="@(() => _car.Price)"/>
                 </div>
-                
+
             </div>
-            
+
         </div>
 
     </div>

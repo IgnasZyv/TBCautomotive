@@ -52,6 +52,17 @@
                     <div class="sub-image-container position-relative">
                         <div class="sub-image-box rounded-2 shadow-sm" @onclick="() => ShowImageModal(Car.SubImages[imageIndex])">
                             <img src="@Car.SubImages[imageIndex]" alt="sub image" class="sub-image-box-image rounded-2"/>
+                            
+                            <!-- Primary button -->
+                            @if (IsEditable)
+                            {
+                                <button class="btn btn-primary btn-sm make-primary-btn" 
+                                        title="Make Primary Image"
+                                        @onclick:stopPropagation="true"
+                                        @onclick="() => MakeImagePrimary(imageIndex)">
+                                    <i class="bi bi-star"></i>
+                                </button>
+                            }
                         </div>
                         @if (IsEditable)
                         {
@@ -209,6 +220,29 @@
     private int _imageToDeleteIndex = -1;
 
     private bool _isUploading;
+
+    private async Task MakeImagePrimary(int index)
+    {
+        if (!(Car.SubImages != null && index >= 0 && index < Car.SubImages.Count)) return;
+
+        var newPrimaryImage = Car.SubImages[index];
+
+        if (!string.IsNullOrEmpty(Car.ImagePath) && !Car.SubImages.Contains(Car.ImagePath))
+        {
+            Car.SubImages.Insert(index, Car.ImagePath);
+        }
+
+        Car.ImagePath = newPrimaryImage;
+
+        Car.SubImages.Remove(newPrimaryImage);
+
+        if (Car.Id != null)
+        {
+            await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
+        }
+        
+        StateHasChanged();
+    }
     
     private async Task OnFilesSelected(InputFileChangeEventArgs e)
     {
@@ -330,7 +364,7 @@
             }
             else
             {
-                Console.WriteLine("Failed to delete image from Cloudinary");
+                Console.WriteLine(@"Failed to delete image from Cloudinary");
             }
         }
     

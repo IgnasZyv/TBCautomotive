@@ -15,44 +15,72 @@
             <h5 class="mb-0">Car Images</h5>
         </div>
 
-        <div class="card-body p-0 position-relative">
-            @if (!string.IsNullOrEmpty(Car.ImagePath))
+<div class="card-body p-0 position-relative">
+    @if (!string.IsNullOrEmpty(Car.ImagePath))
+    {
+        <!-- Existing primary image from database -->
+        <div class="image-container">
+            <img src="@Car.ImagePath" class="w-100 h-100 object-fit-cover" alt="Main Car Image" @onclick="() => ShowImageModal(Car.ImagePath)"/>
+        </div>
+    }
+    else if (_primaryImageSource == "temp" && _primaryImageIndex >= 0 && _primaryImageIndex < TemporaryFiles.Count)
+    {
+        <!-- Temporary image selected as primary -->
+        <div class="image-container">
+            <img src="@TemporaryFiles[_primaryImageIndex].DataUrl" 
+                 class="w-100 h-100 object-fit-cover primary-temp-image" 
+                 alt="Selected Primary Image" 
+                 @onclick="() => ShowImageModal(TemporaryFiles[_primaryImageIndex].DataUrl)"/>
+            
+            <!-- Primary indicator overlay -->
+            <div class="primary-indicator">
+                <span class="badge bg-warning text-dark">
+                    <i class="bi bi-star-fill me-1"></i>Selected as Primary
+                </span>
+            </div>
+            
+            @if (IsEditable)
             {
-                <div class="image-container">
-                    @if (!IsEditable)
-                    {
-                        <img src="@Car.ImagePath" class="w-100 h-100 object-fit-cover" alt="Main Car Image" @onclick="() => ShowImageModal(Car.ImagePath)"/>
-                    }
-                    else
-                    {
-                        <img src="@Car.ImagePath" class="w-100 h-100 object-fit-cover" alt="Main Car Image"/>
-                        
-                        <div class="overlay d-flex flex-column">
-                            <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="80" width="80"/>
-                            <span class="overlay-text">Click to change primary image</span>
-                        </div>
-                    }
+                <!-- Clear primary selection button -->
+                <div class="clear-primary-btn">
+                    <button type="button" class="btn btn-outline-light btn-sm" 
+                            @onclick:stopPropagation="true"
+                            @onclick="ClearPrimarySelection"
+                            title="Clear primary selection">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
                 </div>
             }
-            else
-            {
-                @if (!IsEditable)
+        </div>
+    }
+    else
+    {
+        <!-- No primary image set -->
+        @if (!IsEditable)
+        {
+            <div class="text-center p-5">
+                <i class="bi bi-image display-4 text-muted"></i>
+                <p class="text-muted mt-2">No image available</p>
+            </div>
+        }
+        else
+        {
+            <div class="text-center p-5 image-container d-flex flex-column justify-content-center align-items-center">
+                <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="80" width="80"/>
+                @if (TemporaryFiles.Any() || (Car.SubImages?.Any() == true))
                 {
-                    <div class="text-center p-5">
-                        <i class="bi bi-image display-4 text-muted"></i>
-                        <p class="text-muted mt-2">No image available</p>
-                    </div>
+                    <p class="text-muted mt-2">Select a primary image below</p>
+                    <small class="text-muted">Click the star icon on any image to make it primary</small>
                 }
                 else
                 {
-                    <div class="text-center p-5 image-container flex-column justify-content-center align-content-center">
-                        <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="80" width="80"/>
-                        <p class="text-muted mt-2">Click to add primary image</p>
-                    </div>
+                    <p class="text-muted mt-2">Add images to get started</p>
+                    <small class="text-muted">Upload images using the "Add Images" button below</small>
                 }
-
-            }
-        </div>
+            </div>
+        }
+    }
+</div>
         
         <div class="card-footer">
             @if (Car.SubImages?.Any() == true)
@@ -67,7 +95,7 @@
                             <!-- Primary button -->
                             @if (IsEditable)
                             {
-                                <button class="btn btn-primary btn-sm make-primary-btn" 
+                                <button type="button" class="btn btn-primary btn-sm make-primary-btn" 
                                         title="Make Primary Image"
                                         @onclick:stopPropagation="true"
                                         @onclick="() => MakeImagePrimary(imageIndex)">
@@ -77,7 +105,7 @@
                         </div>
                         @if (IsEditable)
                         {
-                            <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" 
+                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1" 
                                     style="border-radius: 50%; width: 25px; height: 25px; padding: 0;"
                                     @onclick:stopPropagation="true"
                                     @onclick="() => RemoveUploadedImage(imageIndex)">
@@ -96,10 +124,21 @@
                     <div class="sub-image-container position-relative temp-image">
                         <div class="sub-image-box rounded-2 shadow-sm" @onclick="() => ShowImageModal(TemporaryFiles[imageIndex].DataUrl)">
                             <img src="@TemporaryFiles[imageIndex].DataUrl" alt="sub image" class="sub-image-box-image rounded-2"/>
+                            
+                            <!-- Primary button -->
+                            @if (IsEditable)
+                            {
+                                <button type="button" class="btn btn-primary btn-sm make-primary-btn" 
+                                        title="Make Primary Image"
+                                        @onclick:stopPropagation="true"
+                                        @onclick="@(() => MakePrimary("temp", imageIndex))">
+                                    <i class="bi bi-star"></i>
+                                </button>
+                            }
                         </div>
                         @if (IsEditable)
                         {
-                            <button class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
+                            <button type="button" class="btn btn-danger btn-sm position-absolute top-0 end-0 m-1"
                                     style="border-radius: 50%; width: 25px; height: 25px; padding: 0;"
                                     @onclick:stopPropagation="true"
                                     @onclick="() => RemoveTemporaryImage(imageIndex)">
@@ -115,7 +154,7 @@
                 <label class="sub-image-box rounded-2 shadow-sm d-flex flex-wrap justify-content-center"
                        style="cursor: pointer;">
                     <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="40" width="40"/>
-                    <span class="text-muted">Add Image</span>
+                    <span class="text-muted">Add Images</span>
                     <InputFile OnChange="OnFilesSelected"
                                multiple
                                accept="image/*"
@@ -128,7 +167,7 @@
         @if (_containsUnuploaded || _isUploading)
         {
             <div class="d-flex justify-content-center m-2">
-                <button class="btn btn-success text-white" @onclick="UploadTemporaryImages" disabled="@_isUploading">
+                <button type="button" class="btn btn-success text-white" @onclick="UploadTemporaryImages" disabled="@_isUploading">
                     @if (_isUploading)
                     {
                         <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
@@ -222,8 +261,11 @@
 @code {
     [Parameter] public required Car Car { get; set; }
     [Parameter] public bool IsEditable { get; set; }
+    
+    private const int MaxFileSize = 10 * 1024 * 1024;
 
     private List<TempImage> TemporaryFiles { get; set; } = new();
+    private TempImage TempPrimaryImage { get; set; }
     
     private bool _containsUnuploaded;
     private string? _selectedImage;
@@ -231,11 +273,46 @@
     private int _imageToDeleteIndex = -1;
 
     private bool _isUploading;
+    
+    // Add these properties to track primary image
+    private string? _primaryImageSource; // "temp" or "sub" 
+    private int _primaryImageIndex = -1;
+    private bool _hasPrimaryImageChanged = false;
+
+// Helper property to check if we have a designated primary
+    private bool HasDesignatedPrimary => _primaryImageSource != null && _primaryImageIndex >= 0;
+    
+    private void ClearPrimarySelection()
+    {
+        _primaryImageSource = null;
+        _primaryImageIndex = -1;
+        _hasPrimaryImageChanged = false;
+        StateHasChanged();
+    }
+    
+    private async Task MakePrimary(string source, int index)
+    {
+        Console.WriteLine($"MakePrimary called: source={source}, index={index}");
+        Console.WriteLine($"Car.Id before: {Car.Id}");
+    
+        // Only mark for temp images - don't update database yet
+        if (source == "temp")
+        {
+            _primaryImageSource = source;
+            _primaryImageIndex = index;
+            _hasPrimaryImageChanged = true;
+        
+            Console.WriteLine($"Primary image marked: {_primaryImageSource}[{_primaryImageIndex}]");
+            Console.WriteLine($"Car.Id after: {Car.Id}");
+        
+            StateHasChanged();
+        }
+    }
 
     private async Task MakeImagePrimary(int index)
     {
         if (!(Car.SubImages != null && index >= 0 && index < Car.SubImages.Count)) return;
-
+        
         var newPrimaryImage = Car.SubImages[index];
 
         if (!string.IsNullOrEmpty(Car.ImagePath) && !Car.SubImages.Contains(Car.ImagePath))
@@ -259,9 +336,6 @@
     {
         var files = e.GetMultipleFiles();
     
-        // Initialize SubImages list if it's null
-        Car.SubImages ??= [];
-    
         foreach (var file in files)
         {
             if (file.ContentType.StartsWith("image/"))
@@ -269,15 +343,14 @@
                 try
                 {
                     // Read file content and convert to data URL
-                    var maxFileSize = 10 * 1024 * 1024; // 10MB limit
-                    using var stream = file.OpenReadStream(maxFileSize);
+                    await using var stream = file.OpenReadStream(MaxFileSize);
                     using var memoryStream = new MemoryStream();
                     await stream.CopyToAsync(memoryStream);
                 
                     var fileBytes = memoryStream.ToArray();
                     var base64String = Convert.ToBase64String(fileBytes);
                     var dataUrl = $"data:{file.ContentType};base64,{base64String}";
-                
+
                     // Add to SubImages list for immediate display
                     var tempImage = new TempImage(imageDataUrl: dataUrl, imageFile: file);
                     TemporaryFiles.Add(tempImage);
@@ -297,52 +370,144 @@
         StateHasChanged();
     }
 
+    // private async Task UploadTemporaryImages()
+    // {
+    //     if (!TemporaryFiles.Any()) return;
+    //
+    //     _isUploading = true;
+    //     StateHasChanged();
+    //
+    //     try
+    //     {
+    //         var filesToUpload = TemporaryFiles.Select(t => t.File);
+    //
+    //         var uploadedUrls = await ImageUploadService.UploadImagesAsync(filesToUpload);
+    //
+    //         Car.SubImages ??= [];
+    //         Car.SubImages.AddRange(uploadedUrls);
+    //
+    //         if (Car.Id != null) await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
+    //
+    //         // Clear temp images
+    //         TemporaryFiles.Clear();
+    //         _containsUnuploaded = false;
+    //
+    //         StateHasChanged();
+    //     }
+    //     catch (Exception e)
+    //     {
+    //         Console.WriteLine($@"Error uploading images: {e.Message}");
+    //     }
+    //     finally
+    //     {
+    //         _isUploading = false;
+    //         StateHasChanged();
+    //     }
+    // }
+    
     private async Task UploadTemporaryImages()
+{
+    if (!TemporaryFiles.Any()) return;
+
+    _isUploading = true;
+    StateHasChanged();
+
+    try
     {
-        if (!TemporaryFiles.Any()) return;
+        var filesToUpload = TemporaryFiles.Select(t => t.File);
+        var uploadedUrls = await ImageUploadService.UploadImagesAsync(filesToUpload);
 
-        _isUploading = true;
-        StateHasChanged();
-
-        try
+        if (uploadedUrls.Any())
         {
-            var filesToUpload = TemporaryFiles.Select(t => t.File);
-
-            var uploadedUrls = await ImageUploadService.UploadImagesAsync(filesToUpload);
-
             Car.SubImages ??= [];
-            Car.SubImages.AddRange(uploadedUrls);
+            
+            // If a temp image was marked as primary, make it the car's primary image
+            if (_primaryImageSource == "temp" && _primaryImageIndex >= 0 && _primaryImageIndex < uploadedUrls.Count)
+            {
+                var primaryUrl = uploadedUrls[_primaryImageIndex];
+                
+                // Move current primary image to sub images if it exists
+                if (!string.IsNullOrEmpty(Car.ImagePath))
+                {
+                    Car.SubImages.Add(Car.ImagePath);
+                }
+                
+                // Set new primary
+                Car.ImagePath = primaryUrl;
+                
+                // Add other uploaded images to sub images (excluding the new primary)
+                var otherUrls = uploadedUrls.Where((url, i) => i != _primaryImageIndex).ToList();
+                Car.SubImages.AddRange(otherUrls);
+            }
+            else
+            {
+                // No primary selected from temps, just add all to sub images
+                Car.SubImages.AddRange(uploadedUrls);
+            }
 
-            if (Car.Id != null) await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
+            if (Car.Id != null) 
+                await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
 
-            // Clear temp images
+            // Clear temp data
             TemporaryFiles.Clear();
             _containsUnuploaded = false;
+            _primaryImageSource = null;
+            _primaryImageIndex = -1;
+            _hasPrimaryImageChanged = false;
+        }
 
-            StateHasChanged();
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine($@"Error uploading images: {e.Message}");
-        }
-        finally
-        {
-            _isUploading = false;
-            StateHasChanged();
-        }
+        StateHasChanged();
     }
+    catch (Exception e)
+    {
+        Console.WriteLine($@"Error uploading images: {e.Message}");
+    }
+    finally
+    {
+        _isUploading = false;
+        StateHasChanged();
+    }
+}
+    
+    // private void RemoveTemporaryImage(int index)
+    // {
+    //     if (index >= 0 && index < TemporaryFiles.Count)
+    //     {
+    //         TemporaryFiles.RemoveAt(index);
+    //         
+    //         if (TemporaryFiles.Count == 0)
+    //         {
+    //             _containsUnuploaded = false;
+    //         }
+    //         
+    //         StateHasChanged();
+    //     }
+    // }
     
     private void RemoveTemporaryImage(int index)
     {
         if (index >= 0 && index < TemporaryFiles.Count)
         {
+            // If removing the primary temp image, clear primary designation
+            if (_primaryImageSource == "temp" && _primaryImageIndex == index)
+            {
+                _primaryImageSource = null;
+                _primaryImageIndex = -1;
+                _hasPrimaryImageChanged = false;
+            }
+            // If removing an image before the primary, adjust the primary index
+            else if (_primaryImageSource == "temp" && _primaryImageIndex > index)
+            {
+                _primaryImageIndex--;
+            }
+        
             TemporaryFiles.RemoveAt(index);
-            
+        
             if (TemporaryFiles.Count == 0)
             {
                 _containsUnuploaded = false;
             }
-            
+        
             StateHasChanged();
         }
     }

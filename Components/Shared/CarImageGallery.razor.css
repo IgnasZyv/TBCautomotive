@@ -1,5 +1,61 @@
-﻿.editable {
+﻿/* Primary temp image styling */
+.primary-temp-image {
+    border: 3px solid #ffc107;
+    box-shadow: 0 0 15px rgba(255, 193, 7, 0.3);
+}
+
+/* Primary indicator overlay */
+.primary-indicator {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 10;
+}
+
+.primary-indicator .badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Clear primary button */
+.clear-primary-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    z-index: 10;
+}
+
+.clear-primary-btn .btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.clear-primary-btn .btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.1);
+}
+
+.editable {
     cursor: pointer;
+}
+
+.primary-image-border {
+    border: 3px dashed #ffc107 !important;
+    background-color: #fff8e1;
+}
+
+.primary-image-border:hover {
+    border-color: #ffb300 !important;
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.4) !important;
 }
 
 .image-container {

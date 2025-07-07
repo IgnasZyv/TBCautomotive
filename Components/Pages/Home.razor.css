@@ -4,6 +4,32 @@
     border: 1px solid #dee2e6;
 }
 
+.contact-card {
+    transition: all 0.3s ease;
+}
+
+.contact-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.btn {
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.logo-container {
+    transition: all 0.3s ease;
+}
+
+.logo-container:hover {
+    transform: scale(1.05);
+}
+
 
 .hero {
     background: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #ffffff 100%);
@@ -68,8 +94,8 @@
 }
 
 .hero-logo {
-    width: 220px;
-    margin-bottom: 1.5rem;
+    width: 180px;
+    margin-bottom: 0.5rem;
     position: relative;
     transition: transform 0.3s ease;
 }

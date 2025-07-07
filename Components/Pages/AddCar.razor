@@ -16,9 +16,11 @@
     
     <div class="container mt-5">
         
-        <div class="row">
-            <CarImageGallery Car="_car" IsEditable="@true" />
-            
+        <SectionHeader LocalizationString="Create a Car Listing" IconClassString="bi bi-plus-square me-1 text-primary"/>
+
+        <div class="row justify-content-center">
+            <CarImageGallery Car="_car" IsEditable="@true"/>
+
             <div class="col-md-4">
                 <!-- Basic Car Details -->
                 <div class="mb-2">
@@ -112,7 +114,7 @@
                 <!-- Features -->
                 <div class="mb-2">
                     <label for="features" class="form-label">Features</label>
-                    <InputTextArea id="features" @bind-Value="_featuresText" class="form-control" rows="3" 
+                    <InputTextArea id="features" @bind-Value="_featuresText" class="form-control" rows="3"
                                    placeholder="Enter features separated by commas (e.g., Leather Seats, Sunroof, GPS Navigation)"/>
                     <small class="form-text text-muted">Separate multiple features with commas</small>
                 </div>

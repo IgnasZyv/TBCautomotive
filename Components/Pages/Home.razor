@@ -9,7 +9,7 @@
 
 <PageTitle>Car hosting</PageTitle>
 
-<section class="hero" style="margin-left: -2rem; margin-right: -1.5rem;">
+<section class="hero ">
     <div class="hero-container pt-5">
         <div class="hero-text d-flex flex-column justify-content-center align-content-center">
             <img src="assets/Logo/Logo.webp" 
@@ -40,14 +40,61 @@
     </div>
 </section>
 
-<section class="mt-3 listing-section" id="listing-section">
+<section class="mt-3 listing-section px-3" id="listing-section">
     <SectionHeader LocalizationString="ListingHeader" IconClassString="bi bi-car-front-fill me-1 text-primary" IsTop="@false"/>
     
     <DisplayCars />
 </section>
 
 <section class="contact-section" id="contact-section">
-    <SectionHeader LocalizationString="ContactUs" IconClassString="bi bi-envelope me-1 text-primary" IsTop="@false"/>
+    <SectionHeader LocalizationString="ContactUsHeader" IconClassString="bi bi-envelope me-1 text-primary" IsTop="@false"/>
+    
+    <div class="container">
+            <div class="d-flex align-items-center justify-content-center">
+                <div class="col-lg-6 mb-4 mb-lg-0">
+                    <div class="d-flex align-items-center">
+                        <img src="assets/Logo/Logo.webp" 
+                             alt="TB C Automotive Logo" 
+                             class="hero-logo rounded-2 shadow-sm fade-in-left"/>
+                    </div>
+                    <h3 class="fw-bold" style="color: #2c3e50;">
+                        Servicio Integral de <span class="text-primary">Automoción</span>
+                    </h3>
+                    
+                    <p class="text-muted mb-4 fs-5">
+                        Trust, quality and commitment with every vehicle.
+                    </p>
+
+                    <!-- Contact Methods -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <div class="contact-card h-100 p-3 bg-white rounded-3 shadow-sm border-start border-4 border-primary">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-telephone-fill text-primary me-3" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Call Us</h6>
+                                        <a href="tel:+1234567890" class="text-decoration-none text-dark">+1 (234) 567-890</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <div class="contact-card h-100 p-3 bg-white rounded-3 shadow-sm border-start border-4 border-success">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-envelope-fill text-success me-3" style="font-size: 1.5rem;"></i>
+                                    <div>
+                                        <h6 class="fw-bold mb-1">Email Us</h6>
+                                        <a href="mailto:info@cardealer.com" class="text-decoration-none text-dark">info@cardealer.com</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+
+            </div>
+        </div>
 </section>
 
 
@@ -85,4 +132,4 @@
 @*         StateHasChanged(); *@
 @*     } *@
 
-}
+

@@ -20,12 +20,10 @@
 }
 
 .top-navbar {
-    position: fixed; /* or absolute */
-    top: 0;
-    left: 0;
-    right: 0;
+    position: relative; /* Default for mobile */
     width: 100%;
     z-index: 1000;
+    background-color: white;
 }
 
 .top-row {
@@ -140,6 +138,15 @@
     color: #000000;
 }
 
+@media (min-width: 768px) {
+    .top-navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+}
+
 @media (min-width: 641px) {
     .navbar-toggler {
         display: none;
@@ -149,6 +156,12 @@
         display: block;
         height: auto;
         overflow-y: visible;
+    }
+
+    .top-navbar {
+        position: relative; /* or absolute */
+        width: 100%;
+        z-index: 1000;
     }
 }
 

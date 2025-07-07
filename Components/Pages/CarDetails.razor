@@ -36,46 +36,147 @@ else
         <div class="row">
             
             <CarImageGallery Car="_car"/>
-            @* <div class="col-md-6"> *@
-            @*     @if (!string.IsNullOrEmpty(_car.ImagePath)) *@
-            @*     { *@
-            @*         <img src="@_car.ImagePath" alt="@_car.Make @_car.Model" class="img-fluid rounded" /> *@
-            @*     } *@
-            @*     else *@
-            @*     { *@
-            @*         <div class="bg-light p-5 text-center rounded"> *@
-            @*             <span class="text-muted">No Image Available</span> *@
-            @*         </div> *@
-            @*     } *@
-            @* </div> *@
+            
             <div class="col-md-6">
-                <h1>@_car.Make @_car.Model</h1>
-                <h2 class="text-primary">$@_car.Price.ToString("N2")</h2>
+                <h1>@_car.Make @_car.Model (@_car.Year)</h1>
+                <h2 class="text-primary mb-4">€@_car.Price.ToString("N2")</h2>
 
-                <div class="row mb-3">
-                    <div class="col-4"><strong>Year:</strong></div>
-                    <div class="col-8">@_car.Year</div>
+                <!-- Basic Information -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-car-front me-2"></i>Vehicle Information</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-4"><strong>Make:</strong></div>
+                            <div class="col-8">@_car.Make</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4"><strong>Model:</strong></div>
+                            <div class="col-8">@_car.Model</div>
+                        </div>
+
+                        <div class="row mb-2">
+                            <div class="col-4"><strong>Year:</strong></div>
+                            <div class="col-8">@_car.Year</div>
+                        </div>
+
+                        @if (_car.Condition.HasValue)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Condition:</strong></div>
+                                <div class="col-8">
+                                    <span class="badge @GetConditionBadgeClass(_car.Condition.Value)">
+                                        @GetConditionDisplayName(_car.Condition.Value)
+                                    </span>
+                                </div>
+                            </div>
+                        }
+
+                        @if (_car.Kilometres.HasValue)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Kilometres:</strong></div>
+                                <div class="col-8">@_car.Kilometres.Value.ToString("N0") km</div>
+                            </div>
+                        }
+
+                        <div class="row mb-2">
+                            <div class="col-4"><strong>Listed:</strong></div>
+                            <div class="col-8">@_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")</div>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-4"><strong>Make:</strong></div>
-                    <div class="col-8">@_car.Make</div>
+                <!-- Engine & Performance -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Engine & Performance</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (_car.FuelType.HasValue)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Fuel Type:</strong></div>
+                                <div class="col-8">@GetFuelTypeDisplayName(_car.FuelType.Value)</div>
+                            </div>
+                        }
+
+                        @if (_car.Transmission.HasValue)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Transmission:</strong></div>
+                                <div class="col-8">@GetTransmissionDisplayName(_car.Transmission.Value)</div>
+                            </div>
+                        }
+
+                        @if (!string.IsNullOrEmpty(_car.EngineSize))
+                        {
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Engine Size:</strong></div>
+                                <div class="col-8">@_car.EngineSize</div>
+                            </div>
+                        }
+
+                        @if (_car.EngineCylinders.HasValue)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Cylinders:</strong></div>
+                                <div class="col-8">@_car.EngineCylinders.Value</div>
+                            </div>
+                        }
+
+                        @if (_car.Horsepower.HasValue)
+                        {
+                            <div class="row mb-2">
+                                <div class="col-4"><strong>Horsepower:</strong></div>
+                                <div class="col-8">@_car.Horsepower.Value HP</div>
+                            </div>
+                        }
+                    </div>
                 </div>
 
-                <div class="row mb-3">
-                    <div class="col-4"><strong>Model:</strong></div>
-                    <div class="col-8">@_car.Model</div>
-                </div>
+                <!-- Features -->
+                @if (_car.Features?.Any() == true)
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-star me-2"></i>Features</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                @foreach (var feature in _car.Features)
+                                {
+                                    <div class="col-6 mb-2">
+                                        <i class="bi bi-check-circle-fill text-success me-2"></i>@feature
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
 
-                <div class="row mb-3">
-                    <div class="col-4"><strong>Listed:</strong></div>
-                    <div class="col-8">@_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")</div>
-                </div>
+                <!-- Description -->
+                @if (!string.IsNullOrEmpty(_car.Description))
+                {
+                    <div class="card mb-4">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="bi bi-file-text me-2"></i>Description</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-0">@_car.Description</p>
+                        </div>
+                    </div>
+                }
 
+                <!-- Action Buttons -->
                 <div class="mt-4">
-                    <button class="btn btn-primary me-2">Contact Seller</button>
+                    <button class="btn btn-primary btn-lg me-2">
+                        <i class="bi bi-envelope me-2"></i>Contact Seller
+                    </button>
                     <button class="btn btn-outline-secondary" @onclick="GoHome">
-                        Back to Listings
+                        <i class="bi bi-arrow-left me-2"></i>Back to Listings
                     </button>
                 </div>
             </div>
@@ -88,8 +189,6 @@ else
     
     private Car? _car;
     private bool _isLoading = true;
-
-    private List<string> testData = ["./assets/Cars/test-car1.jpg", "./assets/Cars/test-car2.jpg", "./assets/Cars/test-car3.jpg"];
 
     protected override async Task OnInitializedAsync()
     {
@@ -114,5 +213,55 @@ else
     private void GoHome()
     {
         NavigationManager.NavigateTo("/");
+    }
+
+    // Helper methods for display names
+    private string GetConditionDisplayName(VehicleCondition condition)
+    {
+        return condition switch
+        {
+            VehicleCondition.New => "New",
+            VehicleCondition.Used => "Used",
+            VehicleCondition.CertifiedPreOwned => "Certified Pre-Owned",
+            _ => condition.ToString()
+        };
+    }
+
+    private string GetConditionBadgeClass(VehicleCondition condition)
+    {
+        return condition switch
+        {
+            VehicleCondition.New => "bg-success",
+            VehicleCondition.Used => "bg-primary",
+            VehicleCondition.CertifiedPreOwned => "bg-info",
+            _ => "bg-secondary"
+        };
+    }
+
+    private string GetFuelTypeDisplayName(FuelType fuelType)
+    {
+        return fuelType switch
+        {
+            FuelType.Petrol => "Petrol",
+            FuelType.Diesel => "Diesel",
+            FuelType.Electric => "Electric",
+            FuelType.Hybrid => "Hybrid",
+            FuelType.PlugInHybrid => "Plug-in Hybrid",
+            FuelType.LPG => "LPG",
+            FuelType.CNG => "CNG",
+            _ => fuelType.ToString()
+        };
+    }
+
+    private string GetTransmissionDisplayName(TransmissionType transmission)
+    {
+        return transmission switch
+        {
+            TransmissionType.Manual => "Manual",
+            TransmissionType.Automatic => "Automatic",
+            TransmissionType.CVT => "CVT",
+            TransmissionType.SemiAutomatic => "Semi-Automatic",
+            _ => transmission.ToString()
+        };
     }
 }

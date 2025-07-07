@@ -1,6 +1,34 @@
 using Google.Cloud.Firestore;
+using System.Text.Json.Serialization;
 
 namespace CarHostingWeb.Models;
+
+// Enums for data consistency
+public enum VehicleCondition
+{
+    New,
+    Used,
+    CertifiedPreOwned
+}
+
+public enum TransmissionType
+{
+    Manual,
+    Automatic,
+    CVT,
+    SemiAutomatic
+}
+
+public enum FuelType
+{
+    Petrol,
+    Diesel,
+    Electric,
+    Hybrid,
+    PlugInHybrid,
+    LPG,
+    CNG
+}
 
 [FirestoreData]
 public class Car
@@ -18,7 +46,8 @@ public class Car
     public double? Kilometres { get; set; }
     
     [FirestoreProperty]
-    public string? FuelType { get; set; }
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public FuelType? FuelType { get; set; }
 
     [FirestoreProperty]
     public int Year { get; set; }
@@ -33,7 +62,28 @@ public class Car
     public string? ImagePath { get; set; }
     
     [FirestoreProperty]
-    public List<string>? SubImages { get; set; } 
+    public List<string>? SubImages { get; set; }
+
+    // Enhanced properties with enums
+    [FirestoreProperty]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public VehicleCondition? Condition { get; set; }
+    
+    [FirestoreProperty]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public TransmissionType? Transmission { get; set; }
+    
+    [FirestoreProperty]
+    public string? EngineSize { get; set; } // "2.0L", "3.5L V6", etc.
+    
+    [FirestoreProperty]
+    public int? EngineCylinders { get; set; } // 4, 6, 8, etc.
+    
+    [FirestoreProperty]
+    public int? Horsepower { get; set; } // Engine power in HP
+    
+    [FirestoreProperty]
+    public List<string>? Features { get; set; } // ["Leather Seats", "Sunroof", "GPS Navigation", etc.]
 
     [FirestoreProperty]
     public Timestamp CreatedAt { get; set; }

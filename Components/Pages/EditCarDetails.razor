@@ -43,7 +43,7 @@ else
                 <button class="btn btn-outline-secondary me-2" @onclick="GoBack">
                     <i class="bi bi-arrow-left"></i> @Localization.GetString("FormCancel")
                 </button>
-                <button class="btn btn-danger" @onclick="DeleteCar" disabled="@_isDeleting">
+                <button class="btn btn-danger me-2" @onclick="DeleteCar" disabled="@_isDeleting">
                     @if (_isDeleting)
                     {
                         <span class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -88,6 +88,7 @@ else
                         <h5 class="mb-0">@Localization.GetString("FormCarDetails")</h5>
                     </div>
                     <div class="card-body">
+                        <!-- Basic Information -->
                         <div class="mb-3">
                             <label class="form-label">@Localization.GetString("CarMake") <span class="text-danger">*</span></label>
                             <input type="text" class="form-control @(_validationErrors.ContainsKey("Make") ? "is-invalid" : "")" 
@@ -132,28 +133,80 @@ else
                         </div>
 
                         <div class="mb-3">
+                            <label class="form-label">@Localization.GetString("CarKm")</label>
+                            <input type="number" class="form-control" @bind="_car.Kilometres" 
+                                   min="0" placeholder="Kilometres" />
+                        </div>
+
+                        <!-- Vehicle Condition -->
+                        <div class="mb-3">
+                            <label class="form-label">Condition</label>
+                            <select class="form-select" @bind="_car.Condition">
+                                <option value="">Select Condition</option>
+                                @foreach (var condition in Enum.GetValues<VehicleCondition>())
+                                {
+                                    <option value="@condition">@GetConditionDisplayName(condition)</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Fuel Type -->
+                        <div class="mb-3">
+                            <label class="form-label">@Localization.GetString("CarFuelType")</label>
+                            <select class="form-select" @bind="_car.FuelType">
+                                <option value="">@Localization.GetString("FormSelectFuelType")</option>
+                                @foreach (var fuelType in Enum.GetValues<FuelType>())
+                                {
+                                    <option value="@fuelType">@GetFuelTypeDisplayName(fuelType)</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Transmission -->
+                        <div class="mb-3">
+                            <label class="form-label">Transmission</label>
+                            <select class="form-select" @bind="_car.Transmission">
+                                <option value="">Select Transmission</option>
+                                @foreach (var transmission in Enum.GetValues<TransmissionType>())
+                                {
+                                    <option value="@transmission">@GetTransmissionDisplayName(transmission)</option>
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Engine Details -->
+                        <div class="row mb-3">
+                            <div class="col-6">
+                                <label class="form-label">Engine Size</label>
+                                <input type="text" class="form-control" @bind="_car.EngineSize" 
+                                       placeholder="e.g., 2.0L, 3.5L V6" />
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label">Cylinders</label>
+                                <input type="number" class="form-control" @bind="_car.EngineCylinders" 
+                                       min="1" max="16" placeholder="e.g., 4, 6, 8" />
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Horsepower</label>
+                            <input type="number" class="form-control" @bind="_car.Horsepower" 
+                                   min="0" placeholder="Engine power in HP" />
+                        </div>
+
+                        <!-- Features -->
+                        <div class="mb-3">
+                            <label class="form-label">Features</label>
+                            <textarea class="form-control" rows="3" @bind="_featuresText" 
+                                      placeholder="Enter features separated by commas (e.g., Leather Seats, Sunroof, GPS Navigation)"></textarea>
+                            <small class="form-text text-muted">Separate multiple features with commas</small>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
                             <label class="form-label">@Localization.GetString("CarDescription")</label>
                             <textarea class="form-control" rows="4" @bind="_car.Description" 
                                       placeholder="Enter car description (optional)"></textarea>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="col-6">
-                                <label class="form-label">@Localization.GetString("CarKm")</label>
-                                <input type="number" class="form-control" @bind="_car.Kilometres" 
-                                       min="0" placeholder="Miles" />
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label">@Localization.GetString("CarFuelType")</label>
-                                <select class="form-select" @bind="_car.FuelType">
-                                    <option value="">@Localization.GetString("FormSelectFuelType")</option>
-                                    <option value="Petrol">@Localization.GetString("CarFuelTypePetrol")</option>
-                                    <option value="Diesel">@Localization.GetString("CarFuelTypeDiesel")</option>
-                                    <option value="Electric">@Localization.GetString("CarFuelTypeElectric")</option>
-                                    <option value="Hybrid">@Localization.GetString("CarFuelTypeHybrid")</option>
-                                    <option value="Other">@Localization.GetString("GeneralOther")</option>
-                                </select>
-                            </div>
                         </div>
 
                         <div class="mb-3">
@@ -194,6 +247,7 @@ else
     [Parameter] public string CarId { get; set; } = string.Empty;
 
     private Car? _car;
+    private string _featuresText = "";
     
     private bool _isLoading = true;
     private bool _isSaving = false;
@@ -210,6 +264,12 @@ else
             if (!string.IsNullOrEmpty(CarId))
             {
                 _car = await CarService.GetCarByIdAsync(CarId);
+                
+                // Initialize features text from existing data
+                if (_car?.Features?.Any() == true)
+                {
+                    _featuresText = string.Join(", ", _car.Features);
+                }
             }
         }
         catch (Exception ex)
@@ -266,9 +326,6 @@ else
             Console.WriteLine(e);
             throw;
         }
-        
-        
-        
     }
 
     private bool ValidateForm()
@@ -294,8 +351,6 @@ else
     {
         if (_car == null) return;
 
-        Console.WriteLine(_car.FuelType);
-
         if (!ValidateForm())
         {
             _errorMessage = $"{Localization.GetString("FormValidationErrorMessage")}";
@@ -308,6 +363,20 @@ else
 
         try
         {
+            // Parse features from comma-separated text
+            if (!string.IsNullOrWhiteSpace(_featuresText))
+            {
+                _car.Features = _featuresText
+                    .Split(',')
+                    .Select(f => f.Trim())
+                    .Where(f => !string.IsNullOrEmpty(f))
+                    .ToList();
+            }
+            else
+            {
+                _car.Features = null;
+            }
+
             await CarService.UpdateCarAsync(CarId, _car);
 
             _successMessage = $"{Localization.GetString("FormCarUpdateMessage")}";
@@ -327,4 +396,42 @@ else
         NavigationManager.NavigateTo("/admin");
     }
 
+    // Helper methods for display names
+    private string GetConditionDisplayName(VehicleCondition condition)
+    {
+        return condition switch
+        {
+            VehicleCondition.New => "New",
+            VehicleCondition.Used => "Used",
+            VehicleCondition.CertifiedPreOwned => "Certified Pre-Owned",
+            _ => condition.ToString()
+        };
+    }
+
+    private string GetFuelTypeDisplayName(FuelType fuelType)
+    {
+        return fuelType switch
+        {
+            FuelType.Petrol => "Petrol",
+            FuelType.Diesel => "Diesel",
+            FuelType.Electric => "Electric",
+            FuelType.Hybrid => "Hybrid",
+            FuelType.PlugInHybrid => "Plug-in Hybrid",
+            FuelType.LPG => "LPG",
+            FuelType.CNG => "CNG",
+            _ => fuelType.ToString()
+        };
+    }
+
+    private string GetTransmissionDisplayName(TransmissionType transmission)
+    {
+        return transmission switch
+        {
+            TransmissionType.Manual => "Manual",
+            TransmissionType.Automatic => "Automatic",
+            TransmissionType.CVT => "CVT",
+            TransmissionType.SemiAutomatic => "Semi-Automatic",
+            _ => transmission.ToString()
+        };
+    }
 }

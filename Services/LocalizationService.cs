@@ -1,3 +1,4 @@
+using CarHostingWeb.Models;
 using Microsoft.Extensions.Localization;
 
 namespace CarHostingWeb.Services;
@@ -14,16 +15,19 @@ public class LocalizationService
     public string? GetString(string key) => _localizer[key];
     
 
-    public string? GetLocalizedFuelType(string? fuelType)
+    public string? GetLocalizedFuelType(FuelType? fuelType)
     {
         return fuelType switch
         {
-            "Petrol" => GetString("CarFuelTypePetrol"),
-            "Diesel" => GetString("CarFuelTypeDiesel"),
-            "Electric" => GetString("CarFuelTypeElectric"),
-            "Hybrid" => GetString("CarFuelTypeHybrid"),
-            "Other" => GetString("GeneralOther"),
-            _ => fuelType // Fallback to original value
+            FuelType.Petrol => GetString("CarFuelTypePetrol"),
+            FuelType.Diesel => GetString("CarFuelTypeDiesel"),
+            FuelType.Electric => GetString("CarFuelTypeElectric"),
+            FuelType.Hybrid => GetString("CarFuelTypeHybrid"),
+            FuelType.PlugInHybrid => GetString("CarFuelTypePlugInHybrid"), // Add this if needed
+            FuelType.LPG => GetString("CarFuelTypeLPG"), // Add this if needed
+            FuelType.CNG => GetString("CarFuelTypeCNG"), // Add this if needed
+            null => null,
+            _ => fuelType.ToString() // Fallback to enum name
         };
     }
 

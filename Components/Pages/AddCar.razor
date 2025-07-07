@@ -16,39 +16,11 @@
     
     <div class="container mt-5">
         
-        @* <div> *@
-        @*     <!-- Image upload section --> *@
-        @*     <div class="mb-3"> *@
-        @*         <label for="carImage" class="form-label">Car Image</label> *@
-        @*         <InputFile OnChange="OnFileChange" class="form-control" accept="image/*" id="carImage"/> *@
-        @*     </div> *@
-        @* *@
-        @*     @if (_isUploading) *@
-        @*     { *@
-        @*         <div class="d-flex align-items-center mb-3"> *@
-        @*             <div class="spinner-border text-primary me-2" role="status"> *@
-        @*                 <span class="visually-hidden">Loading...</span> *@
-        @*             </div> *@
-        @*             <span>Uploading image...</span> *@
-        @*         </div> *@
-        @*     } *@
-        @* *@
-        @*     @if (!string.IsNullOrEmpty(_car.ImagePath)) *@
-        @*     { *@
-        @*         <div class="mb-3"> *@
-        @*             <img src="@_car.ImagePath" class="img-thumbnail" style="max-height: 200px;" alt="Main Car Image"/> *@
-        @*         </div> *@
-        @*     } *@
-        @* </div> *@
-        
- 
-        
-
         <div class="row">
             <CarImageGallery Car="_car" IsEditable="@true" />
             
             <div class="col-md-4">
-                <!-- Car details fields -->
+                <!-- Basic Car Details -->
                 <div class="mb-2">
                     <label for="make" class="form-label">Make</label>
                     <InputText id="make" @bind-Value="_car.Make" class="form-control"/>
@@ -73,6 +45,85 @@
                     <ValidationMessage For="@(() => _car.Price)"/>
                 </div>
 
+                <div class="mb-2">
+                    <label for="kilometres" class="form-label">Kilometres</label>
+                    <InputNumber id="kilometres" @bind-Value="_car.Kilometres" class="form-control"/>
+                    <ValidationMessage For="@(() => _car.Kilometres)"/>
+                </div>
+
+                <!-- Condition -->
+                <div class="mb-2">
+                    <label for="condition" class="form-label">Condition</label>
+                    <InputSelect id="condition" @bind-Value="_car.Condition" class="form-control">
+                        <option value="">Select Condition</option>
+                        @foreach (var condition in Enum.GetValues<VehicleCondition>())
+                        {
+                            <option value="@condition">@GetConditionDisplayName(condition)</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => _car.Condition)"/>
+                </div>
+
+                <!-- Fuel Type -->
+                <div class="mb-2">
+                    <label for="fuelType" class="form-label">Fuel Type</label>
+                    <InputSelect id="fuelType" @bind-Value="_car.FuelType" class="form-control">
+                        <option value="">Select Fuel Type</option>
+                        @foreach (var fuelType in Enum.GetValues<FuelType>())
+                        {
+                            <option value="@fuelType">@GetFuelTypeDisplayName(fuelType)</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => _car.FuelType)"/>
+                </div>
+
+                <!-- Transmission -->
+                <div class="mb-2">
+                    <label for="transmission" class="form-label">Transmission</label>
+                    <InputSelect id="transmission" @bind-Value="_car.Transmission" class="form-control">
+                        <option value="">Select Transmission</option>
+                        @foreach (var transmission in Enum.GetValues<TransmissionType>())
+                        {
+                            <option value="@transmission">@GetTransmissionDisplayName(transmission)</option>
+                        }
+                    </InputSelect>
+                    <ValidationMessage For="@(() => _car.Transmission)"/>
+                </div>
+
+                <!-- Engine Details -->
+                <div class="mb-2">
+                    <label for="engineSize" class="form-label">Engine Size</label>
+                    <InputText id="engineSize" @bind-Value="_car.EngineSize" class="form-control" placeholder="e.g., 2.0L, 3.5L V6"/>
+                    <ValidationMessage For="@(() => _car.EngineSize)"/>
+                </div>
+
+                <div class="mb-2">
+                    <label for="engineCylinders" class="form-label">Engine Cylinders</label>
+                    <InputNumber id="engineCylinders" @bind-Value="_car.EngineCylinders" class="form-control" placeholder="e.g., 4, 6, 8"/>
+                    <ValidationMessage For="@(() => _car.EngineCylinders)"/>
+                </div>
+
+                <div class="mb-2">
+                    <label for="horsepower" class="form-label">Horsepower</label>
+                    <InputNumber id="horsepower" @bind-Value="_car.Horsepower" class="form-control"/>
+                    <ValidationMessage For="@(() => _car.Horsepower)"/>
+                </div>
+
+                <!-- Features -->
+                <div class="mb-2">
+                    <label for="features" class="form-label">Features</label>
+                    <InputTextArea id="features" @bind-Value="_featuresText" class="form-control" rows="3" 
+                                   placeholder="Enter features separated by commas (e.g., Leather Seats, Sunroof, GPS Navigation)"/>
+                    <small class="form-text text-muted">Separate multiple features with commas</small>
+                </div>
+
+                <!-- Description -->
+                <div class="mb-2">
+                    <label for="description" class="form-label">Description</label>
+                    <InputTextArea id="description" @bind-Value="_car.Description" class="form-control" rows="4"/>
+                    <ValidationMessage For="@(() => _car.Description)"/>
+                </div>
+
             </div>
 
         </div>
@@ -83,14 +134,12 @@
         <button type="submit" class="btn btn-primary" disabled="@_isUploading">Save Car</button>
     </div>
     
-
-
-    
 </EditForm>
 
 @code {
     private readonly Car _car = new Car();
     private bool _isUploading;
+    private string _featuresText = "";
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
@@ -124,7 +173,59 @@
 
     private async Task HandleValidSubmit()
     {
+        // Parse features from comma-separated text
+        if (!string.IsNullOrWhiteSpace(_featuresText))
+        {
+            _car.Features = _featuresText
+                .Split(',')
+                .Select(f => f.Trim())
+                .Where(f => !string.IsNullOrEmpty(f))
+                .ToList();
+        }
+
+        // Set creation timestamp
+        _car.CreatedAt = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
+
         await CarService.CreateCarAsync(_car);
         NavigationManager.NavigateTo("/");
+    }
+
+    // Helper methods for display names
+    private string GetConditionDisplayName(VehicleCondition condition)
+    {
+        return condition switch
+        {
+            VehicleCondition.New => "New",
+            VehicleCondition.Used => "Used",
+            VehicleCondition.CertifiedPreOwned => "Certified Pre-Owned",
+            _ => condition.ToString()
+        };
+    }
+
+    private string GetFuelTypeDisplayName(FuelType fuelType)
+    {
+        return fuelType switch
+        {
+            FuelType.Petrol => "Petrol",
+            FuelType.Diesel => "Diesel",
+            FuelType.Electric => "Electric",
+            FuelType.Hybrid => "Hybrid",
+            FuelType.PlugInHybrid => "Plug-in Hybrid",
+            FuelType.LPG => "LPG",
+            FuelType.CNG => "CNG",
+            _ => fuelType.ToString()
+        };
+    }
+
+    private string GetTransmissionDisplayName(TransmissionType transmission)
+    {
+        return transmission switch
+        {
+            TransmissionType.Manual => "Manual",
+            TransmissionType.Automatic => "Automatic",
+            TransmissionType.CVT => "CVT",
+            TransmissionType.SemiAutomatic => "Semi-Automatic",
+            _ => transmission.ToString()
+        };
     }
 }

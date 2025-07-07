@@ -9,6 +9,13 @@
     
 <DisplayCarCards Cars="FilteredCars"/>
 
+@if (AllCars is { Count: 0 })
+{
+    <div class="d-flex justify-content-center align-items-center">
+        <h3>No cars at this moment!</h3>
+    </div>
+}
+
 @code
 {
     private List<Car>? AllCars { get; set; }

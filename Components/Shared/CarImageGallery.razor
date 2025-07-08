@@ -292,19 +292,13 @@
     
     private async Task MakePrimary(string source, int index)
     {
-        Console.WriteLine($"MakePrimary called: source={source}, index={index}");
-        Console.WriteLine($"Car.Id before: {Car.Id}");
-    
         // Only mark for temp images - don't update database yet
         if (source == "temp")
         {
             _primaryImageSource = source;
             _primaryImageIndex = index;
             _hasPrimaryImageChanged = true;
-        
-            Console.WriteLine($"Primary image marked: {_primaryImageSource}[{_primaryImageIndex}]");
-            Console.WriteLine($"Car.Id after: {Car.Id}");
-        
+            
             StateHasChanged();
         }
     }

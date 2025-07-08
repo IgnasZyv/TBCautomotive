@@ -108,7 +108,4 @@
     <data name="AdminManageCars" xml:space="preserve">
         <value>Manage Cars</value>
     </data>
-    <data name="ContactUsHeader" xml:space="preserve">
-        <value>Contact Us</value>
-    </data>
 </root>

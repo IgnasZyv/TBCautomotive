@@ -8,7 +8,7 @@
 @inject CarService CarService
 @inject NavigationManager NavigationManager
 
-<SectionHeader LocalizationString="CarDetails" IconClassString="bi bi-info-square-fill me-1 text-primary" IsTop="@true"/>
+<SectionHeader LocalizationString="CarDetails" IconClassString="bi bi-info-square-fill me-1 text-primary" IsTop="@false"/>
 
 @if (_isLoading)
 {
@@ -48,25 +48,25 @@ else
                     </div>
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-4"><strong>Make:</strong></div>
-                            <div class="col-8">@_car.Make</div>
+                            <div class="col-6"><strong>Make:</strong></div>
+                            <div class="col-6">@_car.Make</div>
                         </div>
 
                         <div class="row mb-2">
-                            <div class="col-4"><strong>Model:</strong></div>
-                            <div class="col-8">@_car.Model</div>
+                            <div class="col-6"><strong>Model:</strong></div>
+                            <div class="col-6">@_car.Model</div>
                         </div>
 
                         <div class="row mb-2">
-                            <div class="col-4"><strong>Year:</strong></div>
-                            <div class="col-8">@_car.Year</div>
+                            <div class="col-6"><strong>Year:</strong></div>
+                            <div class="col-6">@_car.Year</div>
                         </div>
 
                         @if (_car.Condition.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-4"><strong>Condition:</strong></div>
-                                <div class="col-8">
+                                <div class="col-6"><strong>Condition:</strong></div>
+                                <div class="col-6">
                                     <span class="badge @GetConditionBadgeClass(_car.Condition.Value)">
                                         @GetConditionDisplayName(_car.Condition.Value)
                                     </span>
@@ -77,14 +77,14 @@ else
                         @if (_car.Kilometres.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-4"><strong>Kilometres:</strong></div>
-                                <div class="col-8">@_car.Kilometres.Value.ToString("N0") km</div>
+                                <div class="col-6"><strong>Kilometres:</strong></div>
+                                <div class="col-6">@_car.Kilometres.Value.ToString("N0") km</div>
                             </div>
                         }
 
                         <div class="row mb-2">
-                            <div class="col-4"><strong>Listed:</strong></div>
-                            <div class="col-8">@_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")</div>
+                            <div class="col-6"><strong>Listed:</strong></div>
+                            <div class="col-6">@_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")</div>
                         </div>
                     </div>
                 </div>
@@ -98,40 +98,40 @@ else
                         @if (_car.FuelType.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-4"><strong>Fuel Type:</strong></div>
-                                <div class="col-8">@GetFuelTypeDisplayName(_car.FuelType.Value)</div>
+                                <div class="col-6"><strong>Fuel Type:</strong></div>
+                                <div class="col-6">@GetFuelTypeDisplayName(_car.FuelType.Value)</div>
                             </div>
                         }
 
                         @if (_car.Transmission.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-4"><strong>Transmission:</strong></div>
-                                <div class="col-8">@GetTransmissionDisplayName(_car.Transmission.Value)</div>
+                                <div class="col-6"><strong>Transmission:</strong></div>
+                                <div class="col-6">@GetTransmissionDisplayName(_car.Transmission.Value)</div>
                             </div>
                         }
 
                         @if (!string.IsNullOrEmpty(_car.EngineSize))
                         {
                             <div class="row mb-2">
-                                <div class="col-4"><strong>Engine Size:</strong></div>
-                                <div class="col-8">@_car.EngineSize</div>
+                                <div class="col-6"><strong>Engine Size:</strong></div>
+                                <div class="col-6">@_car.EngineSize</div>
                             </div>
                         }
 
                         @if (_car.EngineCylinders.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-4"><strong>Cylinders:</strong></div>
-                                <div class="col-8">@_car.EngineCylinders.Value</div>
+                                <div class="col-6"><strong>Cylinders:</strong></div>
+                                <div class="col-6">@_car.EngineCylinders.Value</div>
                             </div>
                         }
 
                         @if (_car.Horsepower.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-4"><strong>Horsepower:</strong></div>
-                                <div class="col-8">@_car.Horsepower.Value HP</div>
+                                <div class="col-6"><strong>Horsepower:</strong></div>
+                                <div class="col-6">@_car.Horsepower.Value HP</div>
                             </div>
                         }
                     </div>
@@ -171,11 +171,11 @@ else
                 }
 
                 <!-- Action Buttons -->
-                <div class="mt-4">
-                    <button class="btn btn-primary btn-lg me-2">
+                <div class="mt-4 d-flex justify-content-center">
+                    <button class="btn btn-primary btn-lg me-2 fs-6 fs-md-5">
                         <i class="bi bi-envelope me-2"></i>Contact Seller
                     </button>
-                    <button class="btn btn-outline-secondary" @onclick="GoHome">
+                    <button class="btn btn-outline-secondary fs-6 fs-md-5" @onclick="GoHome">
                         <i class="bi bi-arrow-left me-2"></i>Back to Listings
                     </button>
                 </div>

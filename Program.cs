@@ -6,7 +6,6 @@ using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Firestore;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.Extensions.Options;
-using Microsoft.JSInterop;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
@@ -50,7 +49,7 @@ builder.Services.AddSingleton<CloudinaryDotNet.Cloudinary>(sp =>
 // Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", "Secrets/firebase-key.json");
 
 
-// Instead of using file path, use environment variable
+// Instead of using a file path, use environment variable
 var firebaseCredentialsJson = Environment.GetEnvironmentVariable("FIREBASE_CREDENTIALS");
 
 if (!string.IsNullOrEmpty(firebaseCredentialsJson))
@@ -102,7 +101,6 @@ var localizationOptions = new RequestLocalizationOptions()
     .AddSupportedUICultures(supportedCultures);
 
 app.UseRequestLocalization(localizationOptions);
-
 
 app.MapControllers();
 

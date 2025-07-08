@@ -225,6 +225,10 @@
     .hero::before {
         display: none;
     }
+    
+    .hero-image {
+        display: none;
+    }
 }
 
 /* Entrance animations for polish */

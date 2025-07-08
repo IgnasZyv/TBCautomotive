@@ -1,0 +1,60 @@
+﻿/* Mobile-first button styling */
+.btn {
+    min-height: 44px; /* Touch-friendly minimum */
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+/* Mobile: Stack buttons vertically */
+@media (max-width: 767px) {
+    .btn {
+        width: 100%;
+        justify-content: center !important;
+        font-size: 1rem;
+        padding: 0.875rem 1rem;
+    }
+
+    .btn i {
+        font-size: 1.1rem;
+    }
+}
+
+/* Tablet and up: Horizontal layout */
+@media (min-width: 768px) {
+    .btn {
+        min-width: 120px;
+        font-size: 0.875rem;
+    }
+}
+
+/* Desktop: Slightly larger */
+@media (min-width: 992px) {
+    .btn {
+        min-width: 140px;
+        font-size: 0.9rem;
+        padding: 0.75rem 1.25rem;
+    }
+}
+
+/* Loading state improvements */
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.spinner-border-sm {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* Button hover states */
+.btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.btn:active:not(:disabled) {
+    transform: translateY(0);
+}

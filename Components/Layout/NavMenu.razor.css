@@ -23,7 +23,7 @@
     position: relative; /* Default for mobile */
     width: 100%;
     z-index: 1000;
-    background-color: white;
+    background-color: transparent;
 }
 
 .top-row {
@@ -139,12 +139,12 @@
 }
 
 @media (min-width: 768px) {
-    .top-navbar {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-    }
+    /*.top-navbar {*/
+    /*    position: fixed;*/
+    /*    top: 0;*/
+    /*    left: 0;*/
+    /*    right: 0;*/
+    /*}*/
 }
 
 @media (min-width: 641px) {
@@ -159,7 +159,10 @@
     }
 
     .top-navbar {
-        position: relative; /* or absolute */
+        position: fixed; /* or absolute */
+        /*top: 0;*/
+        /*left: 0;*/
+        /*right: 0;*/
         width: 100%;
         z-index: 1000;
     }

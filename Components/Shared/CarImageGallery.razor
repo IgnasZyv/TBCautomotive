@@ -8,6 +8,7 @@
 @inject ImageUploadService ImageUploadService
 @inject CarService CarService
 @inject IJSRuntime JsRuntime
+@implements IDisposable
 
 <div class="car-image-gallery col-md-6">
     <div class="card mb-3 shadow-sm">
@@ -277,57 +278,100 @@
     private string? _primaryImageSource; // "temp" or "sub" 
     private int _primaryImageIndex = -1;
 
+    // Disposal tracking
+    private bool _disposed = false;
+    private CancellationTokenSource _cancellationTokenSource = new();
+
     // Helper property to check if we have a designated primary
     private bool HasDesignatedPrimary => _primaryImageSource != null && _primaryImageIndex >= 0;
     
+    public void Dispose()
+    {
+        _disposed = true;
+        _cancellationTokenSource?.Cancel();
+        _cancellationTokenSource?.Dispose();
+    }
+
+    private void SafeStateHasChanged()
+    {
+        if (!_disposed)
+        {
+            try
+            {
+                InvokeAsync(StateHasChanged);
+            }
+            catch (ObjectDisposedException)
+            {
+                // Component was disposed, ignore
+            }
+        }
+    }
+    
     private void ClearPrimarySelection()
     {
+        if (_disposed) return;
+        
         _primaryImageSource = null;
         _primaryImageIndex = -1;
-        StateHasChanged();
+        SafeStateHasChanged();
     }
     
     private void MakePrimary(string source, int index)
     {
+        if (_disposed) return;
+        
         // Only mark for temp images - don't update database yet
         if (source == "temp")
         {
             _primaryImageSource = source;
             _primaryImageIndex = index;
             
-            StateHasChanged();
+            SafeStateHasChanged();
         }
     }
 
     private async Task MakeImagePrimary(int index)
     {
-        if (!(Car.SubImages != null && index >= 0 && index < Car.SubImages.Count)) return;
+        if (_disposed || !(Car.SubImages != null && index >= 0 && index < Car.SubImages.Count)) return;
         
-        var newPrimaryImage = Car.SubImages[index];
-
-        if (!string.IsNullOrEmpty(Car.ImagePath) && !Car.SubImages.Contains(Car.ImagePath))
+        try
         {
-            Car.SubImages.Insert(index, Car.ImagePath);
+            var newPrimaryImage = Car.SubImages[index];
+
+            if (!string.IsNullOrEmpty(Car.ImagePath) && !Car.SubImages.Contains(Car.ImagePath))
+            {
+                Car.SubImages.Insert(index, Car.ImagePath);
+            }
+
+            Car.ImagePath = newPrimaryImage;
+            Car.SubImages.Remove(newPrimaryImage);
+
+            if (Car.Id != null && !_disposed)
+            {
+                await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
+            }
+            
+            SafeStateHasChanged();
         }
-
-        Car.ImagePath = newPrimaryImage;
-
-        Car.SubImages.Remove(newPrimaryImage);
-
-        if (Car.Id != null)
+        catch (Exception ex)
         {
-            await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
+            if (!_disposed)
+            {
+                Console.WriteLine($@"Error making image primary: {ex.Message}");
+            }
         }
-        
-        StateHasChanged();
     }
     
     private async Task OnFilesSelected(InputFileChangeEventArgs e)
     {
+        if (_disposed) return;
+        
         var files = e.GetMultipleFiles();
     
         foreach (var file in files)
         {
+            if (_disposed) break;
+            
             if (file.ContentType.StartsWith("image/"))
             {
                 try
@@ -335,8 +379,10 @@
                     // Read file content and convert to data URL
                     await using var stream = file.OpenReadStream(MaxFileSize);
                     using var memoryStream = new MemoryStream();
-                    await stream.CopyToAsync(memoryStream);
+                    await stream.CopyToAsync(memoryStream, _cancellationTokenSource.Token);
                 
+                    if (_disposed) return;
+                    
                     var fileBytes = memoryStream.ToArray();
                     var base64String = Convert.ToBase64String(fileBytes);
                     var dataUrl = $"data:{file.ContentType};base64,{base64String}";
@@ -347,30 +393,38 @@
                     
                     _containsUnuploaded = true;
                 }
+                catch (OperationCanceledException)
+                {
+                    // Component was disposed during operation
+                    return;
+                }
                 catch (Exception ex)
                 {
-                    // Handle error (file too large, etc.)
-                    Console.WriteLine($@"Error processing file {file.Name}: {ex.Message}");
-                    // You might want to show a toast notification or error message to user
+                    if (!_disposed)
+                    {
+                        Console.WriteLine($@"Error processing file {file.Name}: {ex.Message}");
+                    }
                 }
             }
         }
     
         // Refresh the UI to show new images
-        StateHasChanged();
+        SafeStateHasChanged();
     }
 
     private async Task UploadTemporaryImages()
     {
-        if (!TemporaryFiles.Any()) return;
+        if (_disposed || !TemporaryFiles.Any()) return;
 
         _isUploading = true;
-        StateHasChanged();
+        SafeStateHasChanged();
 
         try
         {
             var filesToUpload = TemporaryFiles.Select(t => t.File);
             var uploadedUrls = await ImageUploadService.UploadImagesAsync(filesToUpload);
+
+            if (_disposed) return;
 
             if (uploadedUrls.Any())
             {
@@ -400,7 +454,7 @@
                     Car.SubImages.AddRange(uploadedUrls);
                 }
 
-                if (Car.Id != null) 
+                if (Car.Id != null && !_disposed) 
                     await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
 
                 // Clear temp data
@@ -410,109 +464,154 @@
                 _primaryImageIndex = -1;
             }
 
-            StateHasChanged();
+            SafeStateHasChanged();
         }
         catch (Exception e)
         {
-            Console.WriteLine($@"Error uploading images: {e.Message}");
+            if (!_disposed)
+            {
+                Console.WriteLine($@"Error uploading images: {e.Message}");
+            }
         }
         finally
         {
-            _isUploading = false;
-            StateHasChanged();
+            if (!_disposed)
+            {
+                _isUploading = false;
+                SafeStateHasChanged();
+            }
         }
     }
     
     private void RemoveTemporaryImage(int index)
     {
-        if (index >= 0 && index < TemporaryFiles.Count)
+        if (_disposed || index < 0 || index >= TemporaryFiles.Count) return;
+        
+        // If removing the primary temp image, clear primary designation
+        if (_primaryImageSource == "temp" && _primaryImageIndex == index)
         {
-            // If removing the primary temp image, clear primary designation
-            if (_primaryImageSource == "temp" && _primaryImageIndex == index)
-            {
-                _primaryImageSource = null;
-                _primaryImageIndex = -1;
-            }
-            // If removing an image before the primary, adjust the primary index
-            else if (_primaryImageSource == "temp" && _primaryImageIndex > index)
-            {
-                _primaryImageIndex--;
-            }
-        
-            TemporaryFiles.RemoveAt(index);
-        
-            if (TemporaryFiles.Count == 0)
-            {
-                _containsUnuploaded = false;
-            }
-        
-            StateHasChanged();
+            _primaryImageSource = null;
+            _primaryImageIndex = -1;
         }
+        // If removing an image before the primary, adjust the primary index
+        else if (_primaryImageSource == "temp" && _primaryImageIndex > index)
+        {
+            _primaryImageIndex--;
+        }
+    
+        TemporaryFiles.RemoveAt(index);
+    
+        if (TemporaryFiles.Count == 0)
+        {
+            _containsUnuploaded = false;
+        }
+    
+        SafeStateHasChanged();
     }
     
     private async Task RemoveUploadedImage(int index)
     {
+        if (_disposed) return;
+        
         _imageToDeleteIndex = index;
-        await JsRuntime.InvokeVoidAsync("eval", "new bootstrap.Modal(document.getElementById('deleteConfirmModal')).show()");
+        
+        try
+        {
+            await JsRuntime.InvokeVoidAsync("eval", "new bootstrap.Modal(document.getElementById('deleteConfirmModal')).show()");
+        }
+        catch (Exception ex)
+        {
+            if (!_disposed)
+            {
+                Console.WriteLine($@"Error showing modal: {ex.Message}");
+            }
+        }
     }
 
     private async Task ConfirmDelete()
     {
-        if (_imageToDeleteIndex >= 0 && Car.SubImages != null && _imageToDeleteIndex < Car.SubImages.Count)
+        if (_disposed || _imageToDeleteIndex < 0 || Car.SubImages == null || _imageToDeleteIndex >= Car.SubImages.Count)
+        {
+            _imageToDeleteIndex = -1;
+            return;
+        }
+
+        try
         {
             var imageUrl = Car.SubImages[_imageToDeleteIndex];
         
             // Delete from Cloudinary
             var deleted = await ImageUploadService.DeleteImageAsync(imageUrl);
         
+            if (_disposed) return;
+            
             if (deleted)
             {
                 Car.SubImages.RemoveAt(_imageToDeleteIndex);
             
-                if (Car.Id != null)
+                if (Car.Id != null && !_disposed)
                 {
                     await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
                 }
             
-                StateHasChanged();
+                SafeStateHasChanged();
             }
             else
             {
                 Console.WriteLine(@"Failed to delete image from Cloudinary");
             }
         }
-    
-        _imageToDeleteIndex = -1; // Reset
+        catch (Exception ex)
+        {
+            if (!_disposed)
+            {
+                Console.WriteLine($@"Error deleting image: {ex.Message}");
+            }
+        }
+        finally
+        {
+            _imageToDeleteIndex = -1; // Reset
+        }
     }
 
     private async Task ShowImageModal(string imageUrl)
     {
+        if (_disposed) return;
+        
         _selectedImage = imageUrl;
 
-        // Show the modal using Bootstrap's JavaScript API
-        await JsRuntime.InvokeVoidAsync("eval",
-            "new bootstrap.Modal(document.getElementById('imageModal')).show()");
+        try
+        {
+            // Show the modal using Bootstrap's JavaScript API
+            await JsRuntime.InvokeVoidAsync("eval",
+                "new bootstrap.Modal(document.getElementById('imageModal')).show()");
+        }
+        catch (Exception ex)
+        {
+            if (!_disposed)
+            {
+                Console.WriteLine($@"Error showing image modal: {ex.Message}");
+            }
+        }
     }
     
     private void NextImage()
     {
-        if (Car.SubImages?.Any() == true && _currentImageIndex < Car.SubImages.Count - 1)
-        {
-            _currentImageIndex++;
-            _selectedImage = Car.SubImages[_currentImageIndex];
-            
-            Console.WriteLine(_selectedImage);
-        }
+        if (_disposed || Car.SubImages?.Any() != true || _currentImageIndex >= Car.SubImages.Count - 1) return;
+        
+        _currentImageIndex++;
+        _selectedImage = Car.SubImages[_currentImageIndex];
+        
+        Console.WriteLine(_selectedImage);
     }
 
     private void PreviousImage()
     {
-        if (Car.SubImages?.Any() == true && _currentImageIndex > 0)
-        {
-            _currentImageIndex--;
-            _selectedImage = Car.SubImages[_currentImageIndex];
-            
-            Console.WriteLine(_selectedImage);
-        }
+        if (_disposed || Car.SubImages?.Any() != true || _currentImageIndex <= 0) return;
+        
+        _currentImageIndex--;
+        _selectedImage = Car.SubImages[_currentImageIndex];
+        
+        Console.WriteLine(_selectedImage);
     }
 }

@@ -16,7 +16,7 @@ namespace CarHostingWeb.Services
                 {
                     var maxSize = 10 * 1024 * 1024;
 
-                    await using var stream = file.OpenReadStream();
+                    await using var stream = file.OpenReadStream(maxSize);
                     using var memoryStream = new MemoryStream();
                     await stream.CopyToAsync(memoryStream);
                     memoryStream.Position = 0;

@@ -91,8 +91,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        // // Cars = await CarService.GetAllCarsAsync();
-        // Cars = [];
+        Cars = await CarService.GetAllCarsAsync();
         _currentPath = Navigation.ToBaseRelativePath(Navigation.Uri);
     }
 }

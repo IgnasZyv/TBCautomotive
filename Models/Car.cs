@@ -25,9 +25,7 @@ public enum FuelType
     Diesel,
     Electric,
     Hybrid,
-    PlugInHybrid,
-    LPG,
-    CNG
+    PlugInHybrid
 }
 
 [FirestoreData]

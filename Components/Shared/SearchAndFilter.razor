@@ -1,11 +1,14 @@
-﻿@rendermode InteractiveServer
+﻿@using CarHostingWeb.Services
+@rendermode InteractiveServer
+
+@inject LocalizationService Localization
 
 <div class="input-group custom-input-group shadow-sm rounded" style="width: 15rem;">
     <span class="input-group-text bg-white border-end-0">
         <img src="assets/Icons/search-icon.svg" alt="search icon" class="search-icon" style="width: 1rem; height: 1rem;" />
     </span>
     <input type="text" class="form-control border-start-0 shadow-none"
-           placeholder="Search..." 
+           placeholder="@Localization.GetString("FieldSearch")" 
            @bind="SearchTerm" @oninput="OnSearchChanged" />
 </div>
 

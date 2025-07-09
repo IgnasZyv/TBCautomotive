@@ -23,12 +23,12 @@
 }
 else if (_car == null)
 {
-    <div class="container mt-4">
+        <div class="container mt-4">
         <div class="alert alert-danger">
-            <h4>Car Not Found</h4>
-            <p>The car you're looking for doesn't exist.</p>
+            <h4>@Localization.GetString("ErrorCarNotFound")</h4>
+            <p>@Localization.GetString("ErrorCarNotFoundSubText")</p>
             <button class="btn btn-primary" @onclick="GoBack">
-                Back to Admin
+                @Localization.GetString("ButtonHome")
             </button>
         </div>
     </div>
@@ -160,12 +160,12 @@ else
 
                         <!-- Vehicle Condition -->
                         <div class="mb-3">
-                            <label class="form-label">Condition</label>
+                            <label class="form-label">@Localization.GetString("CarCondition")</label>
                             <select class="form-select" @bind="_car.Condition">
-                                <option value="">Select Condition</option>
+                                <option value="">@Localization.GetString("FormSelectConditionDefault")</option>
                                 @foreach (var condition in Enum.GetValues<VehicleCondition>())
                                 {
-                                    <option value="@condition">@GetConditionDisplayName(condition)</option>
+                                    <option value="@condition">@Localization.GetLocalizedCondition(condition)</option>
                                 }
                             </select>
                         </div>
@@ -177,19 +177,19 @@ else
                                 <option value="">@Localization.GetString("FormSelectFuelType")</option>
                                 @foreach (var fuelType in Enum.GetValues<FuelType>())
                                 {
-                                    <option value="@fuelType">@GetFuelTypeDisplayName(fuelType)</option>
+                                    <option value="@fuelType">@Localization.GetLocalizedFuelType(fuelType)</option>
                                 }
                             </select>
                         </div>
 
                         <!-- Transmission -->
                         <div class="mb-3">
-                            <label class="form-label">Transmission</label>
+                            <label class="form-label">@Localization.GetString("CarTransmission")</label>
                             <select class="form-select" @bind="_car.Transmission">
-                                <option value="">Select Transmission</option>
+                                <option value="">@Localization.GetString("FormSelectTransmissionDefault")</option>
                                 @foreach (var transmission in Enum.GetValues<TransmissionType>())
                                 {
-                                    <option value="@transmission">@GetTransmissionDisplayName(transmission)</option>
+                                    <option value="@transmission">@Localization.GetLocalizedTransmission(transmission)</option>
                                 }
                             </select>
                         </div>
@@ -197,41 +197,41 @@ else
                         <!-- Engine Details -->
                         <div class="row mb-3">
                             <div class="col-6">
-                                <label class="form-label">Engine Size</label>
+                                <label class="form-label">@Localization.GetString("CarEngineSize")</label>
                                 <input type="text" class="form-control" @bind="_car.EngineSize" 
                                        placeholder="e.g., 2.0L, 3.5L V6" />
                             </div>
                             <div class="col-6">
-                                <label class="form-label">Cylinders</label>
+                                <label class="form-label">@Localization.GetString("CarCylinders")</label>
                                 <input type="number" class="form-control" @bind="_car.EngineCylinders" 
                                        min="1" max="16" placeholder="e.g., 4, 6, 8" />
                             </div>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Horsepower</label>
+                            <label class="form-label">@Localization.GetString("CarHP")</label>
                             <input type="number" class="form-control" @bind="_car.Horsepower" 
                                    min="0" placeholder="Engine power in HP" />
                         </div>
 
                         <!-- Features -->
                         <div class="mb-3">
-                            <label class="form-label">Features</label>
+                            <label class="form-label">@Localization.GetString("CarFeatures")</label>
                             <textarea class="form-control" rows="3" @bind="_featuresText" 
-                                      placeholder="Enter features separated by commas (e.g., Leather Seats, Sunroof, GPS Navigation)"></textarea>
-                            <small class="form-text text-muted">Separate multiple features with commas</small>
+                                      placeholder="@Localization.GetString("FormCarFeaturesPlaceholder")"></textarea>
+                            <small class="form-text text-muted">@Localization.GetString("FormCarFeaturesSubText")</small>
                         </div>
 
                         <!-- Description -->
                         <div class="mb-3">
                             <label class="form-label">@Localization.GetString("CarDescription")</label>
                             <textarea class="form-control" rows="4" @bind="_car.Description" 
-                                      placeholder="Enter car description (optional)"></textarea>
+                                      placeholder="@Localization.GetString("FormCarDescriptionPlaceholder")"></textarea>
                         </div>
 
                         <div class="mb-3">
                             <small class="text-muted">
-                                <strong>Created:</strong> @_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")
+                                <strong>@Localization.GetString("CarCreated"):</strong> @_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")
                             </small>
                         </div>
                     </div>
@@ -414,44 +414,5 @@ else
     private void GoBack()
     {
         NavigationManager.NavigateTo("/admin");
-    }
-
-    // Helper methods for display names
-    private string GetConditionDisplayName(VehicleCondition condition)
-    {
-        return condition switch
-        {
-            VehicleCondition.New => "New",
-            VehicleCondition.Used => "Used",
-            VehicleCondition.CertifiedPreOwned => "Certified Pre-Owned",
-            _ => condition.ToString()
-        };
-    }
-
-    private string GetFuelTypeDisplayName(FuelType fuelType)
-    {
-        return fuelType switch
-        {
-            FuelType.Petrol => "Petrol",
-            FuelType.Diesel => "Diesel",
-            FuelType.Electric => "Electric",
-            FuelType.Hybrid => "Hybrid",
-            FuelType.PlugInHybrid => "Plug-in Hybrid",
-            FuelType.LPG => "LPG",
-            FuelType.CNG => "CNG",
-            _ => fuelType.ToString()
-        };
-    }
-
-    private string GetTransmissionDisplayName(TransmissionType transmission)
-    {
-        return transmission switch
-        {
-            TransmissionType.Manual => "Manual",
-            TransmissionType.Automatic => "Automatic",
-            TransmissionType.CVT => "CVT",
-            TransmissionType.SemiAutomatic => "Semi-Automatic",
-            _ => transmission.ToString()
-        };
     }
 }

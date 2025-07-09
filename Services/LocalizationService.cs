@@ -24,10 +24,33 @@ public class LocalizationService
             FuelType.Electric => GetString("CarFuelTypeElectric"),
             FuelType.Hybrid => GetString("CarFuelTypeHybrid"),
             FuelType.PlugInHybrid => GetString("CarFuelTypePlugInHybrid"), // Add this if needed
-            FuelType.LPG => GetString("CarFuelTypeLPG"), // Add this if needed
-            FuelType.CNG => GetString("CarFuelTypeCNG"), // Add this if needed
             null => null,
             _ => fuelType.ToString() // Fallback to enum name
+        };
+    }
+
+    public string? GetLocalizedCondition(VehicleCondition? condition)
+    {
+        return condition switch
+        {
+            VehicleCondition.New => GetString("CarConditionNew"),
+            VehicleCondition.Used => GetString("CarConditionUsed"),
+            VehicleCondition.CertifiedPreOwned => GetString("CarConditionPreOwned"),
+            null => null,
+            _ => condition.ToString()
+        };
+    }
+
+    public string? GetLocalizedTransmission(TransmissionType? transmission)
+    {
+        return transmission switch
+        {
+            TransmissionType.Manual => GetString("CarTransmissionManual"),
+            TransmissionType.Automatic => GetString("CarTransmissionAutomatic"),
+            TransmissionType.SemiAutomatic => GetString("CarTransmissionSemiAutomatic"),
+            TransmissionType.CVT => GetString("CarTransmissionAutomaticCVT"),
+            null => null,
+            _ => transmission.ToString()
         };
     }
 

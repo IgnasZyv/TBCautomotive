@@ -54,7 +54,7 @@
     <data name="CarFuelType" xml:space="preserve">
         <value>Fuel Type</value>
     </data>
-    <data name="FormSelectFuelType" xml:space="preserve">
+    <data name="FormSelectFuelTypeDefault" xml:space="preserve">
         <value>Select fuel type</value>
     </data>
     <data name="CarFuelTypePetrol" xml:space="preserve">
@@ -107,5 +107,158 @@
     </data>
     <data name="AdminManageCars" xml:space="preserve">
         <value>Manage Cars</value>
+    </data>
+    <data name="HeroCTAStock" xml:space="preserve">
+        <value>Cars In Stock</value>
+    </data>
+    <data name="HeroCTAContact" xml:space="preserve">
+        <value>Contact Us!</value>
+    </data>
+    <data name="FieldSearch" xml:space="preserve">
+        <value>Search...</value>
+    </data>
+    <data name="HeaderContactUs" xml:space="preserve">
+        <value>Contact Us</value>
+    </data>
+    <data name="CompanyTagLine" xml:space="preserve">
+        <value>Trust, quality and commitment with every vehicle.</value>
+    </data>
+    <data name="ContactPhoneText" xml:space="preserve">
+        <value>Call Us</value>
+    </data>
+    <data name="ContactEmailText" xml:space="preserve">
+        <value>Email Us</value>
+    </data>
+    <data name="MessageLoading" xml:space="preserve">
+        <value>Loading...</value>
+    </data>
+    <data name="ErrorCarNotFound" xml:space="preserve">
+        <value>Car Not Found</value>
+    </data>
+    <data name="ErrorCarNotFoundSubText" xml:space="preserve">
+        <value>The car you're looking for doesn't exist.</value>
+    </data>
+    <data name="ButtonHome" xml:space="preserve">
+        <value>Back to Home</value>
+    </data>
+    <data name="CarInfoText" xml:space="preserve">
+        <value>Vehicle Information</value>
+    </data>
+    <data name="CarCondition" xml:space="preserve">
+        <value>Condition</value>
+    </data>
+    <data name="FieldListed" xml:space="preserve">
+        <value>Listed</value>
+    </data>
+    <data name="CarEngineText" xml:space="preserve">
+        <value>Engine &amp; Performance</value>
+    </data>
+    <data name="CarTransmission" xml:space="preserve">
+        <value>Transmission</value>
+    </data>
+    <data name="CarEngineSize" xml:space="preserve">
+        <value>Engine Size</value>
+    </data>
+    <data name="CarCylinders" xml:space="preserve">
+        <value>Cylinders</value>
+    </data>
+    <data name="CarHP" xml:space="preserve">
+        <value>Horse Power</value>
+    </data>
+    <data name="CarFeatures" xml:space="preserve">
+        <value>Features</value>
+    </data>
+    <data name="ButtonBackToListing" xml:space="preserve">
+        <value>Back to Listings</value>
+    </data>
+    <data name="HeaderCarDetails" xml:space="preserve">
+        <value>Car Details</value>
+    </data>
+    <data name="CarConditionNew" xml:space="preserve">
+        <value>New</value>
+    </data>
+    <data name="CarConditionUsed" xml:space="preserve">
+        <value>Used</value>
+    </data>
+    <data name="CarConditionPreOwned" xml:space="preserve">
+        <value>Certified Pre Owned</value>
+    </data>
+    <data name="CarTransmissionManual" xml:space="preserve">
+        <value>Manual</value>
+    </data>
+    <data name="CarTransmissionAutomatic" xml:space="preserve">
+        <value>Automatic</value>
+    </data>
+    <data name="CarTransmissionSemiAutomatic" xml:space="preserve">
+        <value>Semi Automatic</value>
+    </data>
+    <data name="CarTransmissionAutomaticCVT" xml:space="preserve">
+        <value>Automatic CVT</value>
+    </data>
+    <data name="FormSelectConditionDefault" xml:space="preserve">
+        <value>Select Condition</value>
+    </data>
+    <data name="FormSelectTransmissionDefault" xml:space="preserve">
+        <value>Select Transmission</value>
+    </data>
+    <data name="CarCreated" xml:space="preserve">
+        <value>Created</value>
+    </data>
+    <data name="CarFuelTypePlugInHybrid" xml:space="preserve">
+        <value>Plug in Hybrid</value>
+    </data>
+    <data name="FormCarFeaturesSubText" xml:space="preserve">
+        <value>Separate multiple features with commas</value>
+    </data>
+    <data name="FormCarFeaturesPlaceholder" xml:space="preserve">
+        <value>Enter features separated by commas (e.g., Leather Seats, Sunroof, GPS Navigation)</value>
+    </data>
+    <data name="FormCarDescriptionPlaceholder" xml:space="preserve">
+        <value>Enter car description (optional)</value>
+    </data>
+    <data name="ImageLabelSelectPrimary" xml:space="preserve">
+        <value>Selected as Primary</value>
+    </data>
+    <data name="ImageInfoImageNotAvailable" xml:space="preserve">
+        <value>No Image Available</value>
+    </data>
+    <data name="ImageInfoSelectPrimaryBellow" xml:space="preserve">
+        <value>Select a primary image below</value>
+    </data>
+    <data name="ImageInfoSelectPrimarySubMessage" xml:space="preserve">
+        <value>Click the star icon on any image to make it primary</value>
+    </data>
+    <data name="ImageInfoAddImageToStart" xml:space="preserve">
+        <value>Add images to get started</value>
+    </data>
+    <data name="ImageInfoAddImageToStartSubMessage" xml:space="preserve">
+        <value>Upload images using the "Add Images" button below</value>
+    </data>
+    <data name="ImageInfoUploading" xml:space="preserve">
+        <value>Uploading...</value>
+    </data>
+    <data name="GeneralConfirm" xml:space="preserve">
+        <value>Confirm</value>
+    </data>
+    <data name="ImageDeleteConfirm" xml:space="preserve">
+        <value>Are you sure you want to delete this image?</value>
+    </data>
+    <data name="ImageDeleteConfirmSubText" xml:space="preserve">
+        <value>This action cannot be undone.</value>
+    </data>
+    <data name="ImageModalDeleteTitle" xml:space="preserve">
+        <value>Delete Image</value>
+    </data>
+    <data name="GeneralDelete" xml:space="preserve">
+        <value>Delete</value>
+    </data>
+    <data name="ImagesButtonAddImages" xml:space="preserve">
+        <value>Add Images</value>
+    </data>
+    <data name="FormCreateCar" xml:space="preserve">
+        <value>Create Car</value>
+    </data>
+    <data name="BackToSite" xml:space="preserve">
+        <value>Go Home</value>
     </data>
 </root>

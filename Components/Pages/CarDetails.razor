@@ -7,14 +7,15 @@
 
 @inject CarService CarService
 @inject NavigationManager NavigationManager
+@inject LocalizationService Localization
 
-<SectionHeader LocalizationString="CarDetails" IconClassString="bi bi-info-square-fill me-1 text-primary" IsTop="@false"/>
+<SectionHeader LocalizationString="HeaderCarDetails" IconClassString="bi bi-info-square-fill me-1 text-primary" IsTop="@true"/>
 
 @if (_isLoading)
 {
     <div class="d-flex justify-content-center mt-5">
         <div class="spinner-border" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span class="visually-hidden">@Localization.GetString("MessageLoading")</span>
         </div>
     </div>
 }
@@ -22,17 +23,17 @@ else if (_car == null)
 {
     <div class="container mt-4">
         <div class="alert alert-danger">
-            <h4>Car Not Found</h4>
-            <p>The car you're looking for doesn't exist.</p>
+            <h4>@Localization.GetString("ErrorCarNotFound")</h4>
+            <p>@Localization.GetString("ErrorCarNotFoundSubText")</p>
             <button class="btn btn-primary" @onclick="GoHome">
-                Back to Home
+                @Localization.GetString("ButtonHome")
             </button>
         </div>
     </div>
 }
 else
 {
-    <div class="container mt-4">
+    <div class="container mt-4 pb-4">
         <div class="row">
             
             <CarImageGallery Car="_car"/>
@@ -44,31 +45,31 @@ else
                 <!-- Basic Information -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-car-front me-2"></i>Vehicle Information</h5>
+                        <h5 class="mb-0"><i class="bi bi-car-front me-2"></i>@Localization.GetString("CarInfoText")</h5>
                     </div>
                     <div class="card-body">
                         <div class="row mb-2">
-                            <div class="col-6"><strong>Make:</strong></div>
+                            <div class="col-6"><strong>@Localization.GetString("CarMake"):</strong></div>
                             <div class="col-6">@_car.Make</div>
                         </div>
 
                         <div class="row mb-2">
-                            <div class="col-6"><strong>Model:</strong></div>
+                            <div class="col-6"><strong>@Localization.GetString("CarModel"):</strong></div>
                             <div class="col-6">@_car.Model</div>
                         </div>
 
                         <div class="row mb-2">
-                            <div class="col-6"><strong>Year:</strong></div>
+                            <div class="col-6"><strong>@Localization.GetString("CarYear"):</strong></div>
                             <div class="col-6">@_car.Year</div>
                         </div>
 
                         @if (_car.Condition.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>Condition:</strong></div>
+                                <div class="col-6"><strong>@Localization.GetString("CarCondition"):</strong></div>
                                 <div class="col-6">
                                     <span class="badge @GetConditionBadgeClass(_car.Condition.Value)">
-                                        @GetConditionDisplayName(_car.Condition.Value)
+                                        @Localization.GetLocalizedCondition(_car.Condition.Value)
                                     </span>
                                 </div>
                             </div>
@@ -77,13 +78,13 @@ else
                         @if (_car.Kilometres.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>Kilometres:</strong></div>
+                                <div class="col-6"><strong>@Localization.GetString("CarKm"):</strong></div>
                                 <div class="col-6">@_car.Kilometres.Value.ToString("N0") km</div>
                             </div>
                         }
 
                         <div class="row mb-2">
-                            <div class="col-6"><strong>Listed:</strong></div>
+                            <div class="col-6"><strong>@Localization.GetString("FieldListed"):</strong></div>
                             <div class="col-6">@_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")</div>
                         </div>
                     </div>
@@ -92,29 +93,29 @@ else
                 <!-- Engine & Performance -->
                 <div class="card mb-4">
                     <div class="card-header">
-                        <h5 class="mb-0"><i class="bi bi-gear me-2"></i>Engine & Performance</h5>
+                        <h5 class="mb-0"><i class="bi bi-gear me-2"></i>@Localization.GetString("CarEngineText")</h5>
                     </div>
                     <div class="card-body">
                         @if (_car.FuelType.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>Fuel Type:</strong></div>
-                                <div class="col-6">@GetFuelTypeDisplayName(_car.FuelType.Value)</div>
+                                <div class="col-6"><strong>@Localization.GetString("CarFuelType"):</strong></div>
+                                <div class="col-6">@Localization.GetLocalizedFuelType(_car.FuelType.Value)</div>
                             </div>
                         }
 
                         @if (_car.Transmission.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>Transmission:</strong></div>
-                                <div class="col-6">@GetTransmissionDisplayName(_car.Transmission.Value)</div>
+                                <div class="col-6"><strong>@Localization.GetString("CarTransmition"):</strong></div>
+                                <div class="col-6">@Localization.GetLocalizedTransmission(_car.Transmission.Value)</div>
                             </div>
                         }
 
                         @if (!string.IsNullOrEmpty(_car.EngineSize))
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>Engine Size:</strong></div>
+                                <div class="col-6"><strong>@Localization.GetString("CarEngineSize"):</strong></div>
                                 <div class="col-6">@_car.EngineSize</div>
                             </div>
                         }
@@ -122,7 +123,7 @@ else
                         @if (_car.EngineCylinders.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>Cylinders:</strong></div>
+                                <div class="col-6"><strong>@Localization.GetString("CarCylinders"):</strong></div>
                                 <div class="col-6">@_car.EngineCylinders.Value</div>
                             </div>
                         }
@@ -130,7 +131,7 @@ else
                         @if (_car.Horsepower.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>Horsepower:</strong></div>
+                                <div class="col-6"><strong>@Localization.GetString("CarHP"):</strong></div>
                                 <div class="col-6">@_car.Horsepower.Value HP</div>
                             </div>
                         }
@@ -142,7 +143,7 @@ else
                 {
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="bi bi-star me-2"></i>Features</h5>
+                            <h5 class="mb-0"><i class="bi bi-star me-2"></i>@Localization.GetString("CarFeatures")</h5>
                         </div>
                         <div class="card-body">
                             <div class="row">
@@ -162,7 +163,7 @@ else
                 {
                     <div class="card mb-4">
                         <div class="card-header">
-                            <h5 class="mb-0"><i class="bi bi-file-text me-2"></i>Description</h5>
+                            <h5 class="mb-0"><i class="bi bi-file-text me-2"></i>@Localization.GetString("CarDescription")</h5>
                         </div>
                         <div class="card-body">
                             <p class="mb-0">@_car.Description</p>
@@ -172,11 +173,8 @@ else
 
                 <!-- Action Buttons -->
                 <div class="mt-4 d-flex justify-content-center">
-                    <button class="btn btn-primary btn-lg me-2 fs-6 fs-md-5">
-                        <i class="bi bi-envelope me-2"></i>Contact Seller
-                    </button>
                     <button class="btn btn-outline-secondary fs-6 fs-md-5" @onclick="GoHome">
-                        <i class="bi bi-arrow-left me-2"></i>Back to Listings
+                        <i class="bi bi-arrow-left me-2"></i>@Localization.GetString("ButtonBackToListing")
                     </button>
                 </div>
             </div>
@@ -214,18 +212,7 @@ else
     {
         NavigationManager.NavigateTo("/");
     }
-
-    // Helper methods for display names
-    private string GetConditionDisplayName(VehicleCondition condition)
-    {
-        return condition switch
-        {
-            VehicleCondition.New => "New",
-            VehicleCondition.Used => "Used",
-            VehicleCondition.CertifiedPreOwned => "Certified Pre-Owned",
-            _ => condition.ToString()
-        };
-    }
+    
 
     private string GetConditionBadgeClass(VehicleCondition condition)
     {
@@ -237,31 +224,5 @@ else
             _ => "bg-secondary"
         };
     }
-
-    private string GetFuelTypeDisplayName(FuelType fuelType)
-    {
-        return fuelType switch
-        {
-            FuelType.Petrol => "Petrol",
-            FuelType.Diesel => "Diesel",
-            FuelType.Electric => "Electric",
-            FuelType.Hybrid => "Hybrid",
-            FuelType.PlugInHybrid => "Plug-in Hybrid",
-            FuelType.LPG => "LPG",
-            FuelType.CNG => "CNG",
-            _ => fuelType.ToString()
-        };
-    }
-
-    private string GetTransmissionDisplayName(TransmissionType transmission)
-    {
-        return transmission switch
-        {
-            TransmissionType.Manual => "Manual",
-            TransmissionType.Automatic => "Automatic",
-            TransmissionType.CVT => "CVT",
-            TransmissionType.SemiAutomatic => "Semi-Automatic",
-            _ => transmission.ToString()
-        };
-    }
+    
 }

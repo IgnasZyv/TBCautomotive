@@ -20,15 +20,15 @@
                 Servicio Integral de <span class="highlight">Automoción</span>
             </h1>
             <p class="hero-subtitle fade-in-up">
-                Confianza, calidad y compromiso en cada vehículo.
+               @Localization.GetString("CompanyTagLine")
             </p>
                 
             <div class="d-flex flex-row justify-content-center align-content-center text-center cta-buttons fade-in-up">
                 <a href="#listing-section" class="btn btn-primary m-2">
-                    Cars In Stock
+                    @Localization.GetString("HeroCTAStock")
                 </a>
                 <a href="#contact-section" class="btn btn-secondary m-2">
-                    Contact Us!
+                    @Localization.GetString("HeroCTAContact")
                 </a>
             </div>
         </div>
@@ -40,7 +40,7 @@
     </div>
 </section>
 
-<section class="mt-3 listing-section px-3 pb-3 pt-3" id="listing-section">
+<section class="mt-3 listing-section px-3 pb-3 pt-3 mx-sm-4 px-lg-4" id="listing-section">
     <SectionHeader LocalizationString="ListingHeader" IconClassString="bi bi-car-front-fill me-1 text-primary" IsTop="@false"/>
     
     <DisplayCars />
@@ -55,13 +55,10 @@
             @*     <h2 class="mb-0 fs-4 fs-md-2 fw-bold">@Localization.GetString("ContactUsHeader")</h2> *@
             @* </div> *@
             
-            <SectionHeader LocalizationString="ContactUsHeader" IconClassString="bi bi-envelope me-1 text-primary" IsTop="@false"/>
+            <SectionHeader LocalizationString="HeaderContactUs" IconClassString="bi bi-envelope me-1 text-primary" IsTop="@false"/>
         
         </div>
         
-        
-        
-
         <!-- Main Content -->
         <div class="row justify-content-center align-items-center g-4 g-md-5">
             <!-- Logo and Info Section -->
@@ -83,7 +80,7 @@
 
                     <!-- Tagline -->
                     <p class="text-muted mb-4 fs-6 fs-md-5 lh-base">
-                        Trust, quality and commitment with every vehicle.
+                        @Localization.GetString("CompanyTagLine")
                     </p>
                 </div>
             </div>
@@ -99,7 +96,7 @@
                                     <i class="bi bi-telephone-fill text-primary fs-4 fs-md-3"></i>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="fw-bold mb-1 fs-6 fs-md-5">Call Us</h6>
+                                    <h6 class="fw-bold mb-1 fs-6 fs-md-5">@Localization.GetString("ContactPhoneText")</h6>
                                     <a href="tel:+1234567890" 
                                        class="text-decoration-none text-dark fs-6 fs-md-5 fw-medium">
                                         +1 (234) 567-890
@@ -120,7 +117,7 @@
                                     <i class="bi bi-envelope-fill text-success fs-4 fs-md-3"></i>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="fw-bold mb-1 fs-6 fs-md-5">Email Us</h6>
+                                    <h6 class="fw-bold mb-1 fs-6 fs-md-5">@Localization.GetString("ContactEmailText")</h6>
                                     <a href="mailto:info@cardealer.com" 
                                        class="text-decoration-none text-dark fs-6 fs-md-5 fw-medium text-break">
                                         info@cardealer.com
@@ -149,40 +146,3 @@
         @* </div> *@
     </div>
 </section>
-
-
-@* @code *@
-@* { *@
-@*     private List<Car>? AllCars { get; set; } *@
-@*     private List<Car>? FilteredCars { get; set; } *@
-@*     private string SearchTerm { get; set; } = string.Empty; *@
-@* *@
-@*     protected override async Task OnInitializedAsync() *@
-@*     { *@
-@*         AllCars = await CarService.GetAllCarsAsync(); *@
-@*         FilteredCars = AllCars; *@
-@*     } *@
-@* *@
-@*     private void HandleFilterChanged(string searchTerm) *@
-@*     { *@
-@*         SearchTerm = searchTerm; *@
-@*         ApplyFilters(); *@
-@*     } *@
-@* *@
-@*     private void ApplyFilters() *@
-@*     { *@
-@*         if (AllCars == null) return; *@
-@* *@
-@*         FilteredCars = AllCars.Where(car => *@
-@*             car is { Make: not null, Model: not null } && *@
-@*             ( *@
-@*                 string.IsNullOrEmpty(SearchTerm) ||  *@
-@*                 car.Make.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) || *@
-@*                 car.Model.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) *@
-@*             ) *@
-@*         ).ToList(); *@
-@*          *@
-@*         StateHasChanged(); *@
-@*     } *@
-
-

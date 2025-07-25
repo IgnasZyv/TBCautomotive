@@ -429,6 +429,10 @@
 
             try
             {
+                _isUploading = true;
+                
+                StateHasChanged();
+                
                 await using var stream = file.OpenReadStream(MaxFileSize);
                 using var memoryStream = new MemoryStream();
                 await stream.CopyToAsync(memoryStream, _cancellationTokenSource.Token);
@@ -444,9 +448,11 @@
             catch (Exception ex)
             {
                 UploadResults.Add(new ImageUploadInfoResult { FileName = file.Name, ErrorMessage = $"Processing error: {ex.Message}" });
+                _isUploading = false;
             }
         }
 
+        _isUploading = false;
         SafeStateHasChanged();
     }
 

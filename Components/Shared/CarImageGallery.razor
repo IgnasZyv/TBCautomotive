@@ -16,72 +16,72 @@
             <h5 class="mb-0">Car Images</h5>
         </div>
 
-<div class="card-body p-0 position-relative">
-    @if (!string.IsNullOrEmpty(Car.ImagePath))
-    {
-        <!-- Existing primary image from database -->
-        <div class="image-container">
-            <img src="@Car.ImagePath" class="w-100 h-100 object-fit-cover" alt="Main Car Image" @onclick="() => ShowImageModal(Car.ImagePath)"/>
-        </div>
-    }
-    else if (_primaryImageSource == "temp" && _primaryImageIndex >= 0 && _primaryImageIndex < TemporaryFiles.Count)
-    {
-        <!-- Temporary image selected as primary -->
-        <div class="image-container">
-            <img src="@TemporaryFiles[_primaryImageIndex].DataUrl" 
-                 class="w-100 h-100 object-fit-cover primary-temp-image" 
-                 alt="Selected Primary Image" 
-                 @onclick="() => ShowImageModal(TemporaryFiles[_primaryImageIndex].DataUrl)"/>
-            
-            <!-- Primary indicator overlay -->
-            <div class="primary-indicator">
-                <span class="badge bg-warning text-dark">
-                    <i class="bi bi-star-fill me-1"></i>@Localization.GetString("ImageLabelSelectPrimary")
-                </span>
-            </div>
-            
-            @if (IsEditable)
+        <div class="card-body p-0 position-relative">
+            @if (!string.IsNullOrEmpty(Car.ImagePath))
             {
-                <!-- Clear primary selection button -->
-                <div class="clear-primary-btn">
-                    <button type="button" class="btn btn-outline-light btn-sm" 
-                            @onclick:stopPropagation="true"
-                            @onclick="ClearPrimarySelection"
-                            title="Clear primary selection">
-                        <i class="bi bi-x-lg"></i>
-                    </button>
+                <!-- Existing primary image from database -->
+                <div class="image-container">
+                    <img src="@Car.ImagePath" class="w-100 h-100 object-fit-cover" alt="Main Car Image" @onclick="() => ShowImageModal(Car.ImagePath)"/>
                 </div>
             }
-        </div>
-    }
-    else
-    {
-        <!-- No primary image set -->
-        @if (!IsEditable)
-        {
-            <div class="text-center p-5">
-                <i class="bi bi-image display-4 text-muted"></i>
-                <p class="text-muted mt-2">@Localization.GetString("ImageInfoImageNotAvailable")</p>
-            </div>
-        }
-        else
-        {
-            <div class="text-center p-5 image-container d-flex flex-column justify-content-center align-items-center">
-                <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="80" width="80"/>
-                @if (TemporaryFiles.Any() || (Car.SubImages?.Any() == true))
+            else if (_primaryImageSource == "temp" && _primaryImageIndex >= 0 && _primaryImageIndex < TemporaryFiles.Count)
+            {
+                <!-- Temporary image selected as primary -->
+                <div class="image-container">
+                    <img src="@TemporaryFiles[_primaryImageIndex].DataUrl" 
+                         class="w-100 h-100 object-fit-cover primary-temp-image" 
+                         alt="Selected Primary Image" 
+                         @onclick="() => ShowImageModal(TemporaryFiles[_primaryImageIndex].DataUrl)"/>
+            
+                    <!-- Primary indicator overlay -->
+                    <div class="primary-indicator">
+                        <span class="badge bg-warning text-dark">
+                            <i class="bi bi-star-fill me-1"></i>@Localization.GetString("ImageLabelSelectPrimary")
+                        </span>
+                    </div>
+            
+                    @if (IsEditable)
+                    {
+                        <!-- Clear primary selection button -->
+                        <div class="clear-primary-btn">
+                            <button type="button" class="btn btn-outline-light btn-sm" 
+                                    @onclick:stopPropagation="true"
+                                    @onclick="ClearPrimarySelection"
+                                    title="Clear primary selection">
+                                <i class="bi bi-x-lg"></i>
+                            </button>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <!-- No primary image set -->
+                @if (!IsEditable)
                 {
-                    <p class="text-muted mt-2">@Localization.GetString("ImageInfoSelectPrimaryBellow")</p>
-                    <small class="text-muted">@Localization.GetString("ImageInfoSelectPrimarySubMessage") </small>
+                    <div class="text-center p-5">
+                        <i class="bi bi-image display-4 text-muted"></i>
+                        <p class="text-muted mt-2">@Localization.GetString("ImageInfoImageNotAvailable")</p>
+                    </div>
                 }
                 else
                 {
-                    <p class="text-muted mt-2">@Localization.GetString("ImageInfoAddImageToStart")</p>
-                    <small class="text-muted">@Localization.GetString("ImageInfoAddImageToStartSubMessage")</small>
+                    <div class="text-center p-5 image-container d-flex flex-column justify-content-center align-items-center">
+                        <img src="assets/Icons/add-image-icon.svg" alt="Add Image Icon" height="80" width="80"/>
+                        @if (TemporaryFiles.Any() || (Car.SubImages?.Any() == true))
+                        {
+                            <p class="text-muted mt-2">@Localization.GetString("ImageInfoSelectPrimaryBellow")</p>
+                            <small class="text-muted">@Localization.GetString("ImageInfoSelectPrimarySubMessage") </small>
+                        }
+                        else
+                        {
+                            <p class="text-muted mt-2">@Localization.GetString("ImageInfoAddImageToStart")</p>
+                            <small class="text-muted">@Localization.GetString("ImageInfoAddImageToStartSubMessage")</small>
+                        }
+                    </div>
                 }
-            </div>
-        }
-    }
-</div>
+            }
+        </div>
         
         <div class="card-footer">
             @if (Car.SubImages?.Any() == true)
@@ -192,8 +192,33 @@
                     </div>
                 </div>
             }
+            
+            
         }
     </div>
+
+    @if (UploadResults?.Any() == true)
+    {
+        <div class="alert alert-warning">
+            <ul>
+                @foreach (var result in UploadResults)
+                {
+                    Console.Write(result);
+                    <li>
+                        @result.FileName - 
+                        @if (!string.IsNullOrWhiteSpace(result.ErrorMessage))
+                        {
+                            <span class="text-danger">@Localization.GetString("InfoFailed"): @result.ErrorMessage</span>
+                        }
+                        else
+                        {
+                            <span class="text-success">@Localization.GetString("InfoUploaded") ✔️</span>
+                        }
+                    </li>
+                }
+            </ul>
+        </div>
+    }
 </div>
 
 <!-- Bootstrap Modal for Full Image -->
@@ -264,12 +289,14 @@
     [Parameter] public bool IsEditable { get; set; }
     
     private const int MaxFileSize = 10 * 1024 * 1024;
+    private readonly string[] _allowedFormats = ["image/jpeg", "image/png", "image/webp"];
 
     private List<TempImage> TemporaryFiles { get; set; } = new();
+    private List<ImageUploadInfoResult> UploadResults { get; set; } = new();
     
     private bool _containsUnuploaded;
     private string? _selectedImage;
-    private int _currentImageIndex = 0;
+    private int _currentImageIndex;
     private int _imageToDeleteIndex = -1;
 
     private bool _isUploading;
@@ -365,50 +392,61 @@
     private async Task OnFilesSelected(InputFileChangeEventArgs e)
     {
         if (_disposed) return;
-        
+
+        UploadResults.Clear();
+
         var files = e.GetMultipleFiles();
-    
+
         foreach (var file in files)
         {
             if (_disposed) break;
             
-            if (file.ContentType.StartsWith("image/"))
+            if (!file.ContentType.StartsWith("image/"))
             {
-                try
-                {
-                    // Read file content and convert to data URL
-                    await using var stream = file.OpenReadStream(MaxFileSize);
-                    using var memoryStream = new MemoryStream();
-                    await stream.CopyToAsync(memoryStream, _cancellationTokenSource.Token);
-                
-                    if (_disposed) return;
-                    
-                    var fileBytes = memoryStream.ToArray();
-                    var base64String = Convert.ToBase64String(fileBytes);
-                    var dataUrl = $"data:{file.ContentType};base64,{base64String}";
+                UploadResults.Add(new ImageUploadInfoResult { FileName = file.Name, ErrorMessage = Localization.GetString("ImageErrorOnlyImageFile") });
+                continue;
+            }
 
-                    // Add to SubImages list for immediate display
-                    var tempImage = new TempImage(imageDataUrl: dataUrl, imageFile: file);
-                    TemporaryFiles.Add(tempImage);
-                    
-                    _containsUnuploaded = true;
-                }
-                catch (OperationCanceledException)
+            if (!_allowedFormats.Contains(file.ContentType))
+            {
+                UploadResults.Add(new ImageUploadInfoResult
                 {
-                    // Component was disposed during operation
-                    return;
-                }
-                catch (Exception ex)
-                {
-                    if (!_disposed)
-                    {
-                        Console.WriteLine($@"Error processing file {file.Name}: {ex.Message}");
-                    }
-                }
+                    FileName = file.Name,
+                    ErrorMessage = @Localization.GetString("ImageErrorWrongFormat")
+                });
+                await InvokeAsync(StateHasChanged); // Force immediate update
+
+                continue;
+            }
+
+            if (file.Size > MaxFileSize)
+            {
+                UploadResults.Add(new ImageUploadInfoResult { FileName = file.Name, ErrorMessage = Localization.GetString("ImageErrorTooBig") });
+                await InvokeAsync(StateHasChanged); // Force immediate update
+
+                continue;
+            }
+
+            try
+            {
+                await using var stream = file.OpenReadStream(MaxFileSize);
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream, _cancellationTokenSource.Token);
+
+                if (_disposed) return;
+
+                var fileBytes = memoryStream.ToArray();
+                var base64String = Convert.ToBase64String(fileBytes);
+                var dataUrl = $"data:{file.ContentType};base64,{base64String}";
+                TemporaryFiles.Add(new TempImage(imageDataUrl: dataUrl, imageFile: file));
+                _containsUnuploaded = true;
+            }
+            catch (Exception ex)
+            {
+                UploadResults.Add(new ImageUploadInfoResult { FileName = file.Name, ErrorMessage = $"Processing error: {ex.Message}" });
             }
         }
-    
-        // Refresh the UI to show new images
+
         SafeStateHasChanged();
     }
 
@@ -417,47 +455,58 @@
         if (_disposed || !TemporaryFiles.Any()) return;
 
         _isUploading = true;
+        UploadResults.Clear();
         SafeStateHasChanged();
 
         try
         {
-            var filesToUpload = TemporaryFiles.Select(t => t.File);
-            var uploadedUrls = await ImageUploadService.UploadImagesAsync(filesToUpload);
+            var uploadedResults = new List<ImageUploadInfoResult>();
+
+            foreach (var tempImage in TemporaryFiles)
+            {
+                var result = await ImageUploadService.UploadImageDetailedAsync(tempImage.File);
+                uploadedResults.Add(result);
+            }
 
             if (_disposed) return;
 
-            if (uploadedUrls.Any())
+            var successfulUploads = uploadedResults
+                .Where(r => !string.IsNullOrWhiteSpace(r.Url))
+                .Select(r => r.Url!)
+                .ToList();
+
+            UploadResults.AddRange(uploadedResults);
+
+            if (successfulUploads.Any())
             {
                 Car.SubImages ??= [];
-                
-                // If a temp image was marked as primary, make it the car's primary image
-                if (_primaryImageSource == "temp" && _primaryImageIndex >= 0 && _primaryImageIndex < uploadedUrls.Count)
+
+                if (_primaryImageSource == "temp" && _primaryImageIndex >= 0 && _primaryImageIndex < uploadedResults.Count)
                 {
-                    var primaryUrl = uploadedUrls[_primaryImageIndex];
-                    
-                    // Move current primary image to sub images if it exists
-                    if (!string.IsNullOrEmpty(Car.ImagePath))
+                    var primaryResult = uploadedResults[_primaryImageIndex];
+                    if (!string.IsNullOrEmpty(primaryResult.Url))
                     {
-                        Car.SubImages.Add(Car.ImagePath);
+                        if (!string.IsNullOrEmpty(Car.ImagePath))
+                        {
+                            Car.SubImages.Add(Car.ImagePath);
+                        }
+
+                        Car.ImagePath = primaryResult.Url;
+
+                        var otherUrls = successfulUploads.Where((url, i) => i != _primaryImageIndex).ToList();
+                        Car.SubImages.AddRange(otherUrls);
                     }
-                    
-                    // Set new primary
-                    Car.ImagePath = primaryUrl;
-                    
-                    // Add other uploaded images to sub images (excluding the new primary)
-                    var otherUrls = uploadedUrls.Where((url, i) => i != _primaryImageIndex).ToList();
-                    Car.SubImages.AddRange(otherUrls);
                 }
                 else
                 {
-                    // No primary selected from temps, just add all to sub images
-                    Car.SubImages.AddRange(uploadedUrls);
+                    Car.SubImages.AddRange(successfulUploads);
                 }
 
-                if (Car.Id != null && !_disposed) 
-                    await CarService.UpdateCarAsync(carId: Car.Id, updatedCar: Car);
+                if (Car.Id != null && !_disposed)
+                {
+                    await CarService.UpdateCarAsync(Car.Id, Car);
+                }
 
-                // Clear temp data
                 TemporaryFiles.Clear();
                 _containsUnuploaded = false;
                 _primaryImageSource = null;
@@ -470,7 +519,7 @@
         {
             if (!_disposed)
             {
-                Console.WriteLine($@"Error uploading images: {e.Message}");
+                Console.WriteLine($"Error uploading images: {e.Message}");
             }
         }
         finally
@@ -482,6 +531,8 @@
             }
         }
     }
+
+
     
     private void RemoveTemporaryImage(int index)
     {

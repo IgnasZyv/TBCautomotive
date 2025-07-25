@@ -94,7 +94,7 @@
 }
 
 .hero-logo {
-    width: 180px;
+    width: 250px;
     margin-bottom: 0.5rem;
     position: relative;
     transition: transform 0.3s ease;
@@ -228,6 +228,10 @@
     
     .hero-image {
         display: none;
+    }
+    
+    .hero-logo {
+        margin: auto auto 1rem;
     }
 }
 

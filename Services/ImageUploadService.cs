@@ -1,6 +1,7 @@
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Components.Forms;
+using CarHostingWeb.Models;
 
 namespace CarHostingWeb.Services
 {
@@ -52,6 +53,58 @@ namespace CarHostingWeb.Services
     
             return urls;
         }
+        
+        public async Task<ImageUploadInfoResult> UploadImageDetailedAsync(IBrowserFile file)
+        {
+            const int maxSize = 10 * 1024 * 1024;
+            var result = new ImageUploadInfoResult { FileName = file.Name };
+
+            if (file.Size > maxSize)
+            {
+                result.ErrorMessage = "File exceeds 10MB size limit.";
+                return result;
+            }
+
+            try
+            {
+                await using var stream = file.OpenReadStream(maxSize);
+                using var memoryStream = new MemoryStream();
+                await stream.CopyToAsync(memoryStream);
+                memoryStream.Position = 0;
+
+                var uploadParams = new ImageUploadParams
+                {
+                    File = new FileDescription(file.Name, memoryStream),
+                    Folder = "car-listings",
+                    UseFilename = true,
+                    UniqueFilename = true,
+                    Transformation = new Transformation()
+                        .Quality("auto")
+                        .FetchFormat("auto")
+                        .Quality("auto:low")
+                        .Width(1200)
+                        .Crop("limit")
+                };
+
+                var uploadResult = await cloudinary.UploadAsync(uploadParams);
+
+                if (uploadResult.Error != null)
+                {
+                    result.ErrorMessage = uploadResult.Error.Message;
+                }
+                else
+                {
+                    result.Url = uploadResult.SecureUrl.ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                result.ErrorMessage = $"Upload failed: {ex.Message}";
+            }
+
+            return result;
+        }
+
 
         // Convenience method for single file (returns single string or null)
         public async Task<string?> UploadImageAsync(IBrowserFile? file)
@@ -143,4 +196,6 @@ namespace CarHostingWeb.Services
             
         }
     }
+
+
 }

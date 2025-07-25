@@ -261,4 +261,22 @@
     <data name="BackToSite" xml:space="preserve">
         <value>Go Home</value>
     </data>
+    <data name="HeaderEditCarDetails" xml:space="preserve">
+        <value>Edit Car Details</value>
+    </data>
+    <data name="InfoUploaded" xml:space="preserve">
+        <value>Uploaded</value>
+    </data>
+    <data name="InfoFailed" xml:space="preserve">
+        <value>Failed</value>
+    </data>
+    <data name="ImageErrorOnlyImageFile" xml:space="preserve">
+        <value>Only image files are allowed.</value>
+    </data>
+    <data name="ImageErrorWrongFormat" xml:space="preserve">
+        <value>Unsupported image format. Use JPG, PNG, or WebP.</value>
+    </data>
+    <data name="ImageErrorTooBig" xml:space="preserve">
+        <value>Image exceeds 10MB size limit.</value>
+    </data>
 </root>

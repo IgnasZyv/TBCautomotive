@@ -1,3 +1,4 @@
+using System.Globalization;
 using CarHostingWeb.Models;
 using Microsoft.Extensions.Localization;
 
@@ -6,6 +7,11 @@ namespace CarHostingWeb.Services;
 public class LocalizationService
 {
     private readonly IStringLocalizer _localizer;
+    
+    // Add this property
+    public string CurrentCulture => CultureInfo.CurrentUICulture.Name;
+    public string CurrentLanguage => CultureInfo.CurrentUICulture.TwoLetterISOLanguageName;
+    
     public LocalizationService(IStringLocalizerFactory factory)
     {
         var type = typeof(LocalizationService); // or use a shared `Resources` class

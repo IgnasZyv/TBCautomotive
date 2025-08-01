@@ -141,7 +141,7 @@ else
 
                         <div class="mb-3">
                             <label class="form-label">@Localization.GetString("CarPrice") <span class="text-danger">*</span></label>
-                            <div class="input-group">
+                            <div class="input-group mb-2">
                                 <span class="input-group-text">€</span>
                                 <input type="number" class="form-control @(_validationErrors.ContainsKey("Price") ? "is-invalid" : "")" 
                                        @bind="_car.Price" min="0" step="0.01" placeholder="0.00" />
@@ -149,6 +149,30 @@ else
                                 {
                                     <div class="invalid-feedback">@_validationErrors["Price"]</div>
                                 }
+                            </div>
+    
+                            <div class="mt-2">
+                                <label class="form-label small">Car Status</label>
+                                <div class="d-flex gap-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="carStatus" id="available" 
+                                               checked="@(!_car.IsSold && !_car.IsReserved)" 
+                                               @onchange="@(() => SetCarStatus("available"))" />
+                                        <label class="form-check-label" for="available">Available</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="carStatus" id="reserved" 
+                                               checked="@_car.IsReserved" 
+                                               @onchange="@(() => SetCarStatus("reserved"))" />
+                                        <label class="form-check-label text-warning" for="reserved">Reserved</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="radio" name="carStatus" id="sold" 
+                                               checked="@_car.IsSold" 
+                                               @onchange="@(() => SetCarStatus("sold"))" />
+                                        <label class="form-check-label text-danger" for="sold">Sold</label>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
@@ -276,6 +300,13 @@ else
     private string _successMessage = string.Empty;
     private string _errorMessage = string.Empty;
     private Dictionary<string, string> _validationErrors = new();
+    
+    private void SetCarStatus(string status)
+    {
+        if (_car == null) return;
+        _car.IsSold = status == "sold";
+        _car.IsReserved = status == "reserved";
+    }
 
     protected override async Task OnInitializedAsync()
     {

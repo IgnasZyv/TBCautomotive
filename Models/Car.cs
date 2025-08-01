@@ -54,6 +54,12 @@ public class Car
     public double Price { get; set; }
     
     [FirestoreProperty]
+    public bool IsSold { get; set; }
+    
+    [FirestoreProperty]
+    public bool IsReserved { get; set; }
+    
+    [FirestoreProperty]
     public string? Description { get; set; }
     
     [FirestoreProperty]

@@ -40,7 +40,20 @@ else
             
             <div class="col-md-6">
                 <h1>@_car.Make @_car.Model (@_car.Year)</h1>
-                <h2 class="text-primary mb-4">€@_car.Price.ToString("N2")</h2>
+                @* <h2 class="text-primary mb-4">€@_car.Price.ToString("N0")</h2> *@
+                
+                @if (_car.IsSold)
+                {
+                    <h2 class="text-primary mb-4 text-danger">@Localization.GetString("CarSold")</h2>
+                }
+                else if (_car.IsReserved)
+                {
+                    <h2 class="text-primary mb-4 text-warning">@Localization.GetString("CarReserved")</h2>
+                }
+                else
+                {
+                    <h2 class="text-primary mb-4 text-primary">€@_car.Price.ToString("N0")</h2>
+                }
 
                 <!-- Basic Information -->
                 <div class="card mb-4">
@@ -82,11 +95,7 @@ else
                                 <div class="col-6">@_car.Kilometres.Value.ToString("N0") km</div>
                             </div>
                         }
-
-                        <div class="row mb-2">
-                            <div class="col-6"><strong>@Localization.GetString("FieldListed"):</strong></div>
-                            <div class="col-6">@_car.CreatedAt.ToDateTime().ToString("MMMM dd, yyyy")</div>
-                        </div>
+                        
                     </div>
                 </div>
 
@@ -107,7 +116,7 @@ else
                         @if (_car.Transmission.HasValue)
                         {
                             <div class="row mb-2">
-                                <div class="col-6"><strong>@Localization.GetString("CarTransmition"):</strong></div>
+                                <div class="col-6"><strong>@Localization.GetString("CarTransmission"):</strong></div>
                                 <div class="col-6">@Localization.GetLocalizedTransmission(_car.Transmission.Value)</div>
                             </div>
                         }
@@ -132,7 +141,7 @@ else
                         {
                             <div class="row mb-2">
                                 <div class="col-6"><strong>@Localization.GetString("CarHP"):</strong></div>
-                                <div class="col-6">@_car.Horsepower.Value HP</div>
+                                <div class="col-6">@_car.Horsepower.Value CV</div>
                             </div>
                         }
                     </div>

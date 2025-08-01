@@ -142,7 +142,7 @@
         <value>Información del vehículo</value>
     </data>
     <data name="CarCondition" xml:space="preserve">
-        <value>Condición</value>
+        <value>Estado</value>
     </data>
     <data name="ErrorCarNotFoundSubText" xml:space="preserve">
         <value>El coche que buscas no existe.</value>
@@ -163,7 +163,7 @@
         <value>Cilindros</value>
     </data>
     <data name="CarHP" xml:space="preserve">
-        <value>Caballos de fuerza</value>
+        <value>Potencia (CV)</value>
     </data>
     <data name="CarFeatures" xml:space="preserve">
         <value>Características</value>
@@ -278,5 +278,14 @@
     </data>
     <data name="ImageErrorTooBig" xml:space="preserve">
         <value>La imagen supera el límite de tamaño de 10 MB.</value>
+    </data>
+    <data name="CarSold" xml:space="preserve">
+        <value>Vendido</value>
+    </data>
+    <data name="CarReserved" xml:space="preserve">
+        <value>Reservado</value>
+    </data>
+    <data name="ContactInfoText" xml:space="preserve">
+        <value>Clic en número para llamar/SMS • Clic en WhatsApp para chatear</value>
     </data>
 </root>

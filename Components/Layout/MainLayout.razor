@@ -10,10 +10,18 @@
                 {
                     <AdminNavMenu />
                 }
+                
                 <article class="@(IsAdminPage ? "admin-content" : "" )">
                     @Body
                 </article>
+                
+                @if (!IsAdminPage)
+                {
+                    <ContactSection/>
+                }
+                
             </main>
+            
         </div>
 
         <div id="blazor-error-ui" data-nosnippet>

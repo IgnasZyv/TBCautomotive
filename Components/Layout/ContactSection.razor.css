@@ -1,0 +1,33 @@
+﻿.phone-link {
+    position: relative;
+    transition: color 0.2s ease;
+}
+
+.phone-link:hover {
+    color: var(--bs-primary) !important;
+    text-decoration: underline !important;
+}
+
+.whatsapp-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    text-decoration: none;
+}
+
+.whatsapp-link:hover {
+    background-color: rgba(37, 211, 102, 0.1);
+    transform: scale(1.1);
+}
+
+.whatsapp-link i {
+    transition: color 0.2s ease;
+}
+
+.whatsapp-link:hover i {
+    color: #25d366 !important;
+}

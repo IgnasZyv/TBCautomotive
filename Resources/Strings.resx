@@ -163,7 +163,7 @@
         <value>Cylinders</value>
     </data>
     <data name="CarHP" xml:space="preserve">
-        <value>Horse Power</value>
+        <value>Power (CV)</value>
     </data>
     <data name="CarFeatures" xml:space="preserve">
         <value>Features</value>
@@ -278,5 +278,14 @@
     </data>
     <data name="ImageErrorTooBig" xml:space="preserve">
         <value>Image exceeds 10MB size limit.</value>
+    </data>
+    <data name="CarSold" xml:space="preserve">
+        <value>Sold</value>
+    </data>
+    <data name="CarReserved" xml:space="preserve">
+        <value>Reserved</value>
+    </data>
+    <data name="ContactInfoText" xml:space="preserve">
+        <value>Click number to call/SMS • Click WhatsApp to chat</value>
     </data>
 </root>

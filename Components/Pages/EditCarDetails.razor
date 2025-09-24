@@ -23,7 +23,7 @@
 }
 else if (_car == null)
 {
-        <div class="container mt-4">
+    <div class="container mt-4">
         <div class="alert alert-danger">
             <h4>@Localization.GetString("ErrorCarNotFound")</h4>
             <p>@Localization.GetString("ErrorCarNotFoundSubText")</p>
@@ -42,17 +42,19 @@ else
             <div class="mb-3">
                 <h1 class="h2 mb-0">Edit Car Details</h1>
             </div>
-    
+
             <!-- Buttons Container -->
             <div class="d-flex flex-column flex-md-row justify-content-md-end gap-2">
                 <!-- Cancel Button -->
-                <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center" @onclick="GoBack">
+                <button class="btn btn-outline-secondary d-flex align-items-center justify-content-center"
+                        @onclick="GoBack">
                     <i class="bi bi-arrow-left me-2"></i>
                     <span>@Localization.GetString("FormCancel")</span>
                 </button>
-        
+
                 <!-- Delete Button -->
-                <button class="btn btn-danger d-flex align-items-center justify-content-center" @onclick="DeleteCar" disabled="@_isDeleting">
+                <button class="btn btn-danger d-flex align-items-center justify-content-center" @onclick="DeleteCar"
+                        disabled="@_isDeleting">
                     @if (_isDeleting)
                     {
                         <span class="spinner-border spinner-border-sm me-2" role="status"></span>
@@ -63,10 +65,11 @@ else
                     }
                     <span>Delete</span>
                 </button>
-        
+
                 <!-- Save Button -->
-                <button class="btn btn-success d-flex align-items-center justify-content-center" @onclick="SaveChanges" disabled="@_isSaving">
-                    
+                <button class="btn btn-success d-flex align-items-center justify-content-center" @onclick="SaveChanges"
+                        disabled="@_isSaving">
+
                     @if (_isSaving)
                     {
                         <span class="spinner - border spinner - border - sm me - 2" role="status"></span>
@@ -110,9 +113,11 @@ else
                     <div class="card-body">
                         <!-- Basic Information -->
                         <div class="mb-3">
-                            <label class="form-label">@Localization.GetString("CarMake") <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @(_validationErrors.ContainsKey("Make") ? "is-invalid" : "")" 
-                                   @bind="_car.Make" placeholder="Enter car make" />
+                            <label class="form-label">@Localization.GetString("CarMake") <span
+                                    class="text-danger">*</span></label>
+                            <input type="text"
+                                   class="form-control @(_validationErrors.ContainsKey("Make") ? "is-invalid" : "")"
+                                   @bind="_car.Make" placeholder="Enter car make"/>
                             @if (_validationErrors.ContainsKey("Make"))
                             {
                                 <div class="invalid-feedback">@_validationErrors["Make"]</div>
@@ -120,19 +125,23 @@ else
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">@Localization.GetString("CarModel") <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control @(_validationErrors.ContainsKey("Model") ? "is-invalid" : "")" 
-                                   @bind="_car.Model" placeholder="Enter car model" />
+                            <label class="form-label">@Localization.GetString("CarModel") <span
+                                    class="text-danger">*</span></label>
+                            <input type="text"
+                                   class="form-control @(_validationErrors.ContainsKey("Model") ? "is-invalid" : "")"
+                                   @bind="_car.Model" placeholder="Enter car model"/>
                             @if (_validationErrors.ContainsKey("Model"))
                             {
                                 <div class="invalid-feedback">@_validationErrors["Model"]</div>
                             }
                         </div>
-    
+
                         <div class="mb-3">
-                            <label class="form-label">@Localization.GetString("CarYear") <span class="text-danger">*</span></label>
-                            <input type="number" class="form-control @(_validationErrors.ContainsKey("Year") ? "is-invalid" : "")" 
-                                   @bind="_car.Year" min="1900" max="@DateTime.Now.Year" placeholder="Enter year" />
+                            <label class="form-label">@Localization.GetString("CarYear") <span
+                                    class="text-danger">*</span></label>
+                            <input type="number"
+                                   class="form-control @(_validationErrors.ContainsKey("Year") ? "is-invalid" : "")"
+                                   @bind="_car.Year" min="1900" max="@DateTime.Now.Year" placeholder="Enter year"/>
                             @if (_validationErrors.ContainsKey("Year"))
                             {
                                 <div class="invalid-feedback">@_validationErrors["Year"]</div>
@@ -140,36 +149,38 @@ else
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">@Localization.GetString("CarPrice") <span class="text-danger">*</span></label>
+                            <label class="form-label">@Localization.GetString("CarPrice") <span
+                                    class="text-danger">*</span></label>
                             <div class="input-group mb-2">
                                 <span class="input-group-text">€</span>
-                                <input type="number" class="form-control @(_validationErrors.ContainsKey("Price") ? "is-invalid" : "")" 
-                                       @bind="_car.Price" min="0" step="0.01" placeholder="0.00" />
+                                <input type="number"
+                                       class="form-control @(_validationErrors.ContainsKey("Price") ? "is-invalid" : "")"
+                                       @bind="_car.Price" min="0" step="0.01" placeholder="0.00"/>
                                 @if (_validationErrors.ContainsKey("Price"))
                                 {
                                     <div class="invalid-feedback">@_validationErrors["Price"]</div>
                                 }
                             </div>
-    
+
                             <div class="mt-2">
                                 <label class="form-label small">Car Status</label>
                                 <div class="d-flex gap-3">
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="carStatus" id="available" 
-                                               checked="@(!_car.IsSold && !_car.IsReserved)" 
-                                               @onchange="@(() => SetCarStatus("available"))" />
+                                        <input class="form-check-input" type="radio" name="carStatus" id="available"
+                                               checked="@(!_car.IsSold && !_car.IsReserved)"
+                                               @onchange="@(() => SetCarStatus("available"))"/>
                                         <label class="form-check-label" for="available">Available</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="carStatus" id="reserved" 
-                                               checked="@_car.IsReserved" 
-                                               @onchange="@(() => SetCarStatus("reserved"))" />
+                                        <input class="form-check-input" type="radio" name="carStatus" id="reserved"
+                                               checked="@_car.IsReserved"
+                                               @onchange="@(() => SetCarStatus("reserved"))"/>
                                         <label class="form-check-label text-warning" for="reserved">Reserved</label>
                                     </div>
                                     <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="carStatus" id="sold" 
-                                               checked="@_car.IsSold" 
-                                               @onchange="@(() => SetCarStatus("sold"))" />
+                                        <input class="form-check-input" type="radio" name="carStatus" id="sold"
+                                               checked="@_car.IsSold"
+                                               @onchange="@(() => SetCarStatus("sold"))"/>
                                         <label class="form-check-label text-danger" for="sold">Sold</label>
                                     </div>
                                 </div>
@@ -178,8 +189,8 @@ else
 
                         <div class="mb-3">
                             <label class="form-label">@Localization.GetString("CarKm")</label>
-                            <input type="number" class="form-control" @bind="_car.Kilometres" 
-                                   min="0" placeholder="Kilometres" />
+                            <input type="number" class="form-control" @bind="_car.Kilometres"
+                                   min="0" placeholder="Kilometres"/>
                         </div>
 
                         <!-- Vehicle Condition -->
@@ -213,7 +224,8 @@ else
                                 <option value="">@Localization.GetString("FormSelectTransmissionDefault")</option>
                                 @foreach (var transmission in Enum.GetValues<TransmissionType>())
                                 {
-                                    <option value="@transmission">@Localization.GetLocalizedTransmission(transmission)</option>
+                                    <option
+                                        value="@transmission">@Localization.GetLocalizedTransmission(transmission)</option>
                                 }
                             </select>
                         </div>
@@ -222,34 +234,39 @@ else
                         <div class="row mb-3">
                             <div class="col-6">
                                 <label class="form-label">@Localization.GetString("CarEngineSize")</label>
-                                <input type="text" class="form-control" @bind="_car.EngineSize" 
-                                       placeholder="e.g., 2.0L, 3.5L V6" />
+                                <input type="text" class="form-control" @bind="_car.EngineSize"
+                                       placeholder="e.g., 2.0L, 3.5L V6"/>
                             </div>
                             <div class="col-6">
                                 <label class="form-label">@Localization.GetString("CarCylinders")</label>
-                                <input type="number" class="form-control" @bind="_car.EngineCylinders" 
-                                       min="1" max="16" placeholder="e.g., 4, 6, 8" />
+                                <input type="number" class="form-control" @bind="_car.EngineCylinders"
+                                       min="1" max="16" placeholder="e.g., 4, 6, 8"/>
                             </div>
                         </div>
 
                         <div class="mb-3">
                             <label class="form-label">@Localization.GetString("CarHP")</label>
-                            <input type="number" class="form-control" @bind="_car.Horsepower" 
-                                   min="0" placeholder="Engine power in HP" />
+                            <input type="number" class="form-control" @bind="_car.Horsepower"
+                                   min="0" placeholder="Engine power in HP"/>
                         </div>
 
-                        <!-- Features -->
+                        <!-- Features Section -->
+                        <CarFeatureSelector SelectedFeatures="SelectedFeatures" 
+                                            SelectedFeaturesChanged="OnSelectedFeaturesChanged" 
+                                            SelectButtonText="@Localization.GetString("FormButtonSelectFeatures")" />
+
+                        <!-- Custom Features Section -->
                         <div class="mb-3">
-                            <label class="form-label">@Localization.GetString("CarFeatures")</label>
+                            <label class="form-label">@Localization.GetString("CustomCarFeatures")</label>
                             <textarea class="form-control" rows="3" @bind="_featuresText" 
-                                      placeholder="@Localization.GetString("FormCarFeaturesPlaceholder")"></textarea>
+                                placeholder="@Localization.GetString("FormCarFeaturesPlaceholder")"></textarea>
                             <small class="form-text text-muted">@Localization.GetString("FormCarFeaturesSubText")</small>
-                        </div>
-
+                        </div>                    
+                        
                         <!-- Description -->
                         <div class="mb-3">
                             <label class="form-label">@Localization.GetString("CarDescription")</label>
-                            <textarea class="form-control" rows="4" @bind="_car.Description" 
+                            <textarea class="form-control" rows="4" @bind="_car.Description"
                                       placeholder="@Localization.GetString("FormCarDescriptionPlaceholder")"></textarea>
                         </div>
 
@@ -260,10 +277,11 @@ else
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>s
         </div>
     </div>
 }
+
 
 <!-- Confirmation Modal -->
 <div class="modal fade" id="deleteCarConfirmModal" tabindex="-1" aria-hidden="true">
@@ -292,15 +310,32 @@ else
 
     private Car? _car;
     private string _featuresText = "";
-    
+
     private bool _isLoading = true;
     private bool _isSaving = false;
     private bool _isDeleting;
-    
+
     private string _successMessage = string.Empty;
     private string _errorMessage = string.Empty;
     private Dictionary<string, string> _validationErrors = new();
-    
+
+    public List<CarFeature> SelectedFeatures { get; set; } = new();
+
+    // Remove all the modal-related methods and keep only this:
+    private void OnSelectedFeaturesChanged(List<CarFeature>? features)
+    {
+        if (features != null) SelectedFeatures = features;
+        if (_car != null)
+        {
+            _car.CarFeatures = SelectedFeatures?.Any() == true ? new List<CarFeature>(SelectedFeatures) : null;
+        }
+        StateHasChanged();
+    }
+
+    private string SearchTerm { get; set; } = string.Empty;
+
+    private bool ShowAllFeatures { get; set; } = false;
+
     private void SetCarStatus(string status)
     {
         if (_car == null) return;
@@ -315,11 +350,17 @@ else
             if (!string.IsNullOrEmpty(CarId))
             {
                 _car = await CarService.GetCarByIdAsync(CarId);
-                
-                // Initialize features text from existing data
-                if (_car?.Features?.Any() == true)
+
+                // Initialize both feature systems
+                if (_car?.CustomFeatures?.Any() == true)
                 {
-                    _featuresText = string.Join(", ", _car.Features);
+                    _featuresText = string.Join(", ", _car.CustomFeatures);
+                }
+            
+                // NEW: Initialize selected features
+                if (_car?.CarFeatures?.Any() == true)
+                {
+                    SelectedFeatures = new List<CarFeature>(_car.CarFeatures);
                 }
             }
         }
@@ -333,7 +374,7 @@ else
             _isLoading = false;
         }
     }
-    
+
     private async Task DeleteCar()
     {
         await JsRuntime.InvokeVoidAsync("eval", "new bootstrap.Modal(document.getElementById('deleteCarConfirmModal')).show()");
@@ -353,6 +394,7 @@ else
             {
                 allImageUrls.Add(_car.ImagePath); // add primary image url if exists
             }
+
             if (_car.SubImages?.Any() == true)
             {
                 allImageUrls.AddRange(_car.SubImages); // add sub image urls if they exist
@@ -414,10 +456,13 @@ else
 
         try
         {
-            // Parse features from comma-separated text
+            // Update both feature systems
+            _car.CarFeatures = SelectedFeatures?.Any() == true ? new List<CarFeature>(SelectedFeatures) : null;
+        
+            // Parse custom features from text
             if (!string.IsNullOrWhiteSpace(_featuresText))
             {
-                _car.Features = _featuresText
+                _car.CustomFeatures = _featuresText
                     .Split(',')
                     .Select(f => f.Trim())
                     .Where(f => !string.IsNullOrEmpty(f))
@@ -425,11 +470,10 @@ else
             }
             else
             {
-                _car.Features = null;
+                _car.CustomFeatures = null;
             }
 
             await CarService.UpdateCarAsync(CarId, _car);
-
             _successMessage = $"{Localization.GetString("FormCarUpdateMessage")}";
         }
         catch (Exception ex)

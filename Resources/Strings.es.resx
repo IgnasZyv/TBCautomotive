@@ -211,7 +211,7 @@
         <value>Separe varias funciones con comas</value>
     </data>
     <data name="FormCarFeaturesPlaceholder" xml:space="preserve">
-        <value>Separe varias funciones con Ingresar funciones separadas por comas (por ejemplo, Asientos de cuero, Techo corredizo, Navegación GPS)</value>
+        <value>Para seleccionar las características del automóvil, haga clic en el botón "Seleccionar características" a continuación.</value>
     </data>
     <data name="FormCarDescriptionPlaceholder" xml:space="preserve">
         <value>Ingrese la descripción del vehículo (opcional)</value>
@@ -287,5 +287,172 @@
     </data>
     <data name="ContactInfoText" xml:space="preserve">
         <value>Clic en número para llamar/SMS • Clic en WhatsApp para chatear</value>
+    </data>
+    
+    
+    <!-- Car Feature Categories -->
+    <data name="CarFeatureCategorySafetySecurity" xml:space="preserve">
+        <value>Seguridad y Protección</value>
+    </data>
+    <data name="CarFeatureCategoryComfortConvenience" xml:space="preserve">
+        <value>Comodidad y Conveniencia</value>
+    </data>
+    <data name="CarFeatureCategoryTechnology" xml:space="preserve">
+        <value>Tecnología</value>
+    </data>
+    <data name="CarFeatureCategoryAudioEntertainment" xml:space="preserve">
+        <value>Audio y Entretenimiento</value>
+    </data>
+    <data name="CarFeatureCategoryExteriorFeatures" xml:space="preserve">
+        <value>Características Exteriores</value>
+    </data>
+    <data name="CarFeatureCategoryPerformanceDrivetrain" xml:space="preserve">
+        <value>Rendimiento y Transmisión</value>
+    </data>
+    <data name="CarFeatureCategorySeatingInterior" xml:space="preserve">
+        <value>Asientos e Interior</value>
+    </data>
+
+    <!-- Safety & Security Features -->
+    <data name="CarFeatureABS" xml:space="preserve">
+        <value>ABS (Sistema de Frenos Antibloqueo)</value>
+    </data>
+    <data name="CarFeatureElectronicStabilityControl" xml:space="preserve">
+        <value>Control Electrónico de Estabilidad (ESC)</value>
+    </data>
+    <data name="CarFeatureFrontAirbags" xml:space="preserve">
+        <value>Airbags Frontales</value>
+    </data>
+    <data name="CarFeatureSideAirbags" xml:space="preserve">
+        <value>Airbags Laterales</value>
+    </data>
+    <data name="CarFeatureBackupCamera" xml:space="preserve">
+        <value>Cámara de Reversa</value>
+    </data>
+    <data name="CarFeatureBlindSpotMonitoring" xml:space="preserve">
+        <value>Monitoreo de Punto Ciego</value>
+    </data>
+    <data name="CarFeatureLaneKeepAssist" xml:space="preserve">
+        <value>Asistente de Mantenimiento de Carril</value>
+    </data>
+    <data name="CarFeatureAutomaticEmergencyBraking" xml:space="preserve">
+        <value>Frenado Automático de Emergencia</value>
+    </data>
+    <data name="CarFeatureAdaptiveCruiseControl" xml:space="preserve">
+        <value>Control de Crucero Adaptivo</value>
+    </data>
+    <data name="CarFeatureKeylessStartStop" xml:space="preserve">
+        <value>Arranque/Parada sin Llave</value>
+    </data>
+
+    <!-- Comfort & Convenience Features -->
+    <data name="CarFeatureAirConditioning" xml:space="preserve">
+        <value>Aire Acondicionado</value>
+    </data>
+    <data name="CarFeatureHeatedFrontSeats" xml:space="preserve">
+        <value>Asientos Delanteros Calefaccionados</value>
+    </data>
+    <data name="CarFeaturePowerWindows" xml:space="preserve">
+        <value>Ventanas Eléctricas</value>
+    </data>
+    <data name="CarFeaturePowerMirrors" xml:space="preserve">
+        <value>Espejos Eléctricos</value>
+    </data>
+    <data name="CarFeatureCruiseControl" xml:space="preserve">
+        <value>Control de Crucero</value>
+    </data>
+    <data name="CarFeatureRemoteStart" xml:space="preserve">
+        <value>Arranque Remoto</value>
+    </data>
+    <data name="CarFeaturePowerTailgate" xml:space="preserve">
+        <value>Portón Trasero Eléctrico</value>
+    </data>
+    <data name="CarFeatureAutomaticHeadlights" xml:space="preserve">
+        <value>Faros Automáticos</value>
+    </data>
+
+    <!-- Technology Features -->
+    <data name="CarFeatureTouchscreen8Inch" xml:space="preserve">
+        <value>Pantalla Táctil de 8 pulgadas</value>
+    </data>
+    <data name="CarFeatureTouchscreen10Inch" xml:space="preserve">
+        <value>Pantalla Táctil de 10 pulgadas</value>
+    </data>
+    <data name="CarFeatureTouchscreen12Inch" xml:space="preserve">
+        <value>Pantalla Táctil de 12 pulgadas</value>
+    </data>
+    <data name="CarFeatureAppleCarPlay" xml:space="preserve">
+        <value>Apple CarPlay</value>
+    </data>
+    <data name="CarFeatureAndroidAuto" xml:space="preserve">
+        <value>Android Auto</value>
+    </data>
+    <data name="CarFeatureBluetoothConnectivity" xml:space="preserve">
+        <value>Conectividad Bluetooth</value>
+    </data>
+    <data name="CarFeatureUSBPorts" xml:space="preserve">
+        <value>Puertos USB</value>
+    </data>
+    <data name="CarFeatureWirelessChargingPad" xml:space="preserve">
+        <value>Cargador Inalámbrico</value>
+    </data>
+    <data name="CarFeatureNavigationSystem" xml:space="preserve">
+        <value>Sistema de Navegación Integrado</value>
+    </data>
+
+    <!-- Audio & Entertainment Features -->
+    <data name="CarFeaturePremiumAudioSystem" xml:space="preserve">
+        <value>Sistema de Audio Premium</value>
+    </data>
+    <data name="CarFeatureSatelliteRadio" xml:space="preserve">
+        <value>Radio Satelital (SiriusXM)</value>
+    </data>
+
+    <!-- Exterior Features -->
+    <data name="CarFeatureSunroof" xml:space="preserve">
+        <value>Techo Solar</value>
+    </data>
+    <data name="CarFeatureAlloyWheels" xml:space="preserve">
+        <value>Ruedas de Aleación</value>
+    </data>
+    <data name="CarFeatureLEDHeadlights" xml:space="preserve">
+        <value>Faros LED</value>
+    </data>
+    <data name="CarFeatureDynamicLighting" xml:space="preserve">
+        <value>Iluminación Dinámica</value>
+    </data>
+
+    <!-- Performance & Drivetrain Features -->
+    <data name="CarFeatureAllWheelDrive" xml:space="preserve">
+        <value>Tracción Integral (AWD)</value>
+    </data>
+    <data name="CarFeatureAutomaticTransmission" xml:space="preserve">
+        <value>Transmisión Automática</value>
+    </data>
+    <data name="CarFeatureSportMode" xml:space="preserve">
+        <value>Modo Deportivo</value>
+    </data>
+    <data name="CarFeatureTurbocharger" xml:space="preserve">
+        <value>Turbocompresor</value>
+    </data>
+
+    <!-- Seating & Interior Features -->
+    <data name="CarFeatureLeatherSeats" xml:space="preserve">
+        <value>Asientos de Cuero</value>
+    </data>
+    <data name="CarFeaturePowerDriverSeat" xml:space="preserve">
+        <value>Asiento del Conductor Eléctrico</value>
+    </data>
+    <data name="CarFeatureHeatedSteeringWheel" xml:space="preserve">
+        <value>Volante Calefaccionado</value>
+    </data>
+    <data name="CarFeatureThirdRowSeating" xml:space="preserve">
+        <value>Tercera Fila de Asientos</value>
+    </data>
+    <data name="FormButtonSelectFeatures" xml:space="preserve">
+        <value>Seleccionar funciones</value>
+    </data>
+    <data name="CustomCarFeatures" xml:space="preserve">
+        <value>Funciones personalizadas</value>
     </data>
 </root>

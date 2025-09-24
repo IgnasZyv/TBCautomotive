@@ -20,6 +20,69 @@ public class LocalizationService
 
     public string? GetString(string key) => _localizer[key];
     
+    // New method to get localized car feature name
+    public string? GetLocalizedCarFeature(CarFeature carFeature)
+    {
+        var key = $"CarFeature{carFeature}";
+        return GetString(key);
+    }
+    
+    // New method to get localized car feature category
+    public string? GetLocalizedCarFeatureCategory(string category)
+    {
+        var key = category switch
+        {
+            "Safety & Security" => "CarFeatureCategorySafetySecurity",
+            "Comfort & Convenience" => "CarFeatureCategoryComfortConvenience",
+            "Technology" => "CarFeatureCategoryTechnology",
+            "Audio & Entertainment" => "CarFeatureCategoryAudioEntertainment",
+            "Exterior Features" => "CarFeatureCategoryExteriorFeatures",
+            "Performance & Drivetrain" => "CarFeatureCategoryPerformanceDrivetrain",
+            "Seating & Interior" => "CarFeatureCategorySeatingInterior",
+            _ => null
+        };
+        
+        return key != null ? GetString(key) : category;
+    }
+    
+    // New method to get grouped features by localized category
+    public Dictionary<string, List<(CarFeature Feature, string LocalizedName)>> GetGroupedLocalizedFeatures()
+    {
+        var groupedFeatures = new Dictionary<string, List<(CarFeature, string)>>();
+        
+        foreach (var feature in Enum.GetValues<CarFeature>())
+        {
+            var category = feature.GetCategory();
+            var localizedCategory = GetLocalizedCarFeatureCategory(category) ?? category;
+            var localizedFeature = GetLocalizedCarFeature(feature) ?? feature.ToString();
+            
+            if (!groupedFeatures.ContainsKey(localizedCategory))
+            {
+                groupedFeatures[localizedCategory] = new List<(CarFeature, string)>();
+            }
+            
+            groupedFeatures[localizedCategory].Add((feature, localizedFeature));
+        }
+        
+        return groupedFeatures;
+    }
+    
+    // New method to get all localized features as a flat list
+    public List<(CarFeature Feature, string LocalizedName, string LocalizedCategory)> GetAllLocalizedFeatures()
+    {
+        var features = new List<(CarFeature, string, string)>();
+        
+        foreach (var feature in Enum.GetValues<CarFeature>())
+        {
+            var category = feature.GetCategory();
+            var localizedCategory = GetLocalizedCarFeatureCategory(category) ?? category;
+            var localizedFeature = GetLocalizedCarFeature(feature) ?? feature.ToString();
+            
+            features.Add((feature, localizedFeature, localizedCategory));
+        }
+        
+        return features.OrderBy(f => f.Item3).ThenBy(f => f.Item2).ToList();
+    }
 
     public string? GetLocalizedFuelType(FuelType? fuelType)
     {
@@ -59,5 +122,4 @@ public class LocalizationService
             _ => transmission.ToString()
         };
     }
-
 }

@@ -111,9 +111,14 @@
                     <ValidationMessage For="@(() => _car.Horsepower)"/>
                 </div>
 
-                <!-- Features -->
+                <!-- Features Section -->
+                <CarFeatureSelector SelectedFeatures="SelectedFeatures" 
+                                    SelectedFeaturesChanged="OnSelectedFeaturesChanged" 
+                                    SelectButtonText="Select Features" />
+
+                <!-- Custom Features Section -->
                 <div class="mb-2">
-                    <label for="features" class="form-label">@Localization.GetString("CarFeatures")</label>
+                    <label class="form-label">@Localization.GetString("CustomCarFeatures")</label>
                     <InputTextArea id="features" @bind-Value="_featuresText" class="form-control" rows="3"
                                    placeholder="@Localization.GetString("FormCarFeaturesPlaceholder")"/>
                     <small class="form-text text-muted">@Localization.GetString("FormCarFeaturesSubText")</small>
@@ -146,6 +151,13 @@
     private readonly Car _car = new Car();
     private bool _isUploading;
     private string _featuresText = "";
+    public List<CarFeature> SelectedFeatures { get; set; } = new();
+
+    private void OnSelectedFeaturesChanged(List<CarFeature>? features)
+    {
+        if (features != null) SelectedFeatures = features;
+        StateHasChanged();
+    }
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
@@ -179,19 +191,20 @@
 
     private async Task HandleValidSubmit()
     {
-        // Parse features from comma-separated text
+        // Parse custom features from comma-separated text
         if (!string.IsNullOrWhiteSpace(_featuresText))
         {
-            _car.Features = _featuresText
+            _car.CustomFeatures = _featuresText
                 .Split(',')
                 .Select(f => f.Trim())
                 .Where(f => !string.IsNullOrEmpty(f))
                 .ToList();
         }
 
-        // Set creation timestamp
-        _car.CreatedAt = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
+        // Add CarFeatures if you implement the modal there too
+        // _car.CarFeatures = SelectedFeatures?.Any() == true ? new List<CarFeature>(SelectedFeatures) : null;
 
+        _car.CreatedAt = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
         await CarService.CreateCarAsync(_car);
         NavigationManager.NavigateTo("/");
     }

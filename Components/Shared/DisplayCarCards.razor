@@ -103,7 +103,13 @@
 
     protected override async Task OnInitializedAsync()
     {
-        Cars = await CarService.GetAllCarsAsync();
+        var allCars = await CarService.GetAllCarsAsync();
+    
+        // Sort cars: Available first, then Reserved, then Sold at the bottom
+        Cars = allCars?.OrderBy(car => car.IsSold ? 2 : (car.IsReserved ? 1 : 0))
+            .ThenByDescending(car => car.CreatedAt) // Most recent first within each group
+            .ToList();
+    
         _currentPath = Navigation.ToBaseRelativePath(Navigation.Uri);
     }
 }

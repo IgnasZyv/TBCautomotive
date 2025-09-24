@@ -1,0 +1,54 @@
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Authorization
+@using CarHostingWeb.Services.Authentication
+@using System.Security.Claims
+
+@inject AuthenticationStateProvider AuthStateProvider
+@inject FirebaseAuthService FirebaseAuthService
+@inject NavigationManager NavigationManager
+
+@if (!_initialized)
+{
+    <div class="d-flex justify-content-center p-3">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+}
+else if (_authState?.User.Identity?.IsAuthenticated == true && _isAdmin)
+{
+    @ChildContent
+}
+else
+{
+    <div class="alert alert-warning text-center">
+        <h5>Access Denied</h5>
+        <p>Redirecting to login...</p>
+    </div>
+    @RedirectToLogin()
+}
+
+@code {
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+    
+    private bool _initialized = false;
+    private AuthenticationState? _authState;
+    private bool _isAdmin = false;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender && !_initialized)
+        {
+            await FirebaseAuthService.InitializeAsync();
+            _authState = await AuthStateProvider.GetAuthenticationStateAsync();
+            _isAdmin = _authState?.User.Claims.Any(c => c.Type == ClaimTypes.Role && c.Value == "Admin") ?? false;
+            _initialized = true;
+            StateHasChanged();
+        }
+    }
+    
+    private RenderFragment RedirectToLogin() => builder =>
+    {
+        NavigationManager.NavigateTo("/login", true);
+    };
+}

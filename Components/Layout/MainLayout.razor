@@ -1,8 +1,10 @@
 ﻿@inherits LayoutComponentBase
 
 @using CarHostingWeb.Components.Shared
+@using CarHostingWeb.Services.Authentication
 
 @inject NavigationManager Navigation
+@inject FirebaseAuthService FirebaseAuthService
 
 <CascadingValue Value="this">
     <div>
@@ -46,6 +48,14 @@
     protected override void OnInitialized()
     {
         Navigation.LocationChanged += OnLocationChanged;
+    }
+    
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await FirebaseAuthService.InitializeAsync();
+        }
     }
 
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)

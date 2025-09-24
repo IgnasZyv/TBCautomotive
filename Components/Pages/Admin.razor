@@ -1,16 +1,10 @@
-﻿@page "/admin"
-@using CarHostingWeb.Components.Shared
-@using Microsoft.AspNetCore.Authorization
-
+@page "/admin"
 @rendermode InteractiveServer
-@* @attribute [Authorize(Roles = "Admin")] *@
+@using CarHostingWeb.Components.Shared
 
-@* <div class="d-flex justify-content-center bg-primary-subtle rounded-3 shadow shadow-sm" style="margin-top: 4rem"> *@
-@*     <h2 class="">Manage Cars</h2> *@
-@* </div> *@
-
-<div class="container">
-    <SectionHeader LocalizationString="ManageCars" IconClassString="bi bi-car-front-fill me-1 text-primary" IsTop="@true"/>
- 
-    <DisplayCars />
-</div>
+<AdminGuard>
+    <div class="container">
+        <SectionHeader LocalizationString="ManageCars" IconClassString="bi bi-car-front-fill me-1 text-primary" IsTop="@true"/>
+        <DisplayCars />
+    </div>
+</AdminGuard>

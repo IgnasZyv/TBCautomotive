@@ -1,5 +1,6 @@
 using Google.Cloud.Firestore;
 using System.Text.Json.Serialization;
+using CarHostingWeb.Models;
 
 namespace CarHostingWeb.Models;
 
@@ -87,7 +88,11 @@ public class Car
     public int? Horsepower { get; set; } // Engine power in HP
     
     [FirestoreProperty]
-    public List<string>? Features { get; set; } // ["Leather Seats", "Sunroof", "GPS Navigation", etc.]
+    public List<string>? CustomFeatures { get; set; } // ["Leather Seats", "Sunroof", "GPS Navigation", etc.]
+    
+    [FirestoreProperty]
+    [JsonConverter(typeof(JsonStringEnumConverter))]
+    public List<CarFeature>? CarFeatures { get; set; }
 
     [FirestoreProperty]
     public Timestamp CreatedAt { get; set; }

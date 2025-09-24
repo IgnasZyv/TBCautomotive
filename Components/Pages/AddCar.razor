@@ -1,151 +1,169 @@
-@rendermode InteractiveServer
 @page "/admin/add-car"
+@rendermode InteractiveServer
+
+@using CarHostingWeb.Components.Layout
 @using CarHostingWeb.Models
 @using CarHostingWeb.Services
-@using Microsoft.AspNetCore.Components.Forms
 @using CarHostingWeb.Components.Shared
+@using Microsoft.AspNetCore.Authorization
 
 @inject ImageUploadService ImageUploadService
 @inject CarService CarService
 @inject NavigationManager NavigationManager
 @inject LocalizationService Localization
 
-<EditForm Model="@_car" FormName="addCar" OnValidSubmit="HandleValidSubmit">
+<AdminGuard>
+    <EditForm Model="@_car" FormName="addCar" OnValidSubmit="HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
-    
-    <div class="container mt-5">
         
-        <SectionHeader LocalizationString="Create a Car Listing" IconClassString="bi bi-plus-square me-1 text-primary" IsTop="@true"/>
+        <div class="container mt-5">
+            
+            <SectionHeader LocalizationString="Create a Car Listing" IconClassString="bi bi-plus-square me-1 text-primary" IsTop="@true"/>
 
-        <div class="row justify-content-center">
-            <CarImageGallery Car="_car" IsEditable="@true"/>
+            <div class="row justify-content-center">
+                <CarImageGallery Car="_car" IsEditable="@true"/>
 
-            <div class="col-md-4">
-                <!-- Basic Car Details -->
-                <div class="mb-2">
-                    <label for="make" class="form-label">@Localization.GetString("CarMake")</label>
-                    <InputText id="make" @bind-Value="_car.Make" class="form-control"/>
-                    <ValidationMessage For="@(() => _car.Make)"/>
-                </div>
+                <div class="col-md-4">
+                    <!-- Basic Car Details -->
+                    <div class="mb-2">
+                        <label for="make" class="form-label">@Localization.GetString("CarMake")</label>
+                        <InputText id="make" @bind-Value="_car.Make" class="form-control"/>
+                        <ValidationMessage For="@(() => _car.Make)"/>
+                    </div>
 
-                <div class="mb-2">
-                    <label for="model" class="form-label">@Localization.GetString("CarModel")</label>
-                    <InputText id="model" @bind-Value="_car.Model" class="form-control"/>
-                    <ValidationMessage For="@(() => _car.Model)"/>
-                </div>
+                    <div class="mb-2">
+                        <label for="model" class="form-label">@Localization.GetString("CarModel")</label>
+                        <InputText id="model" @bind-Value="_car.Model" class="form-control"/>
+                        <ValidationMessage For="@(() => _car.Model)"/>
+                    </div>
 
-                <div class="mb-2">
-                    <label for="year" class="form-label">@Localization.GetString("CarYear")</label>
-                    <InputNumber id="year" @bind-Value="_car.Year" class="form-control"/>
-                    <ValidationMessage For="@(() => _car.Year)"/>
-                </div>
+                    <div class="mb-2">
+                        <label for="year" class="form-label">@Localization.GetString("CarYear")</label>
+                        <InputNumber id="year" @bind-Value="_car.Year" class="form-control"/>
+                        <ValidationMessage For="@(() => _car.Year)"/>
+                    </div>
 
-                <div class="mb-2">
-                    <label for="price" class="form-label">@Localization.GetString("CarPrice")</label>
-                    <InputNumber id="price" @bind-Value="_car.Price" class="form-control"/>
-                    <ValidationMessage For="@(() => _car.Price)"/>
-                </div>
+                    <div class="mb-2">
+                        <label for="price" class="form-label">@Localization.GetString("CarPrice")</label>
+                        <InputNumber id="price" @bind-Value="_car.Price" class="form-control"/>
+                        <ValidationMessage For="@(() => _car.Price)"/>
+                    </div>
 
-                <div class="mb-2">
-                    <label for="kilometres" class="form-label">@Localization.GetString("CarKm")</label>
-                    <InputNumber id="kilometres" @bind-Value="_car.Kilometres" class="form-control"/>
-                    <ValidationMessage For="@(() => _car.Kilometres)"/>
-                </div>
+                    <div class="mb-2">
+                        <label for="kilometres" class="form-label">@Localization.GetString("CarKm")</label>
+                        <InputNumber id="kilometres" @bind-Value="_car.Kilometres" class="form-control"/>
+                        <ValidationMessage For="@(() => _car.Kilometres)"/>
+                    </div>
 
-                <!-- Condition -->
-                <div class="mb-2">
-                    <label for="condition" class="form-label">@Localization.GetString("CarCondition")</label>
-                    <InputSelect id="condition" @bind-Value="_car.Condition" class="form-control">
-                        <option value="">@Localization.GetString("FormSelectConditionDefault")</option>
-                        @foreach (var condition in Enum.GetValues<VehicleCondition>())
-                        {
-                            <option value="@condition">@Localization.GetLocalizedCondition(condition)</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="@(() => _car.Condition)"/>
-                </div>
+                    <!-- Condition -->
+                    <div class="mb-2">
+                        <label for="condition" class="form-label">@Localization.GetString("CarCondition")</label>
+                        <InputSelect id="condition" @bind-Value="_car.Condition" class="form-control">
+                            <option value="">@Localization.GetString("FormSelectConditionDefault")</option>
+                            @foreach (var condition in Enum.GetValues<VehicleCondition>())
+                            {
+                                <option value="@condition">@Localization.GetLocalizedCondition(condition)</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => _car.Condition)"/>
+                    </div>
 
-                <!-- Fuel Type -->
-                <div class="mb-2">
-                    <label for="fuelType" class="form-label">@Localization.GetString("CarFuelType")</label>
-                    <InputSelect id="fuelType" @bind-Value="_car.FuelType" class="form-control">
-                        <option value="">@Localization.GetString("FormSelectFuelTypeDefault")</option>
-                        @foreach (var fuelType in Enum.GetValues<FuelType>())
-                        {
-                            <option value="@fuelType">@Localization.GetLocalizedFuelType(fuelType)</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="@(() => _car.FuelType)"/>
-                </div>
+                    <!-- Fuel Type -->
+                    <div class="mb-2">
+                        <label for="fuelType" class="form-label">@Localization.GetString("CarFuelType")</label>
+                        <InputSelect id="fuelType" @bind-Value="_car.FuelType" class="form-control">
+                            <option value="">@Localization.GetString("FormSelectFuelTypeDefault")</option>
+                            @foreach (var fuelType in Enum.GetValues<FuelType>())
+                            {
+                                <option value="@fuelType">@Localization.GetLocalizedFuelType(fuelType)</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => _car.FuelType)"/>
+                    </div>
 
-                <!-- Transmission -->
-                <div class="mb-2">
-                    <label for="transmission" class="form-label">@Localization.GetString("CarTransmission")</label>
-                    <InputSelect id="transmission" @bind-Value="_car.Transmission" class="form-control">
-                        <option value="">@Localization.GetString("FormSelectTransmissionDefault")</option>
-                        @foreach (var transmission in Enum.GetValues<TransmissionType>())
-                        {
-                            <option value="@transmission">@Localization.GetLocalizedTransmission(transmission)</option>
-                        }
-                    </InputSelect>
-                    <ValidationMessage For="@(() => _car.Transmission)"/>
-                </div>
+                    <!-- Transmission -->
+                    <div class="mb-2">
+                        <label for="transmission" class="form-label">@Localization.GetString("CarTransmission")</label>
+                        <InputSelect id="transmission" @bind-Value="_car.Transmission" class="form-control">
+                            <option value="">@Localization.GetString("FormSelectTransmissionDefault")</option>
+                            @foreach (var transmission in Enum.GetValues<TransmissionType>())
+                            {
+                                <option value="@transmission">@Localization.GetLocalizedTransmission(transmission)</option>
+                            }
+                        </InputSelect>
+                        <ValidationMessage For="@(() => _car.Transmission)"/>
+                    </div>
 
-                <!-- Engine Details -->
-                <div class="mb-2">
-                    <label for="engineSize" class="form-label">@Localization.GetString("CarEngineSize")</label>
-                    <InputText id="engineSize" @bind-Value="_car.EngineSize" class="form-control" placeholder="e.g., 2.0L, 3.5L V6"/>
-                    <ValidationMessage For="@(() => _car.EngineSize)"/>
-                </div>
+                    <!-- Engine Details -->
+                    <div class="mb-2">
+                        <label for="engineSize" class="form-label">@Localization.GetString("CarEngineSize")</label>
+                        <InputText id="engineSize" @bind-Value="_car.EngineSize" class="form-control" placeholder="e.g., 2.0L, 3.5L V6"/>
+                        <ValidationMessage For="@(() => _car.EngineSize)"/>
+                    </div>
 
-                <div class="mb-2">
-                    <label for="engineCylinders" class="form-label">@Localization.GetString("CarCylinders")</label>
-                    <InputNumber id="engineCylinders" @bind-Value="_car.EngineCylinders" class="form-control" placeholder="e.g., 4, 6, 8"/>
-                    <ValidationMessage For="@(() => _car.EngineCylinders)"/>
-                </div>
+                    <div class="mb-2">
+                        <label for="engineCylinders" class="form-label">@Localization.GetString("CarCylinders")</label>
+                        <InputNumber id="engineCylinders" @bind-Value="_car.EngineCylinders" class="form-control" placeholder="e.g., 4, 6, 8"/>
+                        <ValidationMessage For="@(() => _car.EngineCylinders)"/>
+                    </div>
 
-                <div class="mb-2">
-                    <label for="horsepower" class="form-label">@Localization.GetString("CarHP")</label>
-                    <InputNumber id="horsepower" @bind-Value="_car.Horsepower" class="form-control"/>
-                    <ValidationMessage For="@(() => _car.Horsepower)"/>
-                </div>
+                    <div class="mb-2">
+                        <label for="horsepower" class="form-label">@Localization.GetString("CarHP")</label>
+                        <InputNumber id="horsepower" @bind-Value="_car.Horsepower" class="form-control"/>
+                        <ValidationMessage For="@(() => _car.Horsepower)"/>
+                    </div>
 
-                <!-- Features -->
-                <div class="mb-2">
-                    <label for="features" class="form-label">@Localization.GetString("CarFeatures")</label>
-                    <InputTextArea id="features" @bind-Value="_featuresText" class="form-control" rows="3"
-                                   placeholder="@Localization.GetString("FormCarFeaturesPlaceholder")"/>
-                    <small class="form-text text-muted">@Localization.GetString("FormCarFeaturesSubText")</small>
-                </div>
+                    <!-- Features Section -->
+                    <CarFeatureSelector SelectedFeatures="SelectedFeatures" 
+                                        SelectedFeaturesChanged="OnSelectedFeaturesChanged" 
+                                        SelectButtonText="Select Features" />
 
-                <!-- Description -->
-                <div class="mb-2">
-                    <label for="description" class="form-label">@Localization.GetString("CarDescription")</label>
-                    <InputTextArea id="description" 
-                                   @bind-Value="_car.Description" 
-                                   class="form-control" 
-                                   rows="4" 
-                                   placeholder="@Localization.GetString("FormCarDescriptionPlaceholder")"/>
-                    <ValidationMessage For="@(() => _car.Description)"/>
+                    <!-- Custom Features Section -->
+                    <div class="mb-2">
+                        <label class="form-label">@Localization.GetString("CustomCarFeatures")</label>
+                        <InputTextArea id="features" @bind-Value="_featuresText" class="form-control" rows="3"
+                                       placeholder="@Localization.GetString("FormCarFeaturesPlaceholder")"/>
+                        <small class="form-text text-muted">@Localization.GetString("FormCarFeaturesSubText")</small>
+                    </div>
+
+                    <!-- Description -->
+                    <div class="mb-2">
+                        <label for="description" class="form-label">@Localization.GetString("CarDescription")</label>
+                        <InputTextArea id="description" 
+                                       @bind-Value="_car.Description" 
+                                       class="form-control" 
+                                       rows="4" 
+                                       placeholder="@Localization.GetString("FormCarDescriptionPlaceholder")"/>
+                        <ValidationMessage For="@(() => _car.Description)"/>
+                    </div>
+
                 </div>
 
             </div>
 
         </div>
+        
+        <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-primary" disabled="@_isUploading">@Localization.GetString("FormCreateCar")</button>
+        </div>
+        
+    </EditForm>
+</AdminGuard>
 
-    </div>
-    
-    <div class="d-flex justify-content-center">
-        <button type="submit" class="btn btn-primary" disabled="@_isUploading">@Localization.GetString("FormCreateCar")</button>
-    </div>
-    
-</EditForm>
+
 
 @code {
     private readonly Car _car = new Car();
     private bool _isUploading;
     private string _featuresText = "";
+    public List<CarFeature> SelectedFeatures { get; set; } = new();
+
+    private void OnSelectedFeaturesChanged(List<CarFeature>? features)
+    {
+        if (features != null) SelectedFeatures = features;
+        StateHasChanged();
+    }
 
     private async Task OnFileChange(InputFileChangeEventArgs e)
     {
@@ -179,19 +197,20 @@
 
     private async Task HandleValidSubmit()
     {
-        // Parse features from comma-separated text
+        // Parse custom features from comma-separated text
         if (!string.IsNullOrWhiteSpace(_featuresText))
         {
-            _car.Features = _featuresText
+            _car.CustomFeatures = _featuresText
                 .Split(',')
                 .Select(f => f.Trim())
                 .Where(f => !string.IsNullOrEmpty(f))
                 .ToList();
         }
 
-        // Set creation timestamp
-        _car.CreatedAt = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
+        // Add CarFeatures if you implement the modal there too
+        // _car.CarFeatures = SelectedFeatures?.Any() == true ? new List<CarFeature>(SelectedFeatures) : null;
 
+        _car.CreatedAt = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
         await CarService.CreateCarAsync(_car);
         NavigationManager.NavigateTo("/");
     }

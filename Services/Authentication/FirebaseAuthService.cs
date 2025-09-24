@@ -16,6 +16,8 @@ public class FirebaseAuthService
     public string? CurrentUserEmail => _currentUserEmail;
     public string? CurrentToken => _currentToken;
     public bool IsAuthenticated => !string.IsNullOrEmpty(_currentUserEmail);
+    
+    private bool _initialized;
 
     public FirebaseAuthService(HttpClient httpClient, IConfiguration configuration, IJSRuntime jsRuntime)
     {
@@ -24,9 +26,10 @@ public class FirebaseAuthService
         _jsRuntime = jsRuntime;
     }
 
-    // Call this on component initialization to restore auth state
     public async Task InitializeAsync()
     {
+        if (_initialized) return;
+        
         try
         {
             var storedEmail = await _jsRuntime.InvokeAsync<string?>("localStorage.getItem", "user_email");
@@ -77,12 +80,11 @@ public class FirebaseAuthService
             await _jsRuntime.InvokeVoidAsync("localStorage.setItem", "user_token", result?.IdToken);
             
             AuthStateChanged?.Invoke();
-            
             return result?.IdToken;
         }
 
         var error = await response.Content.ReadAsStringAsync();
-        Console.WriteLine("Failed to sign in: " + error);
+        Console.WriteLine($@"Firebase sign-in failed: {error}");
         return null;
     }
 

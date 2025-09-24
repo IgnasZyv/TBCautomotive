@@ -1,0 +1,19 @@
+﻿@using CarHostingWeb.Services
+
+@inject LocalizationService Localization
+
+@namespace CarHostingWeb.Components.Shared
+
+<!-- WhatsApp Floating Button -->
+<div class="whatsapp-float">
+    <a href="@WhatsAppUrl" target="_blank" class="whatsapp-button" title="@Localization.GetString("ContactInfoText")">
+        <i class="bi bi-whatsapp"></i>
+        <span class="pulse-ring"></span>
+    </a>
+</div>
+
+@code {
+    [Parameter] public string? PhoneNumber { get; set; }
+    
+    private string WhatsAppUrl => $"https://wa.me/{PhoneNumber?.Replace("+", "").Replace(" ", "")}";
+}

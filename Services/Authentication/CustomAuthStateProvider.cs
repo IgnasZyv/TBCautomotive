@@ -2,7 +2,6 @@ using System.Security.Claims;
 using CarHostingWeb.Services.Authentication;
 using Microsoft.AspNetCore.Components.Authorization;
 
-
 namespace CarHostingWeb.Services.Authentication;
 public class CustomAuthStateProvider : AuthenticationStateProvider, IDisposable
 {

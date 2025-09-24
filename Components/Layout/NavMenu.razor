@@ -2,7 +2,6 @@
 @using System.Security.Claims
 @using CarHostingWeb.Services
 @using CarHostingWeb.Services.Authentication
-@using Microsoft.EntityFrameworkCore.Metadata.Internal
 @using Microsoft.AspNetCore.Components.Authorization
 
 @inject NavigationManager NavigationManager
@@ -39,15 +38,14 @@
                                         <i class="bi bi-shield-lock text-primary fs-5 p-2"></i> Admin Panel
                                     </NavLink>
                                 </div>
-
+                                
                                 <div class="nav-item px-3 d-flex justify-content-start">
                                     <button class="nav-link" @onclick="HandleLogout">
                                         <i class="bi bi-box-arrow-right text-primary fs-5 p-2"></i> @Localization.GetString("SignOut")
                                     </button>
                                 </div>
                             </Authorized>
-
-
+                            
                             <NotAuthorized>
                                 <div class="nav-item px-3 d-flex justify-content-start">
                                     <NavLink class="nav-link" href="/" Match="NavLinkMatch.All">

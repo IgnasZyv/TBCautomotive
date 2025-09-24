@@ -147,8 +147,8 @@ else
                     </div>
                 </div>
 
-                <!-- Features -->
-                @if (_car.Features?.Any() == true)
+                <!-- Features Section -->
+                @if ((_car.CustomFeatures?.Any() == true) || (_car.CarFeatures?.Any() == true))
                 {
                     <div class="card mb-4">
                         <div class="card-header">
@@ -156,11 +156,26 @@ else
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                @foreach (var feature in _car.Features)
+                                @* Display CarFeature enums first *@
+                                @if (_car.CarFeatures?.Any() == true)
                                 {
-                                    <div class="col-6 mb-2">
-                                        <i class="bi bi-check-circle-fill text-success me-2"></i>@feature
-                                    </div>
+                                    @foreach (var feature in _car.CarFeatures)
+                                    {
+                                        <div class="col-6 mb-2">
+                                            <i class="bi bi-check-circle-fill text-success me-2"></i>@Localization.GetLocalizedCarFeature(feature)
+                                        </div>
+                                    }
+                                }
+                
+                                @* Display custom features second *@
+                                @if (_car.CustomFeatures?.Any() == true)
+                                {
+                                    @foreach (var feature in _car.CustomFeatures)
+                                    {
+                                        <div class="col-6 mb-2">
+                                            <i class="bi bi-check-circle-fill text-primary me-2"></i>@feature
+                                        </div>
+                                    }
                                 }
                             </div>
                         </div>

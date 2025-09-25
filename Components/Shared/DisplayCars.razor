@@ -1,6 +1,8 @@
 ﻿@using CarHostingWeb.Models
 @using CarHostingWeb.Services
 
+@implements IDisposable
+
 @inject CarService CarService
 
 <div class="d-flex justify-content-end mr-5 mt-3">
@@ -15,7 +17,7 @@
         <h3>No cars at this moment!</h3>
     </div>
 }
-
+    
 @code
 {
     private List<Car>? AllCars { get; set; }
@@ -24,30 +26,56 @@
 
     protected override async Task OnInitializedAsync()
     {
+        await LoadCars();
+        CarService.CarsUpdated += OnCarsUpdated;
+    }
+
+    private async Task LoadCars()
+    {
         AllCars = await CarService.GetAllCarsAsync();
-        FilteredCars = AllCars;
+        Console.WriteLine($"LoadCars: Loaded {AllCars?.Count} cars - Latest car: {AllCars?.FirstOrDefault()?.Make}");
+        ApplyFilters();
+    }
+
+    private async void OnCarsUpdated()
+    {
+        Console.WriteLine("OnCarsUpdated: Event received");
+        await InvokeAsync(async () =>
+        {
+            await LoadCars();
+        });
     }
 
     private void HandleFilterChanged(string searchTerm)
     {
         SearchTerm = searchTerm;
+        Console.WriteLine($"HandleFilterChanged: About to filter. AllCars count: {AllCars?.Count}, SearchTerm: '{searchTerm}'");
+        Console.WriteLine($"First few cars: {string.Join(", ", AllCars?.Take(3).Select(c => c.Make + " " + c.Model) ?? new string[0])}");
         ApplyFilters();
     }
-
     private void ApplyFilters()
     {
-        if (AllCars == null) return;
+        if (AllCars == null) 
+        {
+            FilteredCars = null;
+            return;
+        }
+
+        Console.WriteLine($"ApplyFilters: Filtering {AllCars.Count} cars with search '{SearchTerm}'"); // Debug line
 
         FilteredCars = AllCars.Where(car =>
-            car is { Make: not null, Model: not null } &&
-            (
-                string.IsNullOrEmpty(SearchTerm) || 
-                car.Make.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) ||
-                car.Model.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)
-            )
+            string.IsNullOrEmpty(SearchTerm) || 
+            (car.Make?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) == true) ||
+            (car.Model?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) == true)
         ).ToList();
-        
+    
+        Console.WriteLine($"ApplyFilters: Result has {FilteredCars.Count} cars"); // Debug line
         StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        CarService.CarsUpdated -= OnCarsUpdated;
     }
 
 }

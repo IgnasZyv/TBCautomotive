@@ -23,6 +23,8 @@
     private List<Car>? AllCars { get; set; }
     private List<Car>? FilteredCars { get; set; }
     private string SearchTerm { get; set; } = string.Empty;
+    
+    private bool _isLoading = false;
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,14 +34,24 @@
 
     private async Task LoadCars()
     {
-        AllCars = await CarService.GetAllCarsAsync();
-        Console.WriteLine($"LoadCars: Loaded {AllCars?.Count} cars - Latest car: {AllCars?.FirstOrDefault()?.Make}");
-        ApplyFilters();
+        if (_isLoading) return;
+        _isLoading = true;
+    
+        try
+        {
+            AllCars = await CarService.GetAllCarsAsync();
+            ApplyFilters();
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
     private async void OnCarsUpdated()
     {
-        Console.WriteLine("OnCarsUpdated: Event received");
+        if (_isLoading) return; // Prevent concurrent updates
+    
         await InvokeAsync(async () =>
         {
             await LoadCars();
@@ -49,8 +61,6 @@
     private void HandleFilterChanged(string searchTerm)
     {
         SearchTerm = searchTerm;
-        Console.WriteLine($"HandleFilterChanged: About to filter. AllCars count: {AllCars?.Count}, SearchTerm: '{searchTerm}'");
-        Console.WriteLine($"First few cars: {string.Join(", ", AllCars?.Take(3).Select(c => c.Make + " " + c.Model) ?? new string[0])}");
         ApplyFilters();
     }
     private void ApplyFilters()
@@ -60,16 +70,13 @@
             FilteredCars = null;
             return;
         }
-
-        Console.WriteLine($"ApplyFilters: Filtering {AllCars.Count} cars with search '{SearchTerm}'"); // Debug line
-
+        
         FilteredCars = AllCars.Where(car =>
             string.IsNullOrEmpty(SearchTerm) || 
             (car.Make?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) == true) ||
             (car.Model?.Contains(SearchTerm, StringComparison.OrdinalIgnoreCase) == true)
         ).ToList();
     
-        Console.WriteLine($"ApplyFilters: Result has {FilteredCars.Count} cars"); // Debug line
         StateHasChanged();
     }
 

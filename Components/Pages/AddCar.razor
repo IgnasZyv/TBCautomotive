@@ -208,7 +208,7 @@
         }
 
         // Add CarFeatures if you implement the modal there too
-        // _car.CarFeatures = SelectedFeatures?.Any() == true ? new List<CarFeature>(SelectedFeatures) : null;
+        _car.CarFeatures = SelectedFeatures?.Any() == true ? new List<CarFeature>(SelectedFeatures) : null;
 
         _car.CreatedAt = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
         await CarService.CreateCarAsync(_car);

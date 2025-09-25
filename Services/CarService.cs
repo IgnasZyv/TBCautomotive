@@ -7,7 +7,9 @@ namespace CarHostingWeb.Services;
 public class CarService()
 {
     private readonly CollectionReference? _carsCollection;
-
+    
+    // event when a car is created or updated
+    public event Action? CarsUpdated;
 
     public CarService(FirestoreDb firestoreDb) : this()
     {
@@ -20,14 +22,18 @@ public class CarService()
 
         Debug.Assert(_carsCollection != null, nameof(_carsCollection) + " != null");
         var snapshot = await _carsCollection.GetSnapshotAsync();
-        
+    
         foreach (var doc in snapshot.Documents)
         {
             var car = doc.ConvertTo<Car>();
             cars.Add(car);
         }
 
-        return cars;
+        // Sort cars: Available first (0), then Reserved (1), then Sold (2)
+        // Within each status group, sort by creation date (newest first)
+        return cars.OrderBy(car => car.IsSold ? 2 : (car.IsReserved ? 1 : 0))
+            .ThenByDescending(car => car.CreatedAt)
+            .ToList();
     }
 
     public async Task<Car?> GetCarByIdAsync(string carId)
@@ -46,16 +52,21 @@ public class CarService()
 
         var docRef = _carsCollection.Document(carId);
         await docRef.SetAsync(updatedCar, SetOptions.MergeAll);
+        
+        // Fire event to notify listening components
+        CarsUpdated?.Invoke();
     }
     
-    
-
     public async Task<string> CreateCarAsync(Car car)
     {
         Debug.Assert(_carsCollection != null, nameof(_carsCollection) + " != null");
 
         var docRef = _carsCollection.Document();
         await docRef.SetAsync(car);
+        
+        // Fire event to notify listening components
+        CarsUpdated?.Invoke();
+        
         return docRef.Id;
     }
 
@@ -71,6 +82,9 @@ public class CarService()
 
             var docRef = _carsCollection.Document(carId);
             await docRef.DeleteAsync();
+            
+            // Fire event to notify listening components
+            CarsUpdated?.Invoke();
 
             return true;
         }

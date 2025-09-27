@@ -9,7 +9,31 @@
     <SearchAndFilter OnFilterChanged="HandleFilterChanged"/>
 </div>
     
-<DisplayCarCards Cars="FilteredCars"/>
+@if (_isLoading)
+{
+    <div class="row g-4 justify-content-center">
+        @for (int i = 0; i < 6; i++)
+        {
+            <div class="col-sm-6 col-md-5 col-lg-4">
+                <div class="card h-100 border-0 shadow-sm">
+                    <div class="placeholder-glow">
+                        <div class="placeholder bg-secondary" style="height: 220px;"></div>
+                        <div class="card-body p-4">
+                            <span class="placeholder col-8 placeholder-lg mb-3"></span>
+                            <span class="placeholder col-6"></span>
+                            <span class="placeholder col-7"></span>
+                            <span class="placeholder col-5"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <DisplayCarCards Cars="FilteredCars"/>
+}
 
 @if (AllCars is { Count: 0 })
 {
@@ -35,7 +59,9 @@
     private async Task LoadCars()
     {
         if (_isLoading) return;
+    
         _isLoading = true;
+        StateHasChanged(); // Trigger UI update to show loading state
     
         try
         {
@@ -45,6 +71,7 @@
         finally
         {
             _isLoading = false;
+            StateHasChanged(); // Update UI when done loading
         }
     }
 

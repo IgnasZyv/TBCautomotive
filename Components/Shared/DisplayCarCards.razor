@@ -1,4 +1,4 @@
-@rendermode InteractiveServer
+@* @rendermode InteractiveServer *@
 
 @using System.ComponentModel.DataAnnotations
 @using CarHostingWeb.Models
@@ -9,7 +9,7 @@
 @inject NavigationManager Navigation
 
 <div class="container-fluid px-4 mt-4">
-    @if (Cars != null)
+    @if (Cars != null && Cars.Any())
     {
         <div class="row g-4 justify-content-center">
             @foreach (var car in Cars)
@@ -82,34 +82,14 @@
             }
         </div>
     }
-    else
-    {
-        <div class="text-center py-5">
-            @* <div class="spinner-border text-primary mb-3" role="status"> *@
-            @*     <span class="visually-hidden">Loading...</span> *@
-            @* </div> *@
-            @* <p class="h5">Loading cars...</p> *@
-            @* <p></p> *@
-            
-            <p>No cars at this moment!</p>
-        </div>
-    }
 </div>
-
 
 @code {
     [Parameter] public List<Car>? Cars { get; set; }
     private string _currentPath = string.Empty;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        var allCars = await CarService.GetAllCarsAsync();
-    
-        // Sort cars: Available first, then Reserved, then Sold at the bottom
-        Cars = allCars?.OrderBy(car => car.IsSold ? 2 : (car.IsReserved ? 1 : 0))
-            .ThenByDescending(car => car.CreatedAt) // Most recent first within each group
-            .ToList();
-    
         _currentPath = Navigation.ToBaseRelativePath(Navigation.Uri);
     }
 }
